@@ -6,9 +6,11 @@
 [2.Responsive Web Design Tester是一个超棒的扩展，能快速浏览你的网站在不同浏览器和设备上的行为。](https://chrome.google.com/webstore/detail/responsive-web-design-tes/objclahbaimlfnbjdeobicmmlnbhamkg?hl=en%20)
 
 [3.Window Resizer扩展，允许你快速调整浏览器窗口。点击菜单栏上的图标会产生一个可自定义窗口的下拉菜单。](https://chrome.google.com/webstore/detail/window-resizer/kkelicaakdanhinjdeammmilcgefonfh?hl=en%20)
+
 [4.ColorPick Eyedropper是一个简单的颜色拾取工具，允许你从任意网页中选择颜色值。](https://chrome.google.com/webstore/detail/colorpick-eyedropper/ohcpnigalekghcmgcdcenkpelffpdolg?hl=en%20)
-[5.CSSViewer是一个简单的CSS属性查看器。它有一个浮动面板，上面不但指明鼠标所在之地的身份，还提供其字体、文本、颜色、背景、框、定位和效果属性的说明。 CSSViewer可以快速提供你所需要的基本CSS信息。](https://chrome.google.com/webstore/detail/cssviewer/ggfgijbpiheegefliciemofobhmofgce?hl=en)
-[6.Lorem Ipsum Generator提供了一种创建默认文本方便又快捷的方法。如果你需要一些默认文本作为占位文本，那它毫无疑问会是你快速达到目的的工具。](https://chrome.google.com/webstore/detail/lorem-ipsum-generator-def/mcdcbjjoakogbcopinefncmkcamnfkdb?hl=en%20)
+
+[5.CSSViewer是一个简单的CSS属性查看器。它有一个浮动面板，上面不但指明鼠标所在之地的身份，还提供其字体、文本、颜色、背景、框、定位和效果属性的说明。 CSSViewer可以快速提供你所需要的基本CSS信息。](https://chrome.google.com/webstore/detail/cssviewer/ggfgijbpiheegefliciemofobhmofgce?hl=en) 
+[6.Lorem Ipsum Generator提供了一种创建默认文本方便又快捷的方法。如果你需要一些默认文本作为占位文本，那它毫无疑问会是你快速达到目的的工具。](https://chrome.google.com/webstore/detail/lorem-ipsum-generator-def/mcdcbjjoakogbcopinefncmkcamnfkdb?hl=en%20) 
 [7.Ghostery是一个强大的Chrome扩展，可检测跟踪器、像素，以及网站上嵌入的片段。通过Ghostery，你可以立即知道你访问过的网页上安装了什么插件和跟踪器。并且Ghostery还能保护你的隐私。使用此Chrome扩展无需注册或登录。](https://chrome.google.com/webstore/detail/ghostery/mlomiejdfkolichcflejclcbmpeaniij?hl=en%20)
 [8.和Ghostery类似，Wappalyzer Chrome扩展能让你知道任何特定网站上安装了什么软件。它能揭示技术和内容管理系统、电子商务平台、Web服务器、JavaScript框架和已安装的分析工具。](https://chrome.google.com/webstore/detail/wappalyzer/gppongmhjkpfnbhagpmjfkannfbllamg?hl=en%20)
 [9.Usersnap Chrome扩展可以让你直接在浏览器中捕捉和注释任何网页。此Chrome扩展使得提供反馈原型和错误报告变得特别简单。并且所有创建的屏幕截图直接存储在你的项目仪表板上。](https://chrome.google.com/webstore/detail/usersnap-annotate-screens/khehmhbaabkepkojebhcpjifcmojdmgd?hl=en%20)
