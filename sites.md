@@ -1,7 +1,10 @@
 # 15 Chrome Apps
 [原文链接]( http://www.codeceo.com/article/15-chrome-extension.html?ref=myread)
+
 [1.支持Chrome的Web Developer扩展，允许你通过添加一个小工具栏来使用不同的工具](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+
 [2.Responsive Web Design Tester是一个超棒的扩展，能快速浏览你的网站在不同浏览器和设备上的行为。](https://chrome.google.com/webstore/detail/responsive-web-design-tes/objclahbaimlfnbjdeobicmmlnbhamkg?hl=en%20)
+
 [3.Window Resizer扩展，允许你快速调整浏览器窗口。点击菜单栏上的图标会产生一个可自定义窗口的下拉菜单。](https://chrome.google.com/webstore/detail/window-resizer/kkelicaakdanhinjdeammmilcgefonfh?hl=en%20)
 [4.ColorPick Eyedropper是一个简单的颜色拾取工具，允许你从任意网页中选择颜色值。](https://chrome.google.com/webstore/detail/colorpick-eyedropper/ohcpnigalekghcmgcdcenkpelffpdolg?hl=en%20)
 [5.CSSViewer是一个简单的CSS属性查看器。它有一个浮动面板，上面不但指明鼠标所在之地的身份，还提供其字体、文本、颜色、背景、框、定位和效果属性的说明。 CSSViewer可以快速提供你所需要的基本CSS信息。](https://chrome.google.com/webstore/detail/cssviewer/ggfgijbpiheegefliciemofobhmofgce?hl=en)
