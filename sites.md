@@ -1,7 +1,6 @@
 # 15 Chrome Apps
 [原文链接]( http://www.codeceo.com/article/15-chrome-extension.html?ref=myread) <br>
 [1.支持Chrome的Web Developer扩展，允许你通过添加一个小工具栏来使用不同的工具](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)
-
 [2.Responsive Web Design Tester是一个超棒的扩展，能快速浏览你的网站在不同浏览器和设备上的行为。](https://chrome.google.com/webstore/detail/responsive-web-design-tes/objclahbaimlfnbjdeobicmmlnbhamkg?hl=en%20)
 
 [3.Window Resizer扩展，允许你快速调整浏览器窗口。点击菜单栏上的图标会产生一个可自定义窗口的下拉菜单。](https://chrome.google.com/webstore/detail/window-resizer/kkelicaakdanhinjdeammmilcgefonfh?hl=en%20)
