@@ -15,6 +15,8 @@
 - [14.作为一名使用RESTful API的开发人员，在浏览器上阅读原始的JSON数据可以说是相当尴尬的。树视图比原始状态更便于阅读JSON。 此Chrome扩展——JSON View可以帮助你在浏览器中查看JSON文件。](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en%20)
 - [15.需要从网站上下载图片？那么我建议你试试支持Chrome的Image Downloader扩展。它能够让你批量下载所有的图片。您也可以通过宽度、高度、URL过滤网页图片。](https://chrome.google.com/webstore/detail/image-downloader/cnpniohnfphhjihaiiggeabnkjhpaldj%20)
 
+# Other App
+- [adblockplus](https://downloads.adblockplus.org/devbuilds/adblockpluschrome/)
 
 
 
