@@ -6,3 +6,5 @@
 #### [W3school](http://www.w3school.com.cn/)
 #### [newbiefly](http://www.newbiefly.com/)
 #### [csdn](http://www.csdn.net/)
+#### [oschina](https://www.oschina.net/)
+#### [liuhaihua](http://www.liuhaihua.cn/)
