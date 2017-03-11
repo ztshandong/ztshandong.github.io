@@ -1,5 +1,4 @@
 # Resources Sites
-- [chrome](https://support.google.com/chrome/answer/126299?hl=zh-Hans)
 - [JBoss Tools](http://tools.jboss.org/downloads/)
 - [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
 - [webpack](https://webpack.github.io/)
@@ -9,7 +8,6 @@
 - [node-supervisor](https://github.com/petruisfan/node-supervisor)
 - [ironNode](http://www.genshuixue.com/i-cxy/p/11600790)
 - [开源中国](https://www.oschina.net/)
-- 
 - [fontawesome](http://fontawesome.dashgame.com/)
 - [babel](http://babeljs.io/)
 - [gulp](http://www.gulpjs.com.cn/)
