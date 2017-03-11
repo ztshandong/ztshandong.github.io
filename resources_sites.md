@@ -11,6 +11,7 @@
 ---
 - [开源中国](https://www.oschina.net/)
 - [fontawesome](http://fontawesome.dashgame.com/)
+- [easyicon](http://www.easyicon.net/)
 - [babel](http://babeljs.io/)
 - [gulp](http://www.gulpjs.com.cn/)
 - [awesomes](https://www.awesomes.cn/)
