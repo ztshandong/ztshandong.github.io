@@ -1,4 +1,5 @@
 # Resources Sites
+- [chrome](https://support.google.com/chrome/answer/126299?hl=zh-Hans)
 - [JBoss Tools](http://tools.jboss.org/downloads/)
 - [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
 - [webpack](https://webpack.github.io/)
