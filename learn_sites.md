@@ -2,6 +2,7 @@
 #### [ItHeiMa](http://www.itheima.com/)
 #### [Cnblogs](https://www.cnblogs.com/)
 #### [imooc](http://www.imooc.com/)
+#### [163](http://study.163.com/)
 #### [ItPub](http://blog.itpub.net/index.php)
 #### [W3school](http://www.w3school.com.cn/)
 #### [newbiefly](http://www.newbiefly.com/)
