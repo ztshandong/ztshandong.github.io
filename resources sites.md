@@ -1,4 +1,12 @@
 # Resources Sites
+- [JBoss Tools](http://tools.jboss.org/downloads/)
+- [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
+- [webpack](https://webpack.github.io/)
+- [npm](https://www.npmjs.com/)
+- [io.js](https://iojs.org/zh/index.html)
+- [nvm](https://github.com/creationix/nvm)
+- [node-supervisor](https://github.com/petruisfan/node-supervisor)
+- 
 - [fontawesome](http://fontawesome.dashgame.com/)
 - [babel](http://babeljs.io/)
 - [gulp](http://www.gulpjs.com.cn/)
