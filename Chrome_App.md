@@ -13,13 +13,15 @@
 - [12.浏览器标签管理是用于web的一个非常棒的技术。Session Manager可以节省你的浏览状态，让你之后可以重新打开session。特别是如果你需要一遍又一遍地打开同一网页，这就非常有用了。](https://chrome.google.com/webstore/detail/session-manager/bbcnbpafconjjigibnhbfmmgdbbkcjfi?hl=en%20)
 - [13.这扩展特别有用，能让你从工具栏中清除缓存。它在后台工作，这意味着不会有任何弹窗和确认对话框来让你分心。你还可以根据你所需要清除的数据定制Clear Cache，这些数据包括应用程序缓存、下载、文件系统、表单数据、历史、本地存储、密码等等。](https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn?hl=en%20)
 - [14.作为一名使用RESTful API的开发人员，在浏览器上阅读原始的JSON数据可以说是相当尴尬的。树视图比原始状态更便于阅读JSON。 此Chrome扩展——JSON View可以帮助你在浏览器中查看JSON文件。](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en%20)
-- [15.需要从网站上下载图片？那么我建议你试试支持Chrome的Image Downloader扩展。它能够让你批量下载所有的图片。您也可以通过宽度、高度、URL过滤网页图片。](https://chrome.google.com/webstore/detail/image-downloader/cnpniohnfphhjihaiiggeabnkjhpaldj%20)
+- [15.需要从网站上下载图片？那么我建议你试试支持Chrome的Image Downloader扩展。它能够让你批量下载所有的图片。您也可以通过宽度、高度、URL过滤网页图片。](https://chrome.google.com/webstore/search/image%20downloader)
 
 # Other App
+- [google keep](https://chrome.google.com/webstore/detail/google-keep-chrome-extens/lpcaedmchfhocbbapmcbpinfpgnhiddi)
 - [adblockplus](https://downloads.adblockplus.org/devbuilds/adblockpluschrome/)
-
-
-
-
-
+- [devtools terminal](https://chrome.google.com/webstore/detail/devtools-terminal/leakmhneaibbdapdoienlkifomjceknl)
+- [devtools terminal github](https://github.com/petethepig/devtools-terminal)
+- [browserstack local](https://chrome.google.com/webstore/detail/browserstack-local/mfiddfehmfdojjfdpfngagldgaaafcfo)
+- [what font](https://chrome.google.com/webstore/detail/whatfont/jabopobgcpjmedljpbcaablpmlmfcogm)
+- [page ruler](https://chrome.google.com/webstore/detail/page-ruler/jlpkojjdgbllmedoapgfodplfhcbnbpn)
+- [webdevelop checklist](https://chrome.google.com/webstore/detail/web-developer-checklist/iahamcpedabephpcgkeikbclmaljebjp)
 
