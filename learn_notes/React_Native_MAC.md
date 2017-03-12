@@ -20,6 +20,7 @@ npm install -g yarn react-native-cli
 yarn config set registry https://registry.npm.taobao.org --global
 yarn config set disturl https://npm.taobao.org/dist --global
 ```
+# MAC
 # Watchman
 #### Watchman是由Facebook提供的监视文件系统变更的工具。
 #### 安装此工具可以提高开发时的性能（packager可以快速捕捉文件的变化从而实现实时刷新）。
@@ -44,4 +45,16 @@ react-native run-ios
 你也可以在Nuclide中打开AwesomeProject文件夹 然后运行，
 或是双击ios/AwesomeProject.xcodeproj文件然后在Xcode中点击Run按钮。
 ```
+
+# Android
+Android Studio需要Java Development Kit [JDK] 1.8或更高版本。你可以在命令行中输入 javac -version
+
+
+
+
+
+
+
+
+
 
