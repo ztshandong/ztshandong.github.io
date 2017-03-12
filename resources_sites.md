@@ -1,5 +1,6 @@
 # Resources Sites
 - [bootstrap](http://www.bootcss.com/)
+- [react](http://reactjs.cn/react/docs/getting-started-zh-CN.html)
 - [52framework](http://www.52framework.com/)
 - [JBoss Tools](http://tools.jboss.org/downloads/)
 - [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
