@@ -1,4 +1,6 @@
 # Resources Sites
+- [bootstrap](http://www.bootcss.com/)
+- [52framework](http://www.52framework.com/)
 - [JBoss Tools](http://tools.jboss.org/downloads/)
 - [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
 - [webpack](https://webpack.github.io/)
@@ -9,6 +11,7 @@
 - [ironNode](http://www.genshuixue.com/i-cxy/p/11600790)
 
 ---
+- [echarts](https://github.com/ecomfe/echarts)
 - [fontawesome](http://fontawesome.dashgame.com/)
 - [easyicon](http://www.easyicon.net/)
 - [babel](http://babeljs.io/)
@@ -18,3 +21,5 @@
 - [VR直播](http://developer.detu.com/)
 - [鱼*后花园](http://www.fishlee.net/)
 - [ckeditor](http://ckeditor.com/)
+- [logo](http://www.logoko.com.cn/)
+- [gif](http://gickr.com/)
