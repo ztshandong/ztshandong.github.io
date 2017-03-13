@@ -1,4 +1,4 @@
-# [markdown基本语法](http://www.cnblogs.com/hnrainll/p/3514637.html)
+# [markdown教程](https://github.com/fan2/Markdown/blob/master/Markdown%20Tutorials.md)
 # http://dillinger.io/
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 ### https://pandao.github.io/editor.md/
