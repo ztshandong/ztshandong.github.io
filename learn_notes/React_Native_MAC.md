@@ -48,7 +48,7 @@ react-native run-ios
 
 # Android
 Android Studio需要Java Development Kit [JDK] 1.8或更高版本。你可以在命令行中输入 javac -version
-
+https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551
 
 
 
