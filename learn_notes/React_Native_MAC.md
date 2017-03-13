@@ -74,17 +74,27 @@ echo $ANDROID_HOME检查此变量是否已正确设置。
 ```
 ### 最后配置
 ```sh
-在SDK Tools窗口中，选择Show Package Details，然后在Android SDK Build Tools中勾选Android SDK Build-Tools 23.0.1（必须是这个版本）。然后还要勾选最底部的Android Support Repository.
+在SDK Tools窗口中，选择Show Package Details，然后在Android SDK Build Tools中
+勾选Android SDK Build-Tools 23.0.1（必须是这个版本）。
+然后还要勾选最底部的Android Support Repository.
 
-在SDK Platforms窗口中，选择Show Package Details，然后在Android 6.0 (Marshmallow)中勾选Google APIs、Android SDK Platform 23、Intel x86 Atom System Image、Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image。
+在SDK Platforms窗口中，选择Show Package Details，然后在Android 6.0 (Marshmallow)中
+勾选Google APIs、Android SDK Platform 23、Intel x86 Atom System Image、
+Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image。
 ```
 ###### 几个代理
 [电子科技大学](http://mirrors.dormforce.NET)
+
 [东软信息学院](http://mirrors.neusoft.edu.cn) 
+
 [北京化工大学](http://ubuntu.buct.edu.cn/ubuntu.buct.cn) 
+
 [中国科学院开源协会1](http://mirrors.opencas.cn) 
+
 [中国科学院开源协会2](http://mirrors.opencas.org)
+
 [中国科学院开源协会3](http://mirrors.opencas.ac.cn)
+
 [上海GDG镜像服务器](http://sdk.gdgshanghai.com:8000)
 
 
