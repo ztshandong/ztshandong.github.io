@@ -75,7 +75,7 @@ export GRADLE_HOME=/usr/local/opt/gradle
 source ~/.bash_profile
 echo $ANDROID_HOME检查此变量是否已正确设置。
 ```
-### 最后配置
+### 下载开发版本包
 ```sh
 在SDK Tools窗口中，选择Show Package Details，然后在Android SDK Build Tools中
 勾选Android SDK Build-Tools 23.0.1（必须是这个版本）。
@@ -84,6 +84,22 @@ echo $ANDROID_HOME检查此变量是否已正确设置。
 在SDK Platforms窗口中，选择Show Package Details，然后在Android 6.0 (Marshmallow)中
 勾选Google APIs、Android SDK Platform 23、Intel x86 Atom System Image、
 Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image。
+```
+### 使用Android Studio创建AVD
+```sh
+如果是vmware，则需要勾选 Intel VT-x/EPT 与 AMD-RVI ，否则MAC虚拟机中无法开启安卓虚拟机
+然后运行查看命令
+adb devices
+第一列表示设备 ID，第二列表示设备状态，device 表明可以运行。
+```
+### 真机调试
+```sh
+点击屏幕左上角苹果标志->关于本机->更多信息->系统报告，在左侧列表选择 USB，就能看到对应的 USB 设备厂商号。
+小米1的一般是 0x18dl，小米 2 以后 和 红米应该是 0x2717。
+echo "0x2717" >> ~/.android/adb_usb.ini
+然后重启adb
+adb kill-server
+adb start-server
 ```
 ###### 几个网站
 [电子科技大学](http://mirrors.dormforce.NET)
@@ -102,7 +118,7 @@ Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image�
 
 ### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
 ```sh
-如果是vmware，则需要勾选 Intel VT-x/EPT 与 AMD-RVI ，否则MAC虚拟机中无法开启安卓虚拟机
+
 react-native run-android
 此时会下载N多jar包
 如果下载gradle-2.14.1-all.zip慢就查看路径
