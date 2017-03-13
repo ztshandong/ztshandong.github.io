@@ -61,12 +61,15 @@ $ cp android-sdk-24.4.1_1.el_capitan.bottle.tar.gz $(brew --cache android-sdk)
 $ brew install android-sdk
 此时安装路径为/usr/local/opt/android-sdk
 如果通过Android Studio安装的sdk，则其路径为export ANDROID_HOME=~/Library/Android/sdk
+还有一个
+brew install gradle
 ```
 ### 配置变量
 ```sh
 vi ~/.bash_profile
 添加
 export ANDROID_HOME="/usr/local/opt/android-sdk"
+export GRADLE_HOME=/usr/local/opt/gradle
 :wq
 然后使用下列命令使其立即生效（否则重启后才生效）：
 source ~/.bash_profile
