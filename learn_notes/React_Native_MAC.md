@@ -82,7 +82,7 @@ echo $ANDROID_HOME检查此变量是否已正确设置。
 勾选Google APIs、Android SDK Platform 23、Intel x86 Atom System Image、
 Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image。
 ```
-###### 几个代理
+###### 几个网站
 [电子科技大学](http://mirrors.dormforce.NET)
 
 [东软信息学院](http://mirrors.neusoft.edu.cn) 
