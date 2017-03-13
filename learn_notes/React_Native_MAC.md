@@ -97,5 +97,9 @@ Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image�
 
 [上海GDG镜像服务器](http://sdk.gdgshanghai.com:8000)
 
-
+### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
+```sh
+react-native run-ios 如果下载gradle-2.14.1-all.zip慢就查看路径
+/Users/zhangtao/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1-all.zip
+```
 
