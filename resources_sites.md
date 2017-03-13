@@ -25,3 +25,4 @@
 - [ckeditor](http://ckeditor.com/)
 - [logo](http://www.logoko.com.cn/)
 - [gif](http://gickr.com/)
+- [videojs](http://videojs.com/)
