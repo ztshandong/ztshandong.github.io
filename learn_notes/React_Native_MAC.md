@@ -52,7 +52,7 @@ react-native run-ios
 javac -version
 ```
 ### [下载JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
-### [下载离线sdk][android-sdk-24.4.1_1](https://homebrew.bintray.com/bottles/android-sdk-24.4.1_1.el_capitan.bottle.tar.gz)
+### 下载离线sdk[android-sdk-24.4.1_1](https://homebrew.bintray.com/bottles/android-sdk-24.4.1_1.el_capitan.bottle.tar.gz)
 ###### [原文链接](https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551)
 ### 下载路径中打开终端后执行
 ```sh
