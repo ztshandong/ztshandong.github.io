@@ -102,7 +102,8 @@ Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image�
 
 ### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
 ```sh
-react-native run-ios 
+如果是vmware，则需要勾选 Intel VT-x/EPT 与 AMD-RVI ，否则MAC虚拟机中无法开启安卓虚拟机
+react-native run-android
 此时会下载N多jar包
 如果下载gradle-2.14.1-all.zip慢就查看路径
 /Users/zhangtao/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1-all.zip
