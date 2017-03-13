@@ -61,8 +61,7 @@ $ cp android-sdk-24.4.1_1.el_capitan.bottle.tar.gz $(brew --cache android-sdk)
 $ brew install android-sdk
 此时安装路径为/usr/local/opt/android-sdk
 如果通过Android Studio安装的sdk，则其路径为export ANDROID_HOME=~/Library/Android/sdk
-还有一个
-brew install gradle
+brew install gradle 如果安装Android Studio则不必安装gradle
 ```
 ### 配置变量
 ```sh
@@ -92,6 +91,14 @@ Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image�
 adb devices
 第一列表示设备 ID，第二列表示设备状态，device 表明可以运行。
 ```
+### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
+```sh
+react-native run-android
+此时会下载N多jar包
+如果下载gradle-2.14.1-all.zip慢就查看路径
+/Users/zhangtao/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1-all.zip
+可能会因为没有AVD报错，则可以用Android Studio打开此项目，调试运行
+```
 ### 真机调试
 ```sh
 点击屏幕左上角苹果标志->关于本机->更多信息->系统报告，在左侧列表选择 USB，就能看到对应的 USB 设备厂商号。
@@ -116,12 +123,5 @@ adb start-server
 
 [上海GDG镜像服务器](http://sdk.gdgshanghai.com:8000)
 
-### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
-```sh
 
-react-native run-android
-此时会下载N多jar包
-如果下载gradle-2.14.1-all.zip慢就查看路径
-/Users/zhangtao/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1-all.zip
-```
 
