@@ -1,6 +1,4 @@
 # [markdown教程](https://github.com/fan2/Markdown/blob/master/Markdown%20Tutorials.md)
-		Idina Menze和Caleb Hyles激情对唱Let It Go：<iframe height=498 width=510 src="http://player.youku.com/embed/XNjcyMDU4Njg0" frameborder=0 allowfullscreen></iframe>
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/GzdKMVn8avo/0.jpg)](https://www.youtube.com/embed/GzdKMVn8avo "CameraMaster")
 # http://dillinger.io/
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 ### https://pandao.github.io/editor.md/
