@@ -47,14 +47,45 @@ react-native run-ios
 ```
 
 # Android
-Android Studio需要Java Development Kit [JDK] 1.8或更高版本。你可以在命令行中输入 javac -version
-https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551
+- Android Studio需要Java Development Kit [JDK] 1.8或更高版本
+```sh
+javac -version
+```
+### [下载JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
+### [下载离线sdk][android-sdk-24.4.1_1](https://homebrew.bintray.com/bottles/android-sdk-24.4.1_1.el_capitan.bottle.tar.gz)
+###### [原文链接](https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551)
+### 下载路径中打开终端后执行
+```sh
+$ cp android-sdk-24.4.1_1.el_capitan.bottle.tar.gz $(brew --cache android-sdk)
+解压到brew缓存文件夹中后执行
+$ brew install android-sdk
+此时安装路径为/usr/local/opt/android-sdk
+如果通过Android Studio安装的sdk，则其路径为export ANDROID_HOME=~/Library/Android/sdk
+```
+### 配置变量
+```sh
+vi ~/.bash_profile
+添加
+export ANDROID_HOME="/usr/local/opt/android-sdk"
+:wq
+然后使用下列命令使其立即生效（否则重启后才生效）：
+source ~/.bash_profile
+echo $ANDROID_HOME检查此变量是否已正确设置。
+```
+### 最后配置
+```sh
+在SDK Tools窗口中，选择Show Package Details，然后在Android SDK Build Tools中勾选Android SDK Build-Tools 23.0.1（必须是这个版本）。然后还要勾选最底部的Android Support Repository.
 
-
-
-
-
-
+在SDK Platforms窗口中，选择Show Package Details，然后在Android 6.0 (Marshmallow)中勾选Google APIs、Android SDK Platform 23、Intel x86 Atom System Image、Intel x86 Atom_64 System Image以及Google APIs Intel x86 Atom_64 System Image。
+```
+###### 几个代理
+[电子科技大学](http://mirrors.dormforce.NET)
+[东软信息学院](http://mirrors.neusoft.edu.cn) 
+[北京化工大学](http://ubuntu.buct.edu.cn/ubuntu.buct.cn) 
+[中国科学院开源协会1](http://mirrors.opencas.cn) 
+[中国科学院开源协会2](http://mirrors.opencas.org)
+[中国科学院开源协会3](http://mirrors.opencas.ac.cn)
+[上海GDG镜像服务器](http://sdk.gdgshanghai.com:8000)
 
 
 
