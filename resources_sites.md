@@ -27,6 +27,7 @@
 - [logo](http://www.logoko.com.cn/)
 - [gif](http://gickr.com/)
 - [videojs](http://videojs.com/)
+
 ---
 - [鸠摩搜书](https://www.jiumodiary.com/)
 - [ppt资源](http://www.hippter.com/)
