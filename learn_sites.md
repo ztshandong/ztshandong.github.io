@@ -1,4 +1,7 @@
 #### [deeplearning](https://github.com/exacity/deeplearningbook-chinese)
+#### [tensorflow_git](https://github.com/tensorflow)
+#### [tensorflow](https://www.tensorflow.org/)
+#### [tensorflow_cn](http://www.tensorfly.cn/)
 ---
 #### [imooc](http://www.imooc.com/)
 #### [163](http://study.163.com/)
