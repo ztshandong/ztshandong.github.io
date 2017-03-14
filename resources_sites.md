@@ -27,3 +27,10 @@
 - [logo](http://www.logoko.com.cn/)
 - [gif](http://gickr.com/)
 - [videojs](http://videojs.com/)
+---
+- [鸠摩搜书](https://www.jiumodiary.com/)
+- [ppt资源](http://www.hippter.com/)
+- [自媒体](https://www.pinterest.com/)
+- [创意](http://www.topys.cn/)
+- [video](http://www.flvcd.com/)
+- [表情包](http://www.doubean.com/)
