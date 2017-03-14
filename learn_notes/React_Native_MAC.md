@@ -94,11 +94,11 @@ adb devices
 ```
 ### 下载[gradle-2.14.1-all.zip](https://services.gradle.org/distributions/gradle-2.14.1-all.zip)
 ```sh
+Android Studio打开一个AVD后运行
 react-native run-android
 此时会下载N多jar包
 如果下载gradle-2.14.1-all.zip慢就查看路径
 /Users/zhangtao/.gradle/wrapper/dists/gradle-2.14.1-all/8bnwg5hd3w55iofp58khbp6yv/gradle-2.14.1-all.zip
-可能会因为没有AVD报错，则可以用Android Studio打开此项目，调试运行
 ```
 ### 真机调试
 ```sh
