@@ -69,6 +69,7 @@ vi ~/.bash_profile
 添加
 export ANDROID_HOME="/usr/local/opt/android-sdk"
 export GRADLE_HOME=/usr/local/opt/gradle
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 :wq
 然后使用下列命令使其立即生效（否则重启后才生效）：
 source ~/.bash_profile
