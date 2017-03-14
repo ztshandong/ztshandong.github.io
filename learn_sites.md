@@ -2,6 +2,8 @@
 #### [tensorflow_git](https://github.com/tensorflow)
 #### [tensorflow](https://www.tensorflow.org/)
 #### [tensorflow_cn](http://www.tensorfly.cn/)
+#### [ES6](http://es6.ruanyifeng.com/#README)
+#### [ES5&6](http://bbs.reactnative.cn)
 ---
 #### [imooc](http://www.imooc.com/)
 #### [163](http://study.163.com/)
