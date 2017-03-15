@@ -4,6 +4,7 @@
 #### [tensorflow_cn](http://www.tensorfly.cn/)
 #### [ES6](http://es6.ruanyifeng.com/#README)
 #### [ES5&6](http://bbs.reactnative.cn)
+#### [react](https://github.com/facebook/react)
 #### [react-native](https://github.com/reactnativecn/react-native-guide)
 #### [express](https://github.com/expressjs/express)
 ---
