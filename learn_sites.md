@@ -7,6 +7,7 @@
 #### [react](https://github.com/facebook/react)
 #### [react-native](https://github.com/reactnativecn/react-native-guide)
 #### [express](https://github.com/expressjs/express)
+#### [redis](https://redis.io/)
 ---
 #### [imooc](http://www.imooc.com/)
 #### [163](http://study.163.com/)
