@@ -10,10 +10,19 @@ brew install nodejs
 # 安装mongodb
 ```sh
 brew install mongodb
+默认27017端口
 ```
 # 安装redis
 ```sh
 brew install redis
+```
+### 启动redis
+```sh
+redis-server  可启动，但是按ctrl+c或者关闭终端就关闭了redis
+vim etc/redis.conf     输入?进入查找模式，将daemonize改为yes
+redis-server /etc/redis.conf 可将redis以守护进程的方式启动
+ps aux | grep redis 
+redis-cli 可连接，默认6379
 ```
 # 安装sublime text 3 3126
 ```sh
