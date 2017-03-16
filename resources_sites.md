@@ -14,6 +14,7 @@
 - [ironNode](http://www.genshuixue.com/i-cxy/p/11600790)
 - [webstorm_key](http://idea.lanyus.com/)
 ---
+- [anchor](https://github.com/sailsjs/anchor)
 - [echarts](https://github.com/ecomfe/echarts)
 - [fontawesome](http://fontawesome.dashgame.com/)
 - [easyicon](http://www.easyicon.net/)
