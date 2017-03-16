@@ -7,7 +7,7 @@ npm install mongoose
 ```sh
 var mongoose=require("mongoose");
 var uri=' mongodb://username:password@hostname:port/databasename';
-uri='mongodb://localhost/mongooseproj';
+uri='mongodb://localhost/dbname';
 mongoose.connect(uri);
 ```
 # model与schema
