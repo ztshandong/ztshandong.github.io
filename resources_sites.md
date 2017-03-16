@@ -15,6 +15,7 @@
 - [webstorm_key](http://idea.lanyus.com/)
 ---
 - [anchor](https://github.com/sailsjs/anchor)
+- [waterline](https://github.com/balderdashy/waterline)
 - [echarts](https://github.com/ecomfe/echarts)
 - [fontawesome](http://fontawesome.dashgame.com/)
 - [easyicon](http://www.easyicon.net/)
