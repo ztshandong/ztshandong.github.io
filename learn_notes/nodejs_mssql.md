@@ -1,3 +1,4 @@
+```javascript
 var sql = require('mssql');
 
 var config = {
@@ -38,3 +39,4 @@ sql.connect(config, function(err) {
 sql.on('error', function(err) {
     // ... error handler
 });
+```
