@@ -6,6 +6,8 @@
 # 安装nodejs
 ```sh
 brew install nodejs
+node --version
+brew install -g n  升级工具
 ```
 # 安装mongodb
 ```sh
