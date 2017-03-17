@@ -20,6 +20,13 @@ npm install -g yarn react-native-cli
 yarn config set registry https://registry.npm.taobao.org --global
 yarn config set disturl https://npm.taobao.org/dist --global
 ```
+# 升级
+```sh
+npm info react-native 查看最新版本号
+打开项目目录下的package.json文件，然后在dependencies模块下找到react-native，将当前版本号改到最新
+sudo npm install
+react-native upgrade
+```
 # MAC
 # Watchman
 #### Watchman是由Facebook提供的监视文件系统变更的工具。
