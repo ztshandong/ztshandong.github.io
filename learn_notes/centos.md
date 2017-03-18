@@ -1,3 +1,13 @@
+
+# 关闭SELINUX
+```sh
+vi /etc/selinux/config
+#SELINUX=enforcing #注释掉
+#SELINUXTYPE=targeted #注释掉
+SELINUX=disabled #增加
+:wq! #保存退出 
+setenforce 0 #使配置立即生效
+```
 # vim
 ```sh
 ?string 向下查找
@@ -92,4 +102,53 @@ NVM（Node version manager）顾名思义，就是Node.js的版本管理软件�
 先去github上查看最新版本
 source ~/.bash_profile
 nvm install node 安装最新版
+```
+# ftp
+```sh
+rpm -q vsftpd 查看是否安装
+yum -y install vsftpd 如果没安装就安装
+whereis vsftpd 查看安装路径
+systemctl start vsftpd.service
+vi /etc/vsftpd/vsftpd.conf
+anonymous_enable=NO 默认是YES
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+firewall-cmd --add-port=21/tcp
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd 开机启动
+```
+# firewall
+```sh
+使用自带防火墙：CentOS7使用的是Linux Kernel 3.10.0的内核版本，新版的Kernel内核已经有了防火墙netfilter
+方法一
+cp /usr/lib/firewalld/services/http.xml /etc/firewalld/services/
+firewall-cmd --reload
+方法二 间接修改/etc/firewalld/zones/public.xml文件
+##Add
+firewall-cmd --permanent --zone=public --add-port=80/tcp
+##Remove
+firewall-cmd --permanent --zone=public --remove-port=80/tcp
+##Reload
+firewall-cmd --reload
+查看防火墙状态
+systemctl status firewalld.service
+启动防火墙
+systemctl start firewalld.service
+关闭防火墙
+systemctl stop firewalld.service
+firewall-cmd --list-all 
+firewall-cmd --add-service=ftp
+
+
+使用iptables防火墙，要禁用自带防火墙
+sudo systemctl stop firewalld.service
+sudo systemctl disable firewalld.service
+sudo yum install iptables-services
+vi /etc/sysconfig/iptables
+systemctl restart iptables.service　　
+systemctl enable iptables.service　
+
+
 ```
