@@ -114,8 +114,7 @@ anonymous_enable=NO 默认是YES
 local_enable=YES
 write_enable=YES
 chroot_local_user=YES
-firewall-cmd --add-port=21/tcp
-firewall-cmd --reload
+
 systemctl restart vsftpd
 systemctl enable vsftpd 开机启动
 ```
@@ -128,6 +127,8 @@ firewall-cmd --reload
 方法二 间接修改/etc/firewalld/zones/public.xml文件
 ##Add
 firewall-cmd --permanent --zone=public --add-port=80/tcp
+firewall-cmd --add-port=21/tcp
+firewall-cmd --add-service=ftp
 ##Remove
 firewall-cmd --permanent --zone=public --remove-port=80/tcp
 ##Reload
