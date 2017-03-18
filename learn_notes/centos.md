@@ -151,6 +151,9 @@ vi /etc/sysconfig/iptables
 -A INPUT -m state –state NEW -m tcp -p tcp –dport 80 -j ACCEPT 
 systemctl restart iptables.service　　
 systemctl enable iptables.service　
-
+```
+# 常用命令
+```sh
+tail -f /var/log/secure 查看日志
 
 ```
