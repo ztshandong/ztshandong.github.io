@@ -30,5 +30,7 @@ systemctl restart network
 ```
 # yum
 ```unix
-sudo yum update
+yum install packagename
+yum update
+yum remove packagename
 ```
