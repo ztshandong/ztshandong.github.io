@@ -71,7 +71,13 @@ yum clean, yum clean all (= yum clean packages; yum clean oldheaders) 清除缓�
 ```
 # 安装modejs
 ```sh
+方法一：
 su root
 curl -sL https://rpm.nodesource.com/setup | bash -
-yum install -y nodejs
+yum install -y nodejs  这样nodejs版本是0.x
+方法二：
+NVM（Node version manager）顾名思义，就是Node.js的版本管理软件，可以轻松的在Node.js各个版本间切换，项目源码[GitHub](https://github.com/creationix/nvm)
+先去github上查看最新版本
+source ~/.bash_profile
+nvm install node 安装最新版
 ```
