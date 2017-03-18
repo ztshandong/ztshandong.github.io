@@ -79,9 +79,9 @@ yum clean oldheaders 清除缓存目录下旧的 headers
 yum clean, yum clean all (= yum clean packages; yum clean oldheaders) 清除缓存目录下的软件包及旧的headers
 
 ```
-# 安装modejs
+# 安装nodejs
 ```sh
-方法一：
+方法一：（推荐）
 yum -y install gcc gcc-c++ kernel-devel
 查看最新版本
 https://nodejs.org/zh-cn/download/current/
