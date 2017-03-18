@@ -147,6 +147,7 @@ sudo systemctl stop firewalld.service
 sudo systemctl disable firewalld.service
 sudo yum install iptables-services
 vi /etc/sysconfig/iptables
+-A INPUT -m state –state NEW -m tcp -p tcp –dport 80 -j ACCEPT 
 systemctl restart iptables.service　　
 systemctl enable iptables.service　
 
