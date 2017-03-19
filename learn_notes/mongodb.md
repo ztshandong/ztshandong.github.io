@@ -102,3 +102,5 @@ db.users.remove({"group":"it"},true) 删除一行
 db.users.remove({}) 删除所有，相当于truncate table
 db.users.drop() 相当于drop table
 ```
+# 视图
+# 存储过程
