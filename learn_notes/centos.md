@@ -4,6 +4,14 @@
 Add-Ons中选择Development Tools即可，其他不用选
 选择硬盘界面虽然默认已选，但最好是先取消再重新选择
 ```
+# network
+```centos
+centos网卡默认不启用
+sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 (网卡名可能不同)
+ONBOOT=yes
+然后重启网卡
+systemctl restart network
+```
 #### 安装Vmtools
 ```sh
 若是未安装图形界面貌似不用装这个
@@ -67,7 +75,7 @@ ESC进入查看模式
 n 同向搜索  N逆向搜索
 ```
 # sudo
-```redhat
+```sh
 默认使用sudo会出现：username不在 sudoers 文件中。此事将被报告
 步骤一：
 su root
@@ -82,16 +90,8 @@ vi /etc/sudoers
 找到root ALL=(ALL) ALL后在下面添加
 username ALL=(ALL) ALL
 ```
-# network
-```centos
-centos网卡默认不启用
-sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s3 (网卡名可能不同)
-ONBOOT=yes
-然后重启网卡
-systemctl restart network
-```
 # yum
-```unix
+```sh
 yum的命令形式一般是如下：yum [options] [command] [package ...]
 其中的[options]是可选的，选项包括-h（帮助），-y（当安装过程提示选择全部为"yes"），-q（不显示安装的过程）等等。[command]为所要进行的操作，[package ...]是操作的对象。
 
