@@ -63,10 +63,8 @@ mkdir /data/webscaledb -p
 cd /usr/local/src/webscale-source/
 unzip webscalesql-5.6.27.zip
 
-若无法解压就安装7z
-yum install -y p7zip
-用法是7za
-当时正在yum -y install mongodb，所以采取了另一种方式安装7z
+若无法解压就安装7z用法是7za
+yum install -y p7zip 提示找不到，所以采取了另一种方式安装7z
 https://sourceforge.net/projects/p7zip/files/
 wget https://nchc.dl.sourceforge.net/project/p7zip/p7zip/16.02/p7zip_16.02_src_all.tar.bz2
 tar -jxvf p7zip_16.02_src_all.tar.bz2
