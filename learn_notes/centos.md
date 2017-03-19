@@ -1,8 +1,17 @@
-# 安装
+# 安装CentOS
 ```sh
 建议安装英文
 Add-Ons中选择Development Tools即可，其他不用选
 选择硬盘界面虽然默认已选，但最好是先取消再重新选择
+```
+# 安装Vmtools
+```sh
+cp vmtools.gz /tmp
+cd /tmp
+tar -zxf vmtools.gz
+cd vm-tools
+su root
+./vmware-install.pl -d
 ```
 # 关闭SELINUX
 ```sh
