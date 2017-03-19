@@ -71,6 +71,7 @@ kill 626
 mongo 127.0.0.1:27017
 show dbs      admin与local是默认的
 ```
+# [语法大全](http://www.cnblogs.com/liuzhongfeng/p/5588680.html)
 # 插入数据
 ```sh
 use newdb   只有插入数据后才算真正创建
