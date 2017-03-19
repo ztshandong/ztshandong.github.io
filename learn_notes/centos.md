@@ -40,6 +40,7 @@ rpm -qa |grep policycoreutils-python 检查是否安装semanage
 yum install policycoreutils-python 未安装就安装
 semanage port -l |grep ssh 查看允许的ssh端口
 semanage port -a -t ssh_port_t -p tcp 123 添加新端口
+semanage port -m -t ssh_port_t -p tcp 444 修改为其他端口
 semanage port -l |grep ssh 查看是否添加成功
 
 firewall-cmd --reload
@@ -47,8 +48,12 @@ firewall-cmd --zone=public --list-all
 systemctl restart firewalld.service 重启防火墙
 systemctl restart sshd.service 重启ssh服务
 
-使用新端口登录
-
+使用新端口登录后删除22
+firewall-cmd --permanent --zone=public --remove-port=22/tcp 
+semanage port -d -t ssh_port_t -p tcp 22 报错，semange 不能禁用 ssh 的 22 端口
+firewall-cmd --reload
+firewall-cmd --zone=public --list-all
+systemctl restart firewalld.service 重启防火墙
 ```
 # vim
 ```sh
