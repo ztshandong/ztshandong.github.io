@@ -15,7 +15,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
 
-yum install mongodb-org
+yum -y install mongodb-org
 安装完后创建的文件
 /etc/mongod.conf－MongoDB配置文件，其中包含监听端口
 /var/lib/mongo－MongoDB数据保存目录
