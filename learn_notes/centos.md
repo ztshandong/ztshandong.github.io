@@ -4,8 +4,9 @@
 Add-Ons中选择Development Tools即可，其他不用选
 选择硬盘界面虽然默认已选，但最好是先取消再重新选择
 ```
-# 安装Vmtools
+#### 安装Vmtools
 ```sh
+若是未安装图形界面此步骤可省略
 cp vmtools.gz /tmp
 cd /tmp
 tar -zxf vmtools.gz
