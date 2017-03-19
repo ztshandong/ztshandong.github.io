@@ -102,5 +102,5 @@ db.users.remove({"group":"it"},true) 删除一行
 db.users.remove({}) 删除所有，相当于truncate table
 db.users.drop() 相当于drop table
 ```
-# 视图
-# 存储过程
+# [视图](https://github.com/mongodb-js/mongo-views)
+# [存储过程](http://www.cnblogs.com/liuzhongfeng/p/5588781.html)
