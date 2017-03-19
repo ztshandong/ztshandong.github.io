@@ -1,4 +1,9 @@
-
+# 安装
+```sh
+建议安装英文
+Add-Ons中选择Development Tools即可，其他不用选
+选择硬盘界面虽然默认已选，但最好是先取消再重新选择
+```
 # 关闭SELINUX
 ```sh
 vi /etc/selinux/config
