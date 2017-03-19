@@ -6,7 +6,7 @@ Add-Ons中选择Development Tools即可，其他不用选
 ```
 #### 安装Vmtools
 ```sh
-若是未安装图形界面此步骤可省略
+若是未安装图形界面貌似不用装这个
 cp vmtools.gz /tmp
 cd /tmp
 tar -zxf vmtools.gz
@@ -14,14 +14,41 @@ cd vm-tools
 su root
 ./vmware-install.pl -d
 ```
-# 关闭SELINUX
+#### 关闭SELINUX
 ```sh
+是否要关闭自己决定
 vi /etc/selinux/config
 #SELINUX=enforcing #注释掉
 #SELINUXTYPE=targeted #注释掉
 SELINUX=disabled #增加
 :wq! #保存退出 
 setenforce 0 #使配置立即生效
+```
+# 修改SSH端口
+```sh
+rpm -qa|grep ssh 查看已安装的ssh包
+systemctl status sshd.service 查看ssh服务状态
+ps -ef |grep sshd 查看ssh进程状态
+netstat -anpl |grep sshd 查看端口 -p 参数必须为root
+vi /etc/ssh/sshd_config
+Port 123
+firewall-cmd --permanent --zone=public --add-port=123/tcp 
+
+SELinux 默认只允许 22 端口，使用semanage，来修改 ssh 可访问的端口
+sestatus -v |grep SELinux 查看SELinux是否启用
+rpm -qa |grep policycoreutils-python 检查是否安装semanage
+yum install policycoreutils-python 未安装就安装
+semanage port -l |grep ssh 查看允许的ssh端口
+semanage port -a -t ssh_port_t -p tcp 123 添加新端口
+semanage port -l |grep ssh 查看是否添加成功
+
+firewall-cmd --reload
+firewall-cmd --zone=public --list-all
+systemctl restart firewalld.service 重启防火墙
+systemctl restart sshd.service 重启ssh服务
+
+使用新端口登录
+
 ```
 # vim
 ```sh
