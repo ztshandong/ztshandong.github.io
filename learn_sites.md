@@ -3,6 +3,7 @@
 #### [tensorflow](https://www.tensorflow.org/)
 #### [tensorflow_cn](http://www.tensorfly.cn/)
 #### [R](https://www.r-project.org/)
+#### [RStudio](https://www.rstudio.com/)
 #### [golang](https://golang.org/)
 #### [nodejs](https://nodejs.org/zh-cn/)
 #### [ES6](http://es6.ruanyifeng.com/#README)
