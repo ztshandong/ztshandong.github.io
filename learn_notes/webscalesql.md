@@ -48,10 +48,10 @@ cd bison-3.0.4
 make && make install
 
 wget ftp://ftp.gnu.org/gnu/m4/m4-1.4.18.tar.gz
-tar zxvf m4-1.4.18.tar.gz
+tar -zxvf m4-1.4.18.tar.gz
 cd m4-1.4.18
-./configure make
-make install
+./configure 
+make && make install
 
 https://github.com/webscalesql 下载wescalesql
 wget https://github.com/webscalesql/webscalesql-5.6/archive/webscalesql-5.6.27.zip
