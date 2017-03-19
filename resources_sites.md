@@ -1,4 +1,6 @@
 # Resources Sites
+- [alisql](https://github.com/alibaba/AliSQL)
+- [webscalesql](http://webscalesql.org/)
 - [bootstrap](http://www.bootcss.com/)
 - [react native_cn](https://reactnative.cn/)
 - [react_native](https://facebook.github.io/react-native/docs/getting-started.html)
