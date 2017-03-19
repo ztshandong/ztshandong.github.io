@@ -90,6 +90,36 @@ vi /etc/sudoers
 找到root ALL=(ALL) ALL后在下面添加
 username ALL=(ALL) ALL
 ```
+# rpm
+```sh
+rpm包，由“-”、“.”构成，包名、版本信息、版本号、运行平台
+ 
+对已安装软件信息的查询
+rpm -qa                             查询已安装的软件
+rpm -qf 文件名绝对路径              文件名的绝对路径
+rpm -ql 软件名                        查询已安装的软件包都安装到何处
+rpm -qi 软件名                        查询一个已安装软件包的信息
+rpm -qc 软件名                        查看已安装软件的配置文件
+rpm -qd 软件名                        查看已安装软件的文档安装位置
+rpm -qR 软件名                        查看已安装软件依赖包和文件
+ 
+对未安装软件信息的查询
+rpm -qpi rpm文件                        查看一个软件包的用途和版本信息
+rpm -qpl rpm文件                        查看一个软件包所包含的文件
+rpm -qpd rpm文件                        查看软件包的文档所在位置
+rpm -qpc rpm文件                        查看软件包的配置文件
+rpm -qpR rpm文件                        查看软件包的依赖关系
+ 
+软件包的安装、升级、删除
+rpm -ivh rpm文件                        安装rpm包
+rpm -Uvh rpm文件                          更新rpm包
+rpm -e 软件名                            删除rpm包
+rpm -e 软件名 --nodeps                    不管依赖关系，强制删除软件
+ 
+ 导入签名
+rpm --import 签名文件                   
+rpm --import RPM-GPG-KEY
+```
 # yum
 ```sh
 yum的命令形式一般是如下：yum [options] [command] [package ...]
@@ -115,9 +145,20 @@ yum groupupdate group1 升级程序组group1
 
 3 查找和显示
 yum info package1 显示安装包信息package1
-yum list 显示所有已经安装和可以安装的程序包
-yum list package1 显示指定程序包安装情况package1
+yum list                                   列出资源库中所有可以安装或更新的rpm包
+yum list firefox*                       列出资源库中可以安装、可以更新、已安装的指定rpm包
+yum list update                        列出资源库中可以更新的rpm包
+yum list installed                      列出所有已安装的rpm包
+yum list extras                         列出已安装但不包含在资源库中rpm包
 yum groupinfo group1 显示程序组group1信息yum search string 根据关键字string查找安装包
+yum info                                列出资源库中所有可以安装或更新的rpm包信息
+yum info firefox*                       列出资源库可以安装或更新的指定的rpm的信息
+yum info update                         列出资源库中可以更新的rpm包信息
+yum info installed                      列出已安装的所有rpm包信息
+yum info extras                         列出已安装到时不包含在资源库中rpm包信息
+ 
+yum search firefox                      搜索匹配特定字符的rpm包
+yum provides firefox                    搜索包含特定文件的rpm包
 
 4 删除程序
 yum remove &#124; erase package1 删除程序包package1
