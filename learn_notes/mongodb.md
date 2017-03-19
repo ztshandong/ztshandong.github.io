@@ -1,4 +1,50 @@
 # 默认不需要用户名与密码即可访问
+# CentOS7安装
+```sh
+https://www.mongodb.com/download-center?jmp=nav#community 查看版本
+https://www.mongodb.org/static/pgp/ 
+http://repo.mongodb.org/yum/redhat/7Server/mongodb-org/
+more /etc/redhat-release 
+添加源，写此文时最新稳定版为3.4
+vi /etc/yum.repos.d/mongodb-org-3.4.repo 
+添加以下内容
+[mongodb-org-3.4]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc
+
+yum install mongodb-org
+安装完后创建的文件
+/etc/mongod.conf－MongoDB配置文件，其中包含监听端口
+/var/lib/mongo－MongoDB数据保存目录
+/var/log/mongodb/mongod.log－MongoDB的日志文件
+启动
+systemctl start mongod.service
+systemctl enable mongod.service
+firewall-cmd --zone=public --add-port=27017/tcp --permanent
+firewall-cmd --reload
+
+解决”transparent huge page error”警告信息：
+vi /etc/rc.local
+添加
+echo never > /sys/kernel/mm/transparent_hugepage/enabled
+echo never > /sys/kernel/mm/transparent_hugepage/defrag
+解决 rlimits 相关的警告：
+vim /etc/security/limits.d/20-nproc.conf
+添加
+mongod   soft  nproc   64000
+重启
+systemctl restart mongod
+```
+# 删除
+```sh
+systemctl stop mongod
+yum erase $(rpm -qa | grep mongodb-org)
+rm -rf /var/log/mongodb
+rm -rf /var/lib/mongo
+```
 # 查看是否可用
 ```sh
 which mongod
