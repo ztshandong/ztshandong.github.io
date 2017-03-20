@@ -1,4 +1,5 @@
 # Resources Sites
+- [EPEL](https://fedoraproject.org/wiki/EPEL/zh-cn)
 - [alisql](https://github.com/alibaba/AliSQL)
 - [webscalesql](http://webscalesql.org/)
 - [bootstrap](http://www.bootcss.com/)
