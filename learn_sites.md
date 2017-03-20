@@ -16,6 +16,7 @@
 #### [imooc](http://www.imooc.com/)
 #### [163](http://study.163.com/)
 #### [newbiefly](http://www.newbiefly.com/)
+#### [yiibai](http://www.yiibai.com/r/)
 ---
 #### [W3school](http://www.w3school.com.cn/)
 #### [runoob](http://www.runoob.com)
