@@ -17,4 +17,5 @@ wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz
 #### [安装RStudio](https://www.rstudio.com/)
 ```sh
 我安装的是Server版
+rstudio-server verify-installation
 ```
