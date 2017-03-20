@@ -61,9 +61,8 @@ wget https://github.com/webscalesql/webscalesql-5.6/archive/webscalesql-5.6.27.z
 mkdir /data/webscalesoft -p
 mkdir /data/webscaledb -p
 cd /usr/local/src/webscale-source/
-unzip webscalesql-5.6.27.zip
 
-若无法解压就安装7z用法是7za
+安装7z（可不装）
 yum install -y p7zip 提示找不到，所以采取了另一种方式安装7z
 https://sourceforge.net/projects/p7zip/files/
 wget https://nchc.dl.sourceforge.net/project/p7zip/p7zip/16.02/p7zip_16.02_src_all.tar.bz2
@@ -71,17 +70,17 @@ tar -jxvf p7zip_16.02_src_all.tar.bz2
 cd p7zip_16.02
 make && make install
 
-ls 看一下解压后文件夹的名字
-mkdir webscalesql-5.6.27/source_downloads
+unzip webscalesql-5.6.27.zip
+cd webscalesql-5.6-webscalesql-5.6.27
+mkdir source_downloads
 
 https://github.com/google/googlemock 下载gmock
 wget https://github.com/google/googlemock/archive/master.zip
 unzip master.zip gmock下载的包名字是master.zip
-cp -r gmock webscalesql-5.6.27/source_downloads
-cd webscalesql-5.6.27
+cp -r googlemock-master  webscalesql-5.6-webscalesql-5.6.27/source_downloads
+cd  webscalesql-5.6-webscalesql-5.6.27
 cmake .
-make
-make install
+make && make install
 cd /data/webscalesoft
 rz my-3307.cnf
 ./scripts/mysql_install_db	--user=mysql	--ldata=/data/webscaledb/	-- explicit_defaults_for_timestamp --defaults-file=/data/webscalesoft/my-3307.cnf
