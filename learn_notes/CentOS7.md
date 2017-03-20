@@ -29,8 +29,8 @@ mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.old
 ```
 #### 方法三 fastestmirror和axelget插件
 ```sh
-yum install yum-fastestmirror
-yum install wget gcc make
+yum install yum-fastestmirror -y
+yum -y install gcc make
 wget http://wilmer.gaast.net/downloads/axel-1.0b.tar.gz
 tar xvzf axel-1.0b.tar.gz
 cd axel-1.0b
