@@ -92,12 +92,16 @@ mkdir source_downloads
 https://github.com/google/googlemock 下载gmock
 wget https://github.com/google/googlemock/archive/master.zip
 unzip master.zip gmock下载的包名字是master.zip
-cp -r googlemock-master  webscalesql-5.6-webscalesql-5.6.27/source_downloads
-
+mv master.zip gmock-1.6.0.zip
+cp gmock-1.6.0.zip /usr/local/src/webscale-source/webscalesql-5.6-webscalesql-5.6.27/source_downloads
+--cp -r googlemock-master  webscalesql-5.6-webscalesql-5.6.27/source_downloads
 
 cd  webscalesql-5.6-webscalesql-5.6.27
+mysql-5.5 以上版本需要依赖于如下包文件(如果是低于 mysql-5.5 版本不需要安装 cmake )
 yum -y install gcc gcc-c++ openssl openssl-devel ncurses ncurses-devel cmake
 cmake -DCMAKE_INSTALL_PREFIX=/data/webscalesoft -DMYSQL_UNIX_ADDR=/data/webscalesoft/mysql.sock -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DEXTRA_CHARSETS=all -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DMYSQL_DATADIR=/data/webscaledb -DMYSQL_TCP_PORT=3308 -DENABLE_DOWNLOADS=1
+
+Library webscalesqlclient depends on OSLIBS -lpthread;m;rt;dl  不知道怎么办
 
 make && make install
 cd /data/webscalesoft
