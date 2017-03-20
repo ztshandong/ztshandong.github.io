@@ -12,6 +12,36 @@ ONBOOT=yes
 然后重启网卡
 systemctl restart network
 ```
+# yum提速
+#### 方法一
+```sh
+wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
+mv CentOS6-Base-163.repo /etc/yum.repos.d/CentOS-Base.repo
+yum clean all
+yum makecache
+yum update
+```
+#### 方法二  fastestmirror 插件
+```sh
+yum install yum-fastestmirror -y
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.old
+```
+#### 方法三 fastestmirror和axelget插件
+```sh
+yum install yum-fastestmirror
+yum install wget gcc make
+wget http://wilmer.gaast.net/downloads/axel-1.0b.tar.gz
+tar xvzf axel-1.0b.tar.gz
+cd axel-1.0b
+./configure --i18n=1
+make && make install
+wget http://cnfreesoft.googlecode.com/svn/trunk/axelget/axelget.conf
+wget http://cnfreesoft.googlecode.com/svn/trunk/axelget/axelget.py
+mv axelget.conf /etc/yum/pluginconf.d/
+mv axelget.py /usr/lib/yum-plugins/
+yum update
+```
 # ftp
 ```sh
 rpm -q vsftpd 查看是否安装
