@@ -106,8 +106,6 @@ Library webscalesqlclient depends on OSLIBS -lpthread;m;rt;dl  不知道怎么�
 make && make install
 cd /data/webscalesoft
 ./scripts/mysql_install_db --user=mysql --ldata=/data/webscaledb/  --defaults-file=/data/webscalesoft/my.cnf
-vi my.cnf 最后添加一行
-socket=/var/run/mysqld/mysqld.sock
 ----------------
 这个方法先不用，可能之前装过mysql的配置文件，默认的文件名是my.cnf
 rz my-3307.cnf
