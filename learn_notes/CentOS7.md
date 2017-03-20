@@ -227,4 +227,5 @@ systemctl enable iptables.service　
 tail -f /var/log/secure 查看日志
 ps -aux | grep rstudio
 netstat -lnp|grep 88
+find / -name mysql.soc
 ```
