@@ -82,7 +82,7 @@ firewall-cmd --permanent --zone=public --add-port=123/tcp
 SELinux 默认只允许 22 端口，使用semanage，来修改 ssh 可访问的端口
 sestatus -v |grep SELinux 查看SELinux是否启用
 rpm -qa |grep policycoreutils-python 检查是否安装semanage
-yum install policycoreutils-python 未安装就安装
+yum -y install policycoreutils-python 未安装就安装
 semanage port -l |grep ssh 查看允许的ssh端口
 semanage port -a -t ssh_port_t -p tcp 123 添加新端口
 semanage port -m -t ssh_port_t -p tcp 444 修改为其他端口
