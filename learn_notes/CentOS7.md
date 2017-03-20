@@ -188,30 +188,6 @@ yum clean oldheaders 清除缓存目录下旧的 headers
 yum clean, yum clean all (= yum clean packages; yum clean oldheaders) 清除缓存目录下的软件包及旧的headers
 
 ```
-# 安装nodejs
-```sh
-方法一：（推荐）
-yum -y install gcc gcc-c++ kernel-devel
-查看最新版本
-https://nodejs.org/zh-cn/download/current/
-wget https://nodejs.org/dist/v7.7.3/node-v7.7.3.tar.gz
-tar -xf node-v4.5.0.tar.gz
-rm -f node-v4.5.0.tar.gz
-cd node-v4.5.0
-./configure
-make
-sudo make install
-方法二：
-su root
-curl -sL https://rpm.nodesource.com/setup | bash -
-yum install -y nodejs  这样nodejs版本是0.x
-方法三：
-NVM（Node version manager）顾名思义，就是Node.js的版本管理软件，可以轻松的在Node.js各个版本间切换，
-项目源码[GitHub](https://github.com/creationix/nvm)貌似只剩iojs了
-先去github上查看最新版本
-source ~/.bash_profile
-nvm install node 安装最新版
-```
 
 # firewall
 ```sh
