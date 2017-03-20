@@ -105,13 +105,19 @@ Library webscalesqlclient depends on OSLIBS -lpthread;m;rt;dl  不知道怎么�
 
 make && make install
 cd /data/webscalesoft
+./scripts/mysql_install_db --user=mysql --ldata=/data/webscaledb/  --defaults-file=/data/webscalesoft/my.cnf
+vi my.cnf 最后添加一行
+socket=/var/run/mysqld/mysqld.sock
+----------------
+这个方法先不用，可能之前装过mysql的配置文件，默认的文件名是my.cnf
 rz my-3307.cnf
 ./scripts/mysql_install_db	--user=mysql	--ldata=/data/webscaledb/	-- explicit_defaults_for_timestamp --defaults-file=/data/webscalesoft/my-3307.cnf
 
 将 mysqld_safe_3307 改名为 mysqld_safe 并替换掉/ data/webscalesoft/bin 下的 mysqld_safe
-cd / data/webscalesoft/bin
+cd /data/webscalesoft/bin
 rz mysqld_safe_3307
 mv mysqld_safe_3307 mysqld_safe
+----------------
 chmod    +x    mysqld_safe
 
 将目录/data/webscalesoft 授权给 mysql 用户：
@@ -119,9 +125,9 @@ cd ..
 chown -R mysql.mysql /data/webscalesoft
 chown -R mysql.mysql /data/webscaledb
 
-在文件~/.bashrc 的最后添加如下三行:
+在文件~/.bashrc 的最后添加如下三行:(注意将my-3307.cnf改为my.cnf)
 vi    ~/.bashrc
-alias	mysql3307_start="/data/webscalesoft/bin/mysqld_safe	--defaults- file=/data/webscalesoft/my-3307.cnf -P 3307 -umysql&"
+alias	mysql3307_start="/data/webscalesoft/bin/mysqld_safe --defaults-file=/data/webscalesoft/my-3307.cnf -P 3307 -umysql&"
 alias mysql3307_stop="/data/webscalesoft/bin/mysqladmin -S /data/webscalesoft/mysql.sock -P 3307 shutdown"
 alias mysql3307="/data/webscalesoft/bin/mysql -S /data/webscalesoft/mysql.sock"
 source ~/.bashrc
