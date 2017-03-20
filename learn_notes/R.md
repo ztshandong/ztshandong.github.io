@@ -19,6 +19,6 @@ make uninstall
 #### [安装RStudio](https://www.rstudio.com/)
 ```sh
 我安装的是Server版
-yum install --nogpgcheck rstudio-server-rhel-1.0.136-x86_64.rpm
+yum -y install --nogpgcheck rstudio-server-rhel-1.0.136-x86_64.rpm
 rstudio-server verify-installation
 ```
