@@ -96,7 +96,9 @@ cp -r googlemock-master  webscalesql-5.6-webscalesql-5.6.27/source_downloads
 
 
 cd  webscalesql-5.6-webscalesql-5.6.27
-cmake .
+yum -y install gcc gcc-c++ openssl openssl-devel ncurses ncurses-devel cmake
+cmake -DCMAKE_INSTALL_PREFIX=/data/webscalesoft -DMYSQL_UNIX_ADDR=/data/webscalesoft/mysql.sock -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DEXTRA_CHARSETS=all -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DMYSQL_DATADIR=/data/webscaledb -DMYSQL_TCP_PORT=3308 -DENABLE_DOWNLOADS=1
+
 make && make install
 cd /data/webscalesoft
 rz my-3307.cnf
