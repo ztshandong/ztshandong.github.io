@@ -12,6 +12,22 @@ ONBOOT=yes
 然后重启网卡
 systemctl restart network
 ```
+# ftp
+```sh
+rpm -q vsftpd 查看是否安装
+yum -y install vsftpd 如果没安装就安装
+whereis vsftpd 查看安装路径
+systemctl start vsftpd.service
+vi /etc/vsftpd/vsftpd.conf
+anonymous_enable=NO 默认是YES
+local_enable=YES
+write_enable=YES
+chroot_local_user=YES
+
+systemctl restart vsftpd
+systemctl enable vsftpd 开机启动
+记得防火墙添加端口
+```
 #### 安装Vmtools
 ```sh
 若是未安装图形界面貌似不用装这个
@@ -196,21 +212,7 @@ NVM（Node version manager）顾名思义，就是Node.js的版本管理软件�
 source ~/.bash_profile
 nvm install node 安装最新版
 ```
-# ftp
-```sh
-rpm -q vsftpd 查看是否安装
-yum -y install vsftpd 如果没安装就安装
-whereis vsftpd 查看安装路径
-systemctl start vsftpd.service
-vi /etc/vsftpd/vsftpd.conf
-anonymous_enable=NO 默认是YES
-local_enable=YES
-write_enable=YES
-chroot_local_user=YES
 
-systemctl restart vsftpd
-systemctl enable vsftpd 开机启动
-```
 # firewall
 ```sh
 使用自带防火墙：CentOS7使用的是Linux Kernel 3.10.0的内核版本，新版的Kernel内核已经有了防火墙netfilter
@@ -220,8 +222,7 @@ firewall-cmd --reload
 方法二 间接修改/etc/firewalld/zones/public.xml文件
 ##Add
 firewall-cmd --permanent --zone=public --add-port=80/tcp
-firewall-cmd --add-port=21/tcp
-firewall-cmd --add-service=ftp
+firewall-cmd --permanent --zone=public --add-service=ftp
 ##Remove
 firewall-cmd --permanent --zone=public --remove-port=80/tcp
 ##Reload
