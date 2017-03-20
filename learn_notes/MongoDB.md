@@ -1,5 +1,5 @@
 # 默认不需要用户名与密码即可访问
-# CentOS7安装
+# CentOS7-MongoDB
 ```sh
 https://www.mongodb.com/download-center?jmp=nav#community 查看版本
 https://www.mongodb.org/static/pgp/ 
