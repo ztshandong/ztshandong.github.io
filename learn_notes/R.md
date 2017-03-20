@@ -12,7 +12,10 @@ wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz
 
 #### [下载R](https://www.r-project.org/)
 ```sh
-./configure --with-x=no  如果没安装图形界面需要此参数
+./configure --with-x=yes --enable-R-shlib  如果没安装图形界面需要此参数
+已安装过要先清除
+make clean
+make uninstall
 ```
 #### [安装RStudio](https://www.rstudio.com/)
 ```sh
