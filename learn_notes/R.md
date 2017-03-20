@@ -11,7 +11,7 @@ yum remove pcre 默认安装的可能没有启用uft8，重新安装，顺便安
 
 #### [下载R](https://www.r-project.org/)
 ```sh
-./configure --with-x=yes --enable-R-shlib  如果没安装图形界面需要此参数
+./configure --with-x=no --enable-R-shlib  如果没安装图形界面需要此参数
 已安装过要先清除
 make clean
 make uninstall
