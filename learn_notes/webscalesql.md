@@ -11,8 +11,8 @@ enabled=1
 
 yum list | grep webscalesql
 yum -y install webscalesql-embedded.x86_64    安装这个版本
+然后不知道该怎么办了
 ```
-# 下面的忽略吧，搞了半天，就差最后编译没有测试，有兴趣的自己试试吧
 
 # 安装基本库
 ```sh
@@ -94,7 +94,7 @@ wget https://github.com/google/googlemock/archive/master.zip
 unzip master.zip gmock下载的包名字是master.zip
 cp -r googlemock-master  webscalesql-5.6-webscalesql-5.6.27/source_downloads
 
-此方法到此为止，以下步骤未测试
+
 cd  webscalesql-5.6-webscalesql-5.6.27
 cmake .
 make && make install
