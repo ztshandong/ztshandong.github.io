@@ -1,4 +1,4 @@
-# CentOS7
+# CentOS7-WebScaleSQL
 # 使用yum安装
 ```sh
 vi /etc/yum.conf
@@ -134,7 +134,7 @@ source ~/.bashrc
 echo “export PATH=/data/webscalesoft/bin:/usr/bin:/sbin:\$PATH”>>/etc/profile
 source /etc/profile
 
-以后,
+以后，如果报错，mysql.sock，就搞不定了
 输入 mysql3307_start 时，就可以启动数据库； 
 输入 mysql3307_stop 时，就可以关闭数据库； 
 输入 mysql3307 时,就直接进行相应的数据库中.
