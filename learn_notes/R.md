@@ -12,8 +12,8 @@ yum remove pcre 默认安装的可能没有启用uft8，重新安装，顺便安
 #### [下载R](https://www.r-project.org/)
 ```sh
 方法一：（此方法成功）
-yum install epel-release
-yum install R
+yum -y install epel-release
+yum -y install R
 方法二：（失败）
 yum -y install readline-devel    
 ./configure --with-x=no    如果没安装图形界面需要此参数
