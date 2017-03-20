@@ -31,17 +31,7 @@ mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.old
 ```sh
 yum install yum-fastestmirror -y
 yum -y install gcc make
-https://axel.alioth.debian.org/
-wget http://alioth.debian.org/frs/download.php/3015/axel-2.4.tar.gz
-tar xvzf axel-2.4.tar.gz
-cd axel-2.4
-./configure --i18n=1
-make && make install
-wget http://cnfreesoft.googlecode.com/svn/trunk/axelget/axelget.conf
-wget http://cnfreesoft.googlecode.com/svn/trunk/axelget/axelget.py
-mv axelget.conf /etc/yum/pluginconf.d/
-mv axelget.py /usr/lib/yum-plugins/
-yum update
+yum install -y axel
 ```
 # ftp
 ```sh
