@@ -4,9 +4,8 @@
 #### [安装liblzma](http://tukaani.org/xz/)
 #### [安装pcre](https://ftp.pcre.org/pub/pcre/)
 ```sh
-yum remove pcre 默认安装的可能没有启用uft8，重新安装，顺便安装个高级点的
-wget https://ftp.pcre.org/pub/pcre/pcre-8.40.tar.gz
 ./configure --enable-utf8 
+yum remove pcre 默认安装的可能没有启用uft8，重新安装，顺便安装个高级点的
 ```
 #### [安装libcurl](https://curl.haxx.se/libcurl/)
 
