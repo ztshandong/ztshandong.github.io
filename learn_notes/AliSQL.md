@@ -1,6 +1,6 @@
 # 若已安装要先卸载
 - yum remove mysql mysql-server mysql-libs compat-mysql51 （51为版本号）
-- rm –rf /var/lib/mysql
+- rm -rf /var/lib/mysql
 - rm /etc/my.cnf
 - 查看是否还存在mysql软件
 - rpm -qa|grep mysql
@@ -36,8 +36,8 @@ make[1]: *** [sql/CMakeFiles/sql.dir/all] Error 2
 make: *** [all] Error 2
 这个是gcc的版本问题，
 使用yum mysql-server后然后remove掉mysql-server
-yum install mysql-server
-yum remove  mysql-server
+yum -y install mysql-server
+yum -y remove  mysql-server
 ```
 # 添加用户（也是两种方式）
 - useradd -s /sbin/nologin -M mysql
