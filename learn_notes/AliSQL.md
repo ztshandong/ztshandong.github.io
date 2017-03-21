@@ -21,6 +21,9 @@
 - mkdir -p /home/mysql/{data,logs,tmp} 
 - chown -R mysql: /home/mysql/
 - scripts/mysql_install_db --user=mysql --datadir=/home/mysql/data/
+- 上句若提示无权限就进入压缩包的解压路径添加允许权限
+- cd /AliSQL/AliSQL-master
+- chmod +x mysql_install_db
 # 启动
 - support-files/mysql.server start
 # 配置文件，附Large
