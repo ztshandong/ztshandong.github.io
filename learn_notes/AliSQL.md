@@ -70,6 +70,10 @@ yum -y remove  mysql-server
 
 # 启动
 - support-files/mysql.server start
+- ls -laF /opt/alisql
+- chown -R mysql 
+- cp /var/lib/mysql.sock /var/lib/mysql.sock_bkp
+- rm -rf /var/lib/mysql.sock 
 - chkconfig --add mysqld; chkconfig mysqld on  开机启动
 # 配置文件，附Large
 vi /usr/local/alisql/my.cnf
