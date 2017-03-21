@@ -43,8 +43,7 @@ yum -y remove  mysql-server
 - useradd -s /sbin/nologin -M mysql
 - mkdir -p /home/mysql/{data,logs,tmp} 
 - chown -R mysql: /home/mysql/
-
-
+---
 - groupadd mysql
 - useradd -g mysql mysql
 - mkdir -p /usr/local/alisql
