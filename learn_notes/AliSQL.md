@@ -17,9 +17,18 @@
 - unzip master.zip 
 - cd AliSQL-master/source_downloads
 - wget -o gmock-1.6.0.zip https://github.com/google/googlemock/archive/master.zip
-# 编译安装
+# 关闭THP
+- TokuDB 引擎的启动是不允许开启 THP（透明大页）的，否则就会启动失败，而且数据库类应用确实都不适合开启 THP
+- echo never > /sys/kernel/mm/transparent_hugepage/enabled
+- echo never > /sys/kernel/mm/transparent_hugepage/defrag
+- 运行上面的两个语句，并将他们写入 /etc/rc.local
+# 编译安装（网上搜到两种格式）
 - cmake -DMYSQL_USER=mysql -DCMAKE_INSTALL_PREFIX=/usr/local/alisql -DSYSCONFDIR=/usr/local/alisql -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=0 -DWITH_MEMORY_STORAGE_ENGINE=0 -DENABLED_LOCAL_INFILE=1 -DWITH_EMBEDDED_SERVER=1  -DENABLE_DOWNLOADS=1 -DWITH_READLINE=1 -DWITH_DEBUG=0
+
+- cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/alisql -DMYSQL_TCP_PORT=3306 -DMYSQL_DATADIR=/var/lib/alisql -DSYSCONFDIR=/etc -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DWITH_FEDERATED_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DWITH_TOKUDB_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DWITH_EMBEDDED_SERVER=0 -DENABLE_DTRACE=0 -DENABLED_LOCAL_INFILE=1 -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DCMAKE_EXE_LINKER_FLAGS="-ljemalloc" -DWITH_SAFEMALLOC=OFF -DEXTRA_CHARSETS=all
+
 - make && make install
+- make -j4 && make install 多CPU支持，数字一般比CPU数量多1即可
 # 报错
 ```sh
 make[2]: *** [sql/CMakeFiles/sql.dir/sql_yacc.cc.o] Error 1
@@ -30,16 +39,32 @@ make: *** [all] Error 2
 yum install mysql-server
 yum remove  mysql-server
 ```
-# 初始化
+# 添加用户（也是两种方式）
 - useradd -s /sbin/nologin -M mysql
 - mkdir -p /home/mysql/{data,logs,tmp} 
 - chown -R mysql: /home/mysql/
+
+- groupadd mysql
+- useradd -g mysql mysql
+- mkdir -p /usr/local/alisql
+- mkdir -p /var/lib/alisql
+- chown mysql.mysql -R /var/lib/alisql
+- chmod +w /usr/local/alisql
+- chown -R mysql:mysql /usr/local/alisql
+- ln -s /usr/local/alisql/lib/libmysqlclient.so.18 /usr/lib/libmysqlclient.so.18
+- cp support-files/my-default.cnf /etc/my.cnf
+- cp support-files/mysql.server /etc/init.d/mysqld
+- chmod a+x /etc/init.d/mysqld
+
+# 初始化
 - scripts/mysql_install_db --user=mysql --datadir=/home/mysql/data/
 - 上句若提示无权限就进入压缩包的解压路径添加允许权限
 - cd /AliSQL/AliSQL-master
 - chmod +x mysql_install_db
+
 # 启动
 - support-files/mysql.server start
+- chkconfig --add mysqld; chkconfig mysqld on  开机启动
 # 配置文件，附Large
 vi /usr/local/alisql/my.cnf
 ```sh
