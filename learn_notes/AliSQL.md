@@ -7,14 +7,18 @@
 - 若存在，则继续
 - yum –y remove 查询到的软件名
 # 安装环境
-- yum -y install wget cmake gcc gcc-c++ make ncurses-devel ncurses bison bison-devel zip unzip
+- yum -y install wget centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
+- scl enable devtoolset-4 bash
+- 这个就不用了 yum -y install wget cmake gcc gcc-c++ make ncurses-devel ncurses bison bison-devel zip unzip
 # 安装软件包
+- mkdir /AliSQL 安装包保存位置
+- cd /AliSQL
 - wget https://github.com/alibaba/AliSQL/archive/master.zip
 - unzip master.zip 
 - cd AliSQL-master/source_downloads
 - wget -o gmock-1.6.0.zip https://github.com/google/googlemock/archive/master.zip
-# 编译安装
-- cmake -DMYSQL_USER=mysql -DCMAKE_INSTALL_PREFIX=/usr/local/alisql -DSYSCONFDIR=/usr/local/alisql -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=0 -DWITH_MEMORY_STORAGE_ENGINE=0 -DENABLED_LOCAL_INFILE=1 -DWITH_EMBEDDED_SERVER=1  -DENABLE_DOWNLOADS=1 -DWITH_READLINE=1 -DWITH_DEBUG=0
+# 编译安装，网上教程为/usr/local/alisql，要修改
+- cmake -DMYSQL_USER=mysql -DCMAKE_INSTALL_PREFIX=/AliSQL/AliSQL-master -DSYSCONFDIR=/AliSQL/AliSQL-master -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=0 -DWITH_MEMORY_STORAGE_ENGINE=0 -DENABLED_LOCAL_INFILE=1 -DWITH_EMBEDDED_SERVER=1  -DENABLE_DOWNLOADS=1 -DWITH_READLINE=1 -DWITH_DEBUG=0
 - make && make install
 # 初始化
 - useradd -s /sbin/nologin -M mysql
