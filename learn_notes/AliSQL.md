@@ -1,11 +1,11 @@
 # 若已安装要先卸载
-- yum remove mysql mysql-server mysql-libs compat-mysql51 （51为版本号）
+- yum remove mysql
 - rm -rf /var/lib/mysql
 - rm /etc/my.cnf
 - 查看是否还存在mysql软件
 - rpm -qa|grep mysql
 - 若存在，则继续
-- yum –y remove 查询到的软件名
+- yum –y remove mysql-*
 # 安装环境
 - yum -y install wget centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
 - scl enable devtoolset-4 bash
