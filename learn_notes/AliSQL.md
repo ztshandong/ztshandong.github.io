@@ -69,6 +69,7 @@ yum -y remove  mysql-server
 - chmod +x mysql_install_db
 
 # 启动
+- chmod +x support-files/mysql.server
 - support-files/mysql.server start
 - ls -laF /opt/alisql
 - chown -R mysql 
