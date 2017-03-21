@@ -7,9 +7,9 @@
 - 若存在，则继续
 - yum –y remove mysql-*
 # 安装环境
-- yum -y install wget centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
+- yum -y install wget scl-utils centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
 - scl enable devtoolset-4 bash
-- 这个就不用了 yum -y install wget cmake gcc gcc-c++ make ncurses-devel ncurses bison bison-devel zip unzip
+- yum -y install  gcc gcc-c++ make  ncurses  bison-devel zip unzip
 # 安装软件包
 - mkdir /AliSQL 安装包保存位置
 - cd /AliSQL
