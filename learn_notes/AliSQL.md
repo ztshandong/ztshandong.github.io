@@ -65,7 +65,7 @@ yum -y remove  mysql-server
 # 初始化
 - scripts/mysql_install_db --user=mysql --datadir=/home/mysql/data/
 - 上句若提示无权限就进入压缩包的解压路径添加允许权限
-- cd /AliSQL/AliSQL-master
+- cd /AliSQL/AliSQL-master/scripts
 - chmod +x mysql_install_db
 
 # 启动
