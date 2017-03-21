@@ -31,6 +31,10 @@
 
 - make && make install
 - make -j4 && make install 多CPU支持，数字一般比CPU数量多1即可
+# 重新编译
+```sh
+ rm CMakeCache.txt 
+ ```
 # 报错
 ```sh
 make[2]: *** [sql/CMakeFiles/sql.dir/sql_yacc.cc.o] Error 1
