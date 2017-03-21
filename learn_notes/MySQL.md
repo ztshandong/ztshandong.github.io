@@ -1,4 +1,4 @@
-# 安装
+# CentOS7-MySQL安装
 ```sh
 https://dev.mysql.com/downloads/repo/yum/
 rpm -Uvh https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
