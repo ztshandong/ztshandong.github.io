@@ -44,6 +44,7 @@ yum -y remove  mysql-server
 - mkdir -p /home/mysql/{data,logs,tmp} 
 - chown -R mysql: /home/mysql/
 
+
 - groupadd mysql
 - useradd -g mysql mysql
 - mkdir -p /usr/local/alisql
