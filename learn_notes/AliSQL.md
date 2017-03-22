@@ -122,7 +122,7 @@ rm -fr /usr/local/mysql &>/dev/null
 # 安装环境
 - yum -y install wget scl-utils centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
 - scl enable devtoolset-4 bash
-- yum -y install  gcc gcc-c++ make  ncurses  bison-devel zip unzip
+- yum -y install  gcc gcc-c++ make  ncurses  bison-devel zip unzip 这个不装
 # 安装软件包
 - mkdir /AliSQL 安装包保存位置
 - cd /AliSQL
