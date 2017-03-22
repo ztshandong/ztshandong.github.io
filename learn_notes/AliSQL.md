@@ -92,6 +92,38 @@ yum -y remove  mysql-server
 - cp /var/lib/mysql.sock /var/lib/mysql.sock_bkp
 - rm -rf /var/lib/mysql.sock 
 - chkconfig --add mysqld; chkconfig mysqld on  开机启动
+# 配置数据库
+```sh
+2.配置数据库
+
+[root@iZj6cich5sl4bw9f2e2erzZ cxt]# cd /usr/local/alisql    cd /AliSQL/AliSQL-master/scripts
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# cp support-files/mysql.server /etc/init.d/mysqld
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# cp support-files/my-default.cnf/etc/my.cnf
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# service mysqld start
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# chkconfig --level 35 mysqld on
+
+2.       设置数据库root的密码
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# cd /opt/alisql
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# ./bin/mysqladmin -u root password'root123!@#'
+
+登入数据库，允许root用户远程连接
+
+[root@iZj6cich5sl4bw9f2e2erzZ alisql]# mysql -u root -p
+
+mysql> use mysql;
+
+mysql> update user set host='%' where user = 'root';
+
+mysql> flush privileges;
+
+mysql> quit
+```
 # 配置文件，附Large
 vi /usr/local/alisql/my.cnf
 ```sh
