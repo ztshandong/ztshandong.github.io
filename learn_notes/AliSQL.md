@@ -58,7 +58,10 @@ make: *** [all] Error 2
 yum -y install mysql-server
 yum -y remove  mysql-server
 ```
-# 添加用户（也是两种方式）
+# 添加用户
+- groupadd mysql
+- useradd -g mysql -s /sbin/nologin mysql
+---
 - useradd -s /sbin/nologin -M mysql
 - mkdir -p /home/mysql/{data,logs,tmp} 
 - chown -R mysql: /home/mysql/
