@@ -25,3 +25,9 @@ ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
 - host  all    all    0.0.0.0    md5
 # 防火墙
 - firewall-cmd --permanent --zone=public --add-service=postgresql
+# 启动
+``sh
+su postgres
+/usr/pgsql-9.6/bin/pg_ctl -D /var/lib/pgsql/9.6/data/ -l logfile start
+
+```
