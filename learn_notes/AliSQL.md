@@ -1,3 +1,114 @@
+# [docker](https://github.com/alibaba/AliSQL/issues/14)
+```sh
+yum -y install deltarpm
+yum -y install docker
+systemctl start docker
+docker pull tekintian/alisql
+docker pull registry.cn-hangzhou.aliyuncs.com/acs-sample/alisql:latest
+docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=hello1234 -d registry.cn-hangzhou.aliyuncs.com/acs-sample/alisql:latest mysqld
+
+```
+# 制作rpm
+```sh
+yum -y install rpm* rpm-build rpmdev* tree 
+yum -y install gcc gcc-c++ ncurses-devel perl cmake bison
+rpmdev-setuptree
+如果是root用户，则路径是/root/rpmbuild
+tree rpmbuild/
+将源码包放到SOURCE目录下
+在rpmbuild/SPECS目录下执行rpmdev-newspec -o alisql.spec，会在当前目录下生成名为alisql.spec的模板文件，修改内容见下一段
+在rpmbuild/SPECS目录下执行打包编译
+rpmbuild -bb alisql.spec
+```
+```sh
+Name:           alisql
+Version:        5.6.3
+Release:        1%{?dist}
+Summary:        AliSQL
+
+Group:          Applications/Databases
+License:        GPL
+URL:            https://github.com/alibaba/AliSQL
+Source0:        %{name}-%{version}.tar.gz
+BuildRequires:  gcc gcc-c++
+Requires:       ncurses-devel bison perl
+
+%define MYSQL_USER mysql
+%define MYSQL_GROUP mysql
+
+
+%description    
+The %{name}-devel package contains libraries and header files for
+developing applications that use %{name}.
+
+
+%prep
+%setup -q
+useradd mysql
+mkdir -p /usr/local/mysql
+mkdir -p /data/mysqldb
+
+%build
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_UNIX_ADDR=/tmp/mysql.sock -DDEFAULT_CHARSET=utf8   -DDEFAULT_COLLATION=utf8_general_ci -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_ARCHIVE_STORAGE_ENGINE=1 -DWITH_BLACKHOLE_STORAGE_ENGINE=1 -DMYSQL_DATADIR=/data/mysqldb -DMYSQL_TCP_PORT=3306 -DENABLE_DOWNLOADS=1
+
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
+find $RPM_BUILD_ROOT -name '*.la' -exec rm -f {} ';'
+
+%pre
+id mysql  &>/dev/null||useradd -m -s /bin/bash mysql &>/dev/null
+mkdir -p /data/mysqldb
+chown -R mysql: /data/mysqldb
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%post 
+/usr/local/mysql/scripts/mysql_install_db  --basedir=/usr/local/mysql --user=mysql  --datadir=/data/mysqldb &>/dev/null
+cp -f /usr/local/mysql/support-files/my-default.cnf /etc/my.cnf 
+sed -i 's/^# basedir.*/basedir=\/usr\/local\/mysql/g' /etc/my.cnf
+sed -i 's/^# datadir.*/datadir=\/data\/mysqldb/g' /etc/my.cnf
+sed -i 's/^# socket.*/socket= \/tmp\/mysql.sock/g' /etc/my.cnf
+cp -f /usr/local/mysql/support-files/mysql.server  /etc/init.d/mysqld
+echo export PATH=/usr/local/mysql/bin:/usr/local/mysql/lib:$PATH >> /etc/profile
+source /etc/profile
+chkconfig --add mysqld &>/dev/null
+chkconfig mysqld on &>/dev/null
+
+
+%preun
+chkconfig --del mysqld &>/dev/null
+rm -rf /etc/init.d/mysqld &>/dev/null
+
+%postun 
+userdel -r mysql &>/dev/null
+rm -fr /data/mysqldb &>/dev/null
+rm -fr /usr/local/mysql &>/dev/null
+
+%files
+%defattr(-,mysql,mysql,-)
+/usr/local/mysql/bin
+/usr/local/mysql/data
+/usr/local/mysql/include
+/usr/local/mysql/lib
+/usr/local/mysql/scripts
+/usr/local/mysql/share
+/usr/local/mysql/support-files
+/usr/local/mysql/README
+/usr/local/mysql/docs
+/usr/local/mysql/man
+%exclude /usr/local/mysql/COPYING
+%exclude /usr/local/mysql/mysql-test 
+%exclude /usr/local/mysql/sql-bench
+
+
+%changelog
+```
 # 若已安装要先卸载
 - yum remove mysql
 - rm -rf /var/lib/mysql
