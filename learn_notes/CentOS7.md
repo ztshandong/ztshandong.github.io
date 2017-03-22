@@ -13,11 +13,21 @@ ONBOOT=yes
 systemctl restart network
 ```
 # yum提速
-#### 方法一
+#### 方法一，推荐阿里的
 ```sh
+http://mirrors.aliyun.com/repo/
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+wget -P /etc/yum.repos.d/ http://mirrors.aliyun.com/repo/epel-7.repo
+yum -y install epel-release epel仓库
+
+rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm ius仓库，可选
+rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm remi仓库，可选
+
 wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
 mv CentOS6-Base-163.repo /etc/yum.repos.d/CentOS-Base.repo
+
 yum clean all
 yum makecache
 yum update
