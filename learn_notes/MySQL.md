@@ -7,6 +7,7 @@ yum -y install mysql-community-server
 ```
 ```sh
 /usr/bin/systemctl start mysqld
+grep "password" /var/log/mysqld.log 使用YUM安装并启动MySQL服务后，MySQL进程会自动在进程日志中打印root用户的初始密码
 /usr/bin/systemctl enable mysqld
 
 ```
