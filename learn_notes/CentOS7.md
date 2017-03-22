@@ -20,8 +20,11 @@ yum -y install wget
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 wget -P /etc/yum.repos.d/ http://mirrors.aliyun.com/repo/epel-7.repo
-yum -y install epel-release epel仓库
+yum clean all
+yum makecache
+yum -y update
 
+yum -y install epel-release 再安装epel仓库提示重复
 rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm ius仓库，可选
 rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm remi仓库，可选
 
@@ -31,7 +34,7 @@ mv CentOS6-Base-163.repo /etc/yum.repos.d/CentOS-Base.repo
 
 yum clean all
 yum makecache
-yum update
+yum -y update
 ```
 #### 方法二  fastestmirror 插件
 ```sh
