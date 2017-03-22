@@ -15,7 +15,9 @@ yum -y install gcc gcc-c++ ncurses-devel perl cmake bison
 rpmdev-setuptree
 如果是root用户，则路径是/root/rpmbuild
 tree rpmbuild/
-将源码包放到SOURCE目录下
+从github上下载的名字是master，解压后将文件夹改名为alisql-5.6.3，然后打包压缩
+tar zcvf alisql-5.6.3.tar.gz alisql-5.6.3/
+将alisql-5.6.3.tar.gz放到SOURCE目录下
 在rpmbuild/SPECS目录下执行rpmdev-newspec -o alisql.spec，会在当前目录下生成名为alisql.spec的模板文件，修改内容见下一段
 在rpmbuild/SPECS目录下执行打包编译
 rpmbuild -bb alisql.spec
