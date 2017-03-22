@@ -38,7 +38,7 @@ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=hello1234 -d registry.cn-hangzhou
 # 添加用户(方式一)
 - groupadd mysql
 - useradd -g mysql -s /sbin/nologin mysql
-- cd  /usr/local/mysql 
+- cd  /usr/local/alisql 
 - chown -R mysql:mysql . 
 - cd /data/alisqldb
 - chown -R mysql:mysql . 
