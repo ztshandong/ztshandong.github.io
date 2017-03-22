@@ -88,8 +88,12 @@ yum -y remove  mysql-server
 - 上句若提示无权限就进入压缩包的解压路径添加允许权限
 - cd /AliSQL/AliSQL-master/scripts
 - chmod +x mysql_install_db
-
+- cp support-files/mysql.server /etc/init.d/mysqld
+- cp support-files/my-default.cnf /etc/my.cnf
+- vi /etc/my.cnf
+- datadir = /data/alisqldb    对应添加用户方式一，数据目录
 # 启动
+- service mysqld start   即可启动
 - chmod +x support-files/mysql.server
 - support-files/mysql.server start
 - ls -laF /opt/alisql
@@ -101,7 +105,7 @@ yum -y remove  mysql-server
 ```sh
 2.配置数据库
 
-[root@iZj6cich5sl4bw9f2e2erzZ cxt]# cd /usr/local/alisql    cd /AliSQL/AliSQL-master/scripts
+[root@iZj6cich5sl4bw9f2e2erzZ cxt]# cd /usr/local/alisql   
 
 [root@iZj6cich5sl4bw9f2e2erzZ alisql]# cp support-files/mysql.server /etc/init.d/mysqld
 
