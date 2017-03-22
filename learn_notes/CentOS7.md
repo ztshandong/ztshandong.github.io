@@ -263,5 +263,26 @@ tail -f /var/log/secure 查看日志
 ps -aux | grep rstudio
 netstat -lnp|grep 88
 find / -name mysql.soc
- ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock 创建快捷方式
+ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock 创建快捷方式
+cat /etc/group
+cat /etc/passwd
+usermod -d /home/test -G test2 test
+将test用户的登录目录改成/home/test，并加入test2组，注意这里是大G。
+gpasswd -a test test2 将用户test加入到test2组
+gpasswd -d test test2 将用户test从test2组中移出
+
+a），查看当前登录用户
+[root@krlcgcms01 ~]# w
+[root@krlcgcms01 ~]# who
+b），查看自己的用户名
+[root@krlcgcms01 ~]# whoami
+c），查看单个用户信息
+[root@krlcgcms01 ~]# finger apacheuser
+[root@krlcgcms01 ~]# id apacheuser
+d），查看用户登录记录
+[root@krlcgcms01 ~]# last 查看登录成功的用户记录
+[root@krlcgcms01 ~]# lastb 查看登录不成功的用户记录
+e），查看所有用户
+[root@krlcgcms01 ~]# cut -d : -f 1 /etc/passwd
+[root@krlcgcms01 ~]# cat /etc/passwd |awk -F \: '{print $1}'
 ```
