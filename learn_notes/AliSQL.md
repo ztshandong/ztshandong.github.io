@@ -82,9 +82,11 @@ make: *** [all] Error 2
 yum -y install mysql-server
 yum -y remove  mysql-server
 ```
-
 # 初始化/usr/local/alisql，
-- scripts/mysql_install_db --user=mysql --datadir=/data/alisqldb   对应添加用户方式一，数据目录
+- find / -name my_print_defaults
+- /usr/local/alisql/bin/my_print_defaults  basedir就是/usr/local/alisql
+- cd /home/zhangtao/AliSQL-master/scripts
+- ./mysql_install_db --user=mysql --basedir=/usr/local/alisql --datadir=/data/alisqldb 对应添加用户方式一，数据目录
 - 上句若提示无权限就进入压缩包的解压路径添加允许权限
 - cd /AliSQL/AliSQL-master/scripts
 - chmod +x mysql_install_db
