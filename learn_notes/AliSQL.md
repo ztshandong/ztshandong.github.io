@@ -120,7 +120,10 @@ rm -fr /usr/local/mysql &>/dev/null
 - 若存在，则继续
 - yum –y remove mysql-*
 # 安装环境
-- yum -y install wget scl-utils centos-release-scl devtoolset-4-gcc-c++ devtoolset-4-gcc  cmake git  ncurses-devel openssl-devel bison 
+- yum –y install centos-release-scl 
+- yum –y install devtoolset-4-gcc-c++ devtoolset-4-gcc
+- yum –y install cmake Git
+- yum –y install ncurses-devel openssl-devel bison
 - scl enable devtoolset-4 bash
 - yum -y install  gcc gcc-c++ make  ncurses  bison-devel zip unzip 这个不装
 # 安装软件包
