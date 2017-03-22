@@ -35,6 +35,30 @@ docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=hello1234 -d registry.cn-hangzhou
 - echo never > /sys/kernel/mm/transparent_hugepage/enabled
 - echo never > /sys/kernel/mm/transparent_hugepage/defrag
 - 运行上面的两个语句，并将他们写入 /etc/rc.local
+# 添加用户(方式一)
+- groupadd mysql
+- useradd -g mysql -s /sbin/nologin mysql
+- cd  /usr/local/mysql 
+- chown -R mysql:mysql . 
+- cd /data/alisqldb
+- chown -R mysql:mysql . 
+---
+- useradd -s /sbin/nologin -M mysql
+- mkdir -p /home/mysql/{data,logs,tmp} 
+- chown -R mysql: /home/mysql/
+---
+- groupadd mysql
+- useradd -g mysql mysql
+- mkdir -p /usr/local/alisql
+- mkdir -p /var/lib/alisql
+- chown mysql.mysql -R /var/lib/alisql
+- chmod +w /usr/local/alisql
+- chown -R mysql:mysql /usr/local/alisql
+- ln -s /usr/local/alisql/lib/libmysqlclient.so.18 /usr/lib/libmysqlclient.so.18
+- cp support-files/my-default.cnf /etc/my.cnf
+- cp support-files/mysql.server /etc/init.d/mysqld
+- chmod a+x /etc/init.d/mysqld
+
 # 编译安装/opt/alisql
 - cmake .  -DCMAKE_BUILD_TYPE="Release"      -DCMAKE_INSTALL_PREFIX="/usr/local/alisql"  -DWITH_EMBEDDED_SERVER=0              -DWITH_EXTRA_CHARSETS=all             -DWITH_MYISAM_STORAGE_ENGINE=1        -DWITH_INNOBASE_STORAGE_ENGINE=1      -DWITH_PARTITION_STORAGE_ENGINE=1     -DWITH_CSV_STORAGE_ENGINE=1           -DWITH_ARCHIVE_STORAGE_ENGINE=1       -DWITH_BLACKHOLE_STORAGE_ENGINE=1     -DWITH_FEDERATED_STORAGE_ENGINE=1     -DWITH_PERFSCHEMA_STORAGE_ENGINE=1    -DWITH_TOKUDB_STORAGE_ENGINE=1
 
@@ -58,28 +82,9 @@ make: *** [all] Error 2
 yum -y install mysql-server
 yum -y remove  mysql-server
 ```
-# 添加用户
-- groupadd mysql
-- useradd -g mysql -s /sbin/nologin mysql
----
-- useradd -s /sbin/nologin -M mysql
-- mkdir -p /home/mysql/{data,logs,tmp} 
-- chown -R mysql: /home/mysql/
----
-- groupadd mysql
-- useradd -g mysql mysql
-- mkdir -p /usr/local/alisql
-- mkdir -p /var/lib/alisql
-- chown mysql.mysql -R /var/lib/alisql
-- chmod +w /usr/local/alisql
-- chown -R mysql:mysql /usr/local/alisql
-- ln -s /usr/local/alisql/lib/libmysqlclient.so.18 /usr/lib/libmysqlclient.so.18
-- cp support-files/my-default.cnf /etc/my.cnf
-- cp support-files/mysql.server /etc/init.d/mysqld
-- chmod a+x /etc/init.d/mysqld
 
-# 初始化
-- scripts/mysql_install_db --user=mysql --datadir=/home/mysql/data/
+# 初始化/usr/local/alisql，
+- scripts/mysql_install_db --user=mysql --datadir=/data/alisqldb   对应添加用户方式一，数据目录
 - 上句若提示无权限就进入压缩包的解压路径添加允许权限
 - cd /AliSQL/AliSQL-master/scripts
 - chmod +x mysql_install_db
