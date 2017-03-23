@@ -16,12 +16,43 @@ psql -U postgres 登录数据库，执行后提示符变为 'postgres=#'
 ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
 \q  退出数据库
 ```
+```sh
+yum -y install phpPgAdmin httpd
+vi /etc/httpd/conf.d/phpPgAdmin.conf
+<Location /phpPgAdmin>
+
+  <IfModule mod_authz_core.c>
+
+        # Apache 2.4
+
+        Require all granted
+
+        #Require host example.com
+
+  </IfModule>
+
+  <IfModule !mod_authz_core.c>
+
+        # Apache 2.2
+
+        Order deny,allow
+
+        Allow from all
+
+        # Allow from .example.com
+
+    </IfModule>
+
+</Location>
+vi /etc/phpPgAdmin config.inc.php
+$conf['extra_login_security'] = false;
+```
 # 开启远程访问
 - vi /var/lib/pgsql/9.6/data/postgresql.conf
 - 修改#listen_addresses = 'localhost'  为  listen_addresses='*'
 - ‘*’也可以改为任何你想开放的服务器IP
 - vi /var/lib/pgsql/9.6/data/pg_hba.conf
-- # IPv4 local connections:
+- IPv4 local connections:
 - host  all    all    192.168.125.1      trust   
 - host  all    all    0.0.0.0    md5
 # 防火墙
