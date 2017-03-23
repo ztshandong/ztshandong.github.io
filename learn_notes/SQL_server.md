@@ -8,7 +8,8 @@ mv prod.repo /etc/yum.repos.d/prod.repo
 
 yum install -y mssql-server
 
-/opt/mssql/bin/sqlservr -setup
+/opt/mssql/bin/mssql-conf setup
+/opt/mssql/bin/sqlservr -setup 
 
 systemctl start mssql-server
 systemctl enable mssql-server
@@ -16,7 +17,8 @@ systemctl enable mssql-server
 yum install -y mssql-tools
 
 firewall-cmd --permanent --zone=public --add-port=1433/tcp
- 
+echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+source ~/.bashrc
 sqlcmd -H 127.0.0.1 -U sa
 
 ```
