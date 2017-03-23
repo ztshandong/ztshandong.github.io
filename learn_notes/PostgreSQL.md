@@ -15,7 +15,7 @@ su  postgres  切换用户，执行后提示符会变为 '-bash-4.2$'
 psql -U postgres 登录数据库，执行后提示符变为 'postgres=#'
 ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
 set password_encryption=on
-create role uername login encrypted password '123456';  远程登录模式为md5要这样
+create role uername login encrypted password '123456';  远程登录模式为md5要这样，但好像修改密码无效？
 \q  退出数据库
 ```
 # phpPgAdmin   http://ip/phpPgAdmin/
