@@ -14,38 +14,31 @@ cd ~postgres/
 su  postgres  切换用户，执行后提示符会变为 '-bash-4.2$'
 psql -U postgres 登录数据库，执行后提示符变为 'postgres=#'
 ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
+set password_encryption=on
+create role uername login encrypted password '123456';  远程登录模式为md5要这样
 \q  退出数据库
 ```
+# phpPgAdmin   http://ip/phpPgAdmin/
 ```sh
 yum -y install phpPgAdmin httpd
 vi /etc/httpd/conf.d/phpPgAdmin.conf
 <Location /phpPgAdmin>
-
   <IfModule mod_authz_core.c>
-
         # Apache 2.4
-
         Require all granted
-
         #Require host example.com
-
   </IfModule>
-
   <IfModule !mod_authz_core.c>
-
         # Apache 2.2
-
         Order deny,allow
-
         Allow from all
-
         # Allow from .example.com
-
     </IfModule>
-
 </Location>
+
 vi /etc/phpPgAdmin config.inc.php
 $conf['extra_login_security'] = false;
+$conf['servers'][0]['host'] = '192.168.125.144';
 ```
 # 开启远程访问
 - vi /var/lib/pgsql/9.6/data/postgresql.conf
@@ -56,6 +49,7 @@ $conf['extra_login_security'] = false;
 - host  all    all    192.168.125.1      trust   
 - host  all    all    0.0.0.0    md5
 # 防火墙
+- setsebool -P httpd_can_network_connect_db 1
 - firewall-cmd --permanent --zone=public --add-service=postgresql
 # 启动
 ``sh
