@@ -5,6 +5,9 @@
 - /usr/pgsql-9.6/bin/postgresql96-setup initdb
 - systemctl start postgresql-9.6.service
 - systemctl enable postgresql-9.6.service
+- yum -y install phpPgAdmin httpd
+- systemctl start httpd
+- systemctl enable httpd
 # 修改密码
 ```sh
 PostgreSQL 安装完成后，会建立一下‘postgres’用户，用于执行PostgreSQL，
@@ -20,25 +23,21 @@ create role uername login encrypted password '123456';  远程登录模式为md
 ```
 # phpPgAdmin   http://ip/phpPgAdmin/
 ```sh
-yum -y install phpPgAdmin httpd
 vi /etc/httpd/conf.d/phpPgAdmin.conf
-<Location /phpPgAdmin>
-  <IfModule mod_authz_core.c>
         # Apache 2.4
         Require all granted
         #Require host example.com
-  </IfModule>
-  <IfModule !mod_authz_core.c>
+
         # Apache 2.2
         Order deny,allow
         Allow from all
         # Allow from .example.com
-    </IfModule>
-</Location>
 
-vi /etc/phpPgAdmin config.inc.php
+vi /etc/phpPgAdmin/config.inc.php
 $conf['extra_login_security'] = false;
 $conf['servers'][0]['host'] = '192.168.125.144';
+
+systemctl restart httpd
 ```
 # 开启远程访问
 - vi /var/lib/pgsql/9.6/data/postgresql.conf
@@ -46,10 +45,11 @@ $conf['servers'][0]['host'] = '192.168.125.144';
 - ‘*’也可以改为任何你想开放的服务器IP
 - vi /var/lib/pgsql/9.6/data/pg_hba.conf
 - IPv4 local connections:
-- host  all    all    192.168.125.1      trust   
-- host  all    all    0.0.0.0    md5
+- host  all    all    192.168.125.1/24      trust   
+- host  all    all    0.0.0.0/24    md5
 # 防火墙
 - setsebool -P httpd_can_network_connect_db 1
+- firewall-cmd --permanent --zone=public --add-port=80/tcp
 - firewall-cmd --permanent --zone=public --add-service=postgresql
 # 启动
 ``sh
