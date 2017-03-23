@@ -22,7 +22,7 @@ ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
 - ‘*’也可以改为任何你想开放的服务器IP
 - vi /var/lib/pgsql/9.6/data/pg_hba.conf
 - # IPv4 local connections:
-- host  all    all    192.168.1.0/24      trust
+- host  all    all    192.168.125.1      trust   
 - host  all    all    0.0.0.0    md5
 # 防火墙
 - firewall-cmd --permanent --zone=public --add-service=postgresql
