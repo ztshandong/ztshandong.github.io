@@ -3,7 +3,8 @@
 yum -y install wget
 wget https://packages.microsoft.com/config/rhel/7/mssql-server.repo
 wget https://packages.microsoft.com/config/rhel/7/prod.repo
-mv *.repo /etc/yum.repos.d/mssql.repo
+mv mssql-server.repo /etc/yum.repos.d/mssql.repo
+mv prod.repo /etc/yum.repos.d/prod.repo
 
 yum install -y mssql-server
 
