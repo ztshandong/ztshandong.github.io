@@ -8,7 +8,7 @@ mv prod.repo /etc/yum.repos.d/prod.repo
 
 yum install -y mssql-server
 
-/opt/mssql/bin/sqlservr-setup
+/opt/mssql/bin/sqlservr -setup
 
 systemctl start mssql-server
 systemctl enable mssql-server
