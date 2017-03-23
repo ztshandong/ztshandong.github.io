@@ -22,6 +22,8 @@ wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 wget -P /etc/yum.repos.d/ http://mirrors.aliyun.com/repo/epel-7.repo
 yum clean all
 yum makecache
+
+yum install -y deltarpm
 yum -y update
 
 yum -y install epel-release 再安装epel仓库提示重复
