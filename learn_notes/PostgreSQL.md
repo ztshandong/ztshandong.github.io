@@ -10,6 +10,7 @@
 PostgreSQL 安装完成后，会建立一下‘postgres’用户，用于执行PostgreSQL，
 数据库中也会建立一个'postgres'用户，默认密码为自动生成，需要在系统中改一下。
 passwd postgres  为默认创建的系统用户设置个密码
+cd ~postgres/
 su  postgres  切换用户，执行后提示符会变为 '-bash-4.2$'
 psql -U postgres 登录数据库，执行后提示符变为 'postgres=#'
 ALTER USER postgres WITH PASSWORD '123456'  设置postgres用户密码
