@@ -1,4 +1,5 @@
 # Resources Sites
+- [xclient](http://xclient.info/)
 - [EPEL](https://fedoraproject.org/wiki/EPEL/zh-cn)
 - [alisql](https://github.com/alibaba/AliSQL)
 - [webscalesql](http://webscalesql.org/)
