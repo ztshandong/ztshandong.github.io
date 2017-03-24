@@ -71,6 +71,7 @@ brew install flow
 # 安装常用开发工具
 ```sh
 brew install git gcc pkg-config cairo libpng jpeg gitlab
+npm install -g eslint babel-eslint --registry=http://registry.npm.taobao.org  sublimetxt用
 ```
 # Nuclide
 #### Nuclide（此链接需要科学上网）是由Facebook提供的基于atom的集成开发环境，
@@ -90,6 +91,7 @@ react-native run-ios
 javac -version
 ```
 ### [下载JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
+
 ### 下载离线sdk[android-sdk-24.4.1_1](https://homebrew.bintray.com/bottles/android-sdk-24.4.1_1.el_capitan.bottle.tar.gz)
 ###### [原文链接](https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551)
 ### 下载路径中打开终端后执行
