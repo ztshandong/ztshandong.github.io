@@ -13,10 +13,8 @@ xcode-select --install
 # Homebrew提速
 ```sh
 一：中科大
-替换brew.git:
 cd "$(brew --repo)"
 git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
-替换homebrew-core.git:
 cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
 git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
 二：清华
@@ -25,10 +23,8 @@ git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew
 cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
 git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
 三：重置
-重置brew.git:
 cd "$(brew --repo)"
 git remote set-url origin https://github.com/Homebrew/brew.git
-重置homebrew-core.git:
 cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
 git remote set-url origin https://github.com/Homebrew/homebrew-core.git
 
