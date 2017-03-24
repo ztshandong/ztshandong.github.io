@@ -2,6 +2,7 @@
 ```sh
 安装完后执行
 xcode-select --install
+安装完重启
 ```
 # 安装Homebrew
 ```sh
