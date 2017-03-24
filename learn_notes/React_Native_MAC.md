@@ -70,7 +70,7 @@ brew install flow
 ```
 # 安装常用开发工具
 ```sh
-brew install git gcc pkg-config cairo libpng jpeg gitlib 
+brew install git gcc pkg-config cairo libpng jpeg gitlab
 ```
 # Nuclide
 #### Nuclide（此链接需要科学上网）是由Facebook提供的基于atom的集成开发环境，
