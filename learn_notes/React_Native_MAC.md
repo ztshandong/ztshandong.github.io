@@ -70,7 +70,7 @@ brew install flow
 ```
 # 安装常用开发工具
 ```sh
-brew install git gcc pkg-config cairo libpng jpeg gitlab
+brew install git gcc pkg-config cairo libpng jpeg 
 npm install -g eslint babel-eslint --registry=http://registry.npm.taobao.org  sublimetxt用
 ```
 # Nuclide
