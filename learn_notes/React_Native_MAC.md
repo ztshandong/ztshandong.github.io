@@ -83,6 +83,7 @@ cd AwesomeProject
 react-native run-ios
 你也可以在Nuclide中打开AwesomeProject文件夹 然后运行，
 或是双击ios/AwesomeProject.xcodeproj文件然后在Xcode中点击Run按钮。
+localhost:8081/debugger-ui   cmd+d选择debug in chrome
 ```
 
 # Android
