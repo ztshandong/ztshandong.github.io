@@ -1,3 +1,8 @@
+# 安装Xcode
+```sh
+安装完后执行
+xcode-select --install
+```
 # 安装Homebrew
 ```sh
  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
