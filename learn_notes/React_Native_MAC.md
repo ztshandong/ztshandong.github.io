@@ -20,6 +20,7 @@ brew install node
 npm config set registry https://registry.npm.taobao.org --global
 npm config set disturl https://npm.taobao.org/dist --global
 ```
+
 # Yarn、React Native的命令行工具（react-native-cli）
 ```sh
 npm install -g yarn react-native-cli
@@ -43,9 +44,12 @@ brew install watchman
 ### Flow
 ```sh
 Flow是一个静态的JS类型检查工具。译注：你在很多示例中看到的奇奇怪怪的冒号问号，以及方法参数中像类型一样的写法，
-都是属于这个flow工具的语法。这一语法并不属于ES标准，只是Facebook自家的代码规范。所以新手可以直接跳过
-（即不需要安装这一工具，也不建议去费力学习flow相关语法）。
+都是属于这个flow工具的语法。这一语法并不属于ES标准，只是Facebook自家的代码规范。
 brew install flow
+```
+# 安装常用开发工具
+```sh
+brew install git gcc pkg-config cairo libpng jpeg gitlib 
 ```
 # Nuclide
 #### Nuclide（此链接需要科学上网）是由Facebook提供的基于atom的集成开发环境，
