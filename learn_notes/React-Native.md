@@ -1,29 +1,19 @@
 # WebStorm
-react-native init projectname
-
-WebStorm的Terminal中即可运行
-
-react-native run-ios   或  react-native run-android  (需要事先运行安卓模拟器)
-
-cmd+1,2,3,4,5,6调整模拟器大小
-
-打开模拟器自动更新，置顶功能，前端调试
-
-⌘——Command
-
-⌃ ——Control
-
-⌥——alt
-
-⇧——Shift
-
-⇪——Caps Lock
-
-fn——功能键就是fn
-
-cmd+Alt+L格式化
-
-cmd+E 打开最近文件
+- react-native init projectname
+- WebStorm的Terminal中即可运行
+- react-native run-ios   或  react-native run-android  (需要事先运行安卓模拟器)
+- ⌘——Command
+- ⌃ ——Control
+- ⌥——alt
+- ⇧——Shift
+- ⇪——Caps Lock
+- fn——功能键就是fn
+# 快捷键
+- ⌘+D 打开模拟器自动更新，置顶功能，前端调试
+- ⌘+⇧+u 切换所选字符大小写
+- ⌘+1,2,3,4,5,6调整模拟器大小
+- ⌘+Alt+L格式化
+- ⌘+E 打开最近文件
 # 定义组件，三种方式
 ```jsx
 
@@ -189,5 +179,69 @@ export default class setup extends Component {
                 <Text style={{fontSize:50}}><EIComponent name="张三"/></Text>
                 </View>);
     }
+}
+```
+# Props
+```jsx
+//PropsTest.js
+import React, {Component,PropTypes} from 'react';
+import {
+    // AppRegistry,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 
+//ES6
+export default class  PropsTest extends Component{
+    static  defaultProps={
+    name:'小明',
+        age:16,
+
+}
+static propTypes={
+    name:PropTypes.string,
+    age:PropTypes.number,
+    sex:PropTypes.string.isRequired
+}
+    render(){
+     return <View>
+
+        <Text style={{backgroundColor:'red'}}>hello {this.props.name}</Text>
+        <Text style={{backgroundColor:'red'}}>hello {this.props.age}</Text>
+        <Text style={{backgroundColor:'red'}}>hello {this.props.sex}</Text>
+    </View>
+    }
+}
+
+//setup.js
+import PropsTest from './PropsTest.js';
+export default class setup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({
+            remove: false,//因为组件是在setup里加载的，所以只能在setup里移除
+            result: ''
+        })
+    }
+
+    render() {
+        var params = {name: 'lisi', age: 38, sex: '男'}
+        //var {name,sex}=params  //解构赋值，获取指定属性
+        return (
+            <View style={styles.container}>
+                <PropsTest
+                    {...params} //ES6延展操作符
+
+                    //name={name}  //对应var {name,sex}=params，解构赋值
+                    //sex={sex}
+
+                    //name={params.name} //最复杂的代码
+                    //age={params.age}
+                    //sex={params.sex}
+                />
+            </View>
+        );
+    }
+}
 ```
