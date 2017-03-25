@@ -245,3 +245,82 @@ export default class setup extends Component {
     }
 }
 ```
+# State
+```jsx
+//setup.js
+import StateTest from './StateTest.js';
+export default class setup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({
+            remove: false,//因为组件是在setup里加载的，所以只能在setup里移除
+            result: ''
+        })
+    }
+render() {
+    return (
+        <View style={styles.container}>
+            <StateTest
+            />
+        </View>
+    );
+}
+
+
+//StateTest.js
+import React, {Component} from 'react';
+import {
+    // AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    Image
+} from 'react-native';
+
+//ES6
+export default class StateTest extends Component {
+    //方法一：
+    state = {
+        size: 80,
+    }
+    //state是私有的，无法通过其他组件传递，要在constructor构造方法中初始化
+    constructor(props) {
+        super(props);
+        //方法二
+        // this.state={
+        //     size:80,
+        // }
+    }
+
+    render() {
+        return <View>
+            <Text
+                onPress={()=> {
+                    this.setState({
+                        size: this.state.size + 10
+                    })
+                }}
+            >长大</Text>
+            <Text
+                onPress={()=> {
+                    this.setState({
+                        size: this.state.size - 10
+                    })
+                }}
+            >变小</Text>
+            <Image
+                style={{width: this.state.size, height: this.state.size}}
+                source={require('./kid.jpg')}
+            ></Image>
+        </View>
+    }
+
+    /*
+     render() {
+     return <Text style={{backgroundColor: 'red'}}>hello {this.state.size}</Text>
+     // return <Text style={{fontSize:20,backgroundColor:'red'}}>Hello</Text>
+     }
+     */
+}
+
+```
