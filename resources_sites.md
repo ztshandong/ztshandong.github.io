@@ -7,6 +7,7 @@
 - [react native_cn](https://reactnative.cn/)
 - [react_native](https://facebook.github.io/react-native/docs/getting-started.html)
 - [react](http://reactjs.cn/react/docs/getting-started-zh-CN.html)
+- [react_native_js](https://js.coach/react-native)
 - [52framework](http://www.52framework.com/)
 - [JBoss Tools](http://tools.jboss.org/downloads/)
 - [JDK](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html)
