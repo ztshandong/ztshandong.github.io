@@ -45,6 +45,13 @@ module.exports=HelloComponent;
 import * as Page from './Page'
 使用* as 修饰后，导入的组件直接就成为一个对象，可以使用Page.来调用方法及属性
 ```
+# 特定平台
+```sh
+React Native会检测某个文件是否具有.ios.或是.android.的扩展名
+BigButton.ios.js
+BigButton.android.js
+import BigButton from './components/BigButton';即可
+```
 # 组件生命周期
 ```jsx
 //setup.js文件
