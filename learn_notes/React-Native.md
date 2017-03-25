@@ -142,3 +142,50 @@ export default class LifecycleComponent extends Component {
     }
 }
 ```
+# 导出组件
+```jsx
+//EIComponent.js
+//ES6
+export default class  EIComponent extends Component{
+    render(){
+     return <Text style={{backgroundColor:'red'}}>hello {this.props.name}</Text>
+    }
+}
+
+var name='李四'; //变量
+const age=18;  //常量
+export {name,age};
+
+export function sum(a,b) {
+    return a+b;
+}
+
+//setup.js
+import EIComponent,{name,age,sum} from './EIComponent.js';
+
+export default class setup extends Component {
+    constructor(props){
+        super(props);
+        this.state=({
+            remove:false ,//因为组件是在setup里加载的，所以只能在setup里移除
+            result:''
+        })
+    }
+    render(){
+        return (
+            <View style={styles.container}>
+                <Text style={{fontSize:50}}>{name}</Text>
+                <Text style={{fontSize:50}}>{age}</Text>
+                <Text style={{fontSize:50}}
+                onPress={()=>{
+                   var sumre= sum(2,3);
+                    this.setState({
+                        result:sumre
+                    })
+                }}
+                >2+3={this.state.result}</Text>
+                <Text style={{fontSize:50}}><EIComponent name="张三"/></Text>
+                </View>);
+    }
+
+```
