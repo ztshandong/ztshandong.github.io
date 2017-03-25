@@ -324,3 +324,98 @@ export default class StateTest extends Component {
 }
 
 ```
+# ref
+```jsx
+//RefTest.js
+//ES6
+export default class RefTest extends Component {
+    //方法一：
+    state = {
+        size: 80,
+    }
+    //state是私有的，无法通过其他组件传递，要在constructor构造方法中初始化
+    constructor(props) {
+        super(props);
+        //方法二
+        // this.state={
+        //     size:80,
+        // }
+    }
+
+    getSize() {
+        return this.state.size;
+    }
+
+    render() {
+        return <View>
+            <Text
+                onPress={()=> {
+                    this.setState({
+                        size: this.state.size + 10
+                    })
+                }}
+            >长大</Text>
+            <Text
+                onPress={()=> {
+                    this.setState({
+                        size: this.state.size - 10
+                    })
+                }}
+            >变小</Text>
+            <Image
+                style={{width: this.state.size, height: this.state.size}}
+                source={require('./kid.jpg')}
+            ></Image>
+        </View>
+    }
+
+    /*
+     render() {
+     return <Text style={{backgroundColor: 'red'}}>hello {this.state.size}</Text>
+     // return <Text style={{fontSize:20,backgroundColor:'red'}}>Hello</Text>
+     }
+     */
+}
+
+
+
+
+//setup.js
+import RefTest from './RefTest.js';
+
+export default class setup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({
+            remove: false,//因为组件是在setup里加载的，所以只能在setup里移除
+            result: '',
+            size: 0
+        })
+    }
+
+    //ref是内置属性
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text
+                    ref="ref2"
+                    onPress={()=> {
+                        var gsize = this.refs.reftest.getSize();
+                        var gref2 = this.refs['ref2'];
+                        //var gsize=this.reftest.getSize();//方式二，与下面对应
+                        this.setState({
+                            size: gsize,
+                        })
+                    }}
+                >获取大小{this.state.size}</Text>
+                <Text>{this.gref2}</Text>
+
+                <RefTest
+                    ref="reftest"
+                    //ref={reftest=>this.reftest=reftest}//方式二
+                />
+            </View>
+        );
+    }
+}
+```
