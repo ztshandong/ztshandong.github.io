@@ -419,3 +419,76 @@ export default class setup extends Component {
     }
 }
 ```
+# class
+```jsx
+//Mi.js
+import Student from './Student'
+export default  class Mi extends Student{
+    constructor(name,sex,age){
+        super(name,sex,age);
+    }
+    getDiscription(){
+        return '大家好，'+super.getDiscription();
+    }
+}
+
+
+//Student.js
+export  default  class Student {
+    constructor(name, sex, age) {
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+
+    getDiscription() {
+        return '姓名:' + this.name + '，性别：' + this.sex + '，age:' + this.age
+    }
+}
+
+
+//setup.js
+import RefTest from './RefTest.js';
+import Student from './Student.js';
+import Mi from './Mi.js';
+
+export default class setup extends Component {
+    constructor(props) {
+        super(props);
+        this.state = ({
+            remove: false,//因为组件是在setup里加载的，所以只能在setup里移除
+            result: '',
+            size: 0
+        })
+        this.stu = new Student('小米', '男', 8)
+        this.mi = new Mi('睿睿','男',8);
+    }
+
+    //ref是内置属性
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text
+                    ref="ref2"
+                    onPress={()=> {
+                        var gsize = this.refs.reftest.getSize();
+                        var gref2 = this.refs['ref2'];
+                        //var gsize=this.reftest.getSize();//方式二，与下面对应
+                        this.setState({
+                            size: gsize,
+                        })
+                    }}
+                >获取大小{this.state.size}</Text>
+                <Text>{this.gref2}</Text>
+                <Text>{this.stu.getDiscription()}</Text>
+                <Text>{this.mi.getDiscription()}</Text>
+
+                <RefTest
+                    ref="reftest"
+                    //ref={reftest=>this.reftest=reftest}//方式二
+                />
+            </View>
+        );
+    }
+ }
+```
