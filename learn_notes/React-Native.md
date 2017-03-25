@@ -40,6 +40,11 @@ function HelloComponent(props) {
 }
 module.exports=HelloComponent;
 ```
+# 导入组件
+```jsx
+import * as Page from './Page'
+使用* as 修饰后，导入的组件直接就成为一个对象，可以使用Page.来调用方法及属性
+```
 # 组件生命周期
 ```jsx
 //setup.js文件
