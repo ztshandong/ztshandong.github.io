@@ -497,3 +497,9 @@ export default class setup extends Component {
     }
  }
 ```
+# 原生图片
+```sh
+IOS，图片放入Images.xcassets文件夹下
+Android，放入app/src/main/res/drawable-xxhdpi文件夹下
+source={{uri: 'mikid'}}即可访问，不能加扩展名
+```
