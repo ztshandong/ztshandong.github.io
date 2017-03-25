@@ -1,9 +1,14 @@
 # WebStorm
-react-native init proname
+react-native init projectname
+
 WebStorm的Terminal中即可运行
-react-native run-ios
+
+react-native run-ios   或  react-native run-android  (需要事先运行安卓模拟器)
+
 cmd+1,2,3,4,5,6调整模拟器大小
-打开模拟器自动更新，前段调试，置顶功能
+
+打开模拟器自动更新，置顶功能，前端调试
+
 cmd+Alt+L格式化
 # 定义组件
 ```jsx
