@@ -181,7 +181,7 @@ export default class setup extends Component {
     }
 }
 ```
-# Props
+# Props，只读，不可修改
 ```jsx
 //PropsTest.js
 import React, {Component,PropTypes} from 'react';
