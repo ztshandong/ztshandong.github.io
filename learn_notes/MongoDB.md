@@ -1,6 +1,19 @@
 # 默认不需要用户名与密码即可访问
 ```sh
 https://mongobooster.com/downloads
+use admin
+db.createUser( { user: "admin", pwd: "12345678", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )
+
+vi /etc/mongod.conf
+
+dbPath:/data/db
+bindIp: 0.0.0.0 改为指定ip更安全
+authorization:enabled
+
+mongod --dbpath /data/db --port 27017 --auth
+mongo 192.168.125.140:27017
+use admin
+db.auth("admin","12345678")
 ```
 # CentOS7-MongoDB
 ```sh
