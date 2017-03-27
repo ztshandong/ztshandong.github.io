@@ -13,6 +13,7 @@ ONBOOT=yes
 systemctl restart network
 ```
 # yum提速
+- /etc/yum.conf
 #### 方法一，推荐阿里的
 ```sh
 http://mirrors.aliyun.com/repo/
