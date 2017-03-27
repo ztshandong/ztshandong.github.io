@@ -105,3 +105,8 @@ db.users.drop() 相当于drop table
 ```
 # [视图](https://github.com/mongodb-js/mongo-views)
 # [存储过程](http://www.cnblogs.com/liuzhongfeng/p/5588781.html)
+# MAC
+```sh
+brew install mongodb
+brew unlink mongodb && brew uninstall mongodb
+```
