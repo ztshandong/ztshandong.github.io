@@ -107,6 +107,7 @@ db.users.drop() 相当于drop table
 # [存储过程](http://www.cnblogs.com/liuzhongfeng/p/5588781.html)
 # MAC
 ```sh
+将jar包下载后放入~/Library/Caches/Homebrew
 brew install mongodb
 brew unlink mongodb && brew uninstall mongodb
 ```
