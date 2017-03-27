@@ -54,6 +54,7 @@ which mongod
 mkdir -p /data/db 
 -p参数代表层级创建
 df -lh 检查磁盘空间
+vi /etc/mongod.conf
 ```
 # 启动mongod
 ```sh
