@@ -18,6 +18,7 @@
 - [node-supervisor](https://github.com/petruisfan/node-supervisor)
 - [ironNode](http://www.genshuixue.com/i-cxy/p/11600790)
 - [webstorm_key](http://idea.lanyus.com/)
+- [WebStorm_key](http://us.idea.lanyus.com/)
 ---
 - [mockjs](http://mockjs.com/)
 - [rap](http://rap.taobao.org/org/index.do)
