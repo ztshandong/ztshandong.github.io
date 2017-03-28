@@ -40,6 +40,7 @@
 - [videojs](http://videojs.com/)
 
 ---
+- [luosimao](https://luosimao.com/)
 - [nssm](https://nssm.cc/usage)
 - [鸠摩搜书](https://www.jiumodiary.com/)
 - [ppt资源](http://www.hippter.com/)
