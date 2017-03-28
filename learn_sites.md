@@ -12,6 +12,7 @@
 #### [react-native](https://github.com/reactnativecn/react-native-guide)
 #### [express](https://github.com/expressjs/express)
 #### [redis](https://redis.io/)
+#### [SpechtLite](https://github.com/zhuhaow/SpechtLite)
 ---
 #### [devio](http://www.devio.org/)
 #### [imooc](http://www.imooc.com/)
@@ -28,3 +29,5 @@
 #### [ItPub](http://blog.itpub.net/index.php)
 #### [ItHeiMa](http://www.itheima.com/)
 #### [liuhaihua](http://www.liuhaihua.cn/)
+---
+#### [NOD32](http://down.lansedongli.com/zt/eset_nod32_key.html)
