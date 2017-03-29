@@ -50,7 +50,7 @@ systemctl restart httpd
 - vi /var/lib/pgsql/9.6/data/pg_hba.conf
 - IPv4 local connections:
 - host  all    all    192.168.125.1/24      trust   
-- host  all    all    0.0.0.0/24    md5
+- host  all    all    0.0.0.0/0    md5
 # 防火墙
 - setsebool -P httpd_can_network_connect_db 1
 - firewall-cmd --permanent --zone=public --add-port=80/tcp
