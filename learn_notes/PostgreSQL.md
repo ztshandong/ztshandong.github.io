@@ -89,6 +89,7 @@ host    replication     rep     IP_address_of_master/32  md5
 master运行同步命令，要密码，到底是哪个密码暂时不清楚
 rsync -cva --inplace --exclude=*pg_xlog* /var/lib/pgsql/9.6/data/ IP_address_of_slave:/var/lib/pgsql/9.6/data/
 启动时Slave报错了
+psql -x -c "select * from pg_stat_replication;"
 ```
 # 防火墙
 - setsebool -P httpd_can_network_connect_db 1
