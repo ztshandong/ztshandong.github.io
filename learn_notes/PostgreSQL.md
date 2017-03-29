@@ -54,8 +54,10 @@ systemctl restart httpd
 - firewall-cmd --permanent --zone=public --add-port=80/tcp
 - firewall-cmd --permanent --zone=public --add-service=postgresql
 # 启动
-``sh
+```sh
 su postgres
 /usr/pgsql-9.6/bin/pg_ctl -D /var/lib/pgsql/9.6/data/ -l logfile start
 
 ```
+
+#### [postgresql](http://www.xlgps.com/article/343029.html)
