@@ -126,9 +126,7 @@ cd /usr/pgsql-9.6/bin
 
 
 
-
-
-
+下面有问题
 vi /var/lib/pgsql/9.6/data/pg_hba.conf
 host    replication     rep     IP_address_of_master/32  md5
 
