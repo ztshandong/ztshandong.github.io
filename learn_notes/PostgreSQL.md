@@ -5,9 +5,7 @@
 - /usr/pgsql-9.6/bin/postgresql96-setup initdb
 - systemctl start postgresql-9.6.service
 - systemctl enable postgresql-9.6.service
-- yum -y install phpPgAdmin httpd
-- systemctl start httpd
-- systemctl enable httpd
+
 # 修改密码
 ```sh
 PostgreSQL 安装完成后，会建立一下‘postgres’用户，用于执行PostgreSQL，
@@ -27,6 +25,10 @@ CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
 ```
 # phpPgAdmin   http://ip/phpPgAdmin/
 ```sh
+yum -y install phpPgAdmin httpd
+systemctl start httpd
+systemctl enable httpd
+
 vi /etc/httpd/conf.d/phpPgAdmin.conf
         # Apache 2.4
         Require all granted
@@ -148,4 +150,5 @@ su postgres
 ```
 
 #### [xlgps](http://www.xlgps.com/article/343029.html)
+#### [主从](http://kaliarch.blog.51cto.com/8966921/1909936)
 #### [主从](http://www.jianshu.com/p/41bf119cac9a)
