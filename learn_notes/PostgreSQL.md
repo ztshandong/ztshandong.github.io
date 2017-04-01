@@ -15,12 +15,12 @@ passwd postgres  为默认创建的系统用户设置个密码
 cd ~postgres/
 su  postgres  切换用户，执行后提示符会变为 '-bash-4.2$'
 psql -U postgres 登录数据库，执行后提示符变为 'postgres=#'
-\password postgres 设置及密码
+\password postgres 设置密码
+
 create role uername login encrypted password '123456';  
 alter role postgres with ENCRYPTED password '123456';  最后要有; 成功提示ALTER ROLE
 alter user postgres WITH ENCRYPTED PASSWORD '123456'  
 
-CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
 \q  退出数据库
 ```
 # phpPgAdmin   http://ip/phpPgAdmin/
