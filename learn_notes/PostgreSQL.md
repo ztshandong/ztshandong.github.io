@@ -22,7 +22,7 @@ create role uername login encrypted password '123456';  
 alter role postgres with ENCRYPTED password '123456';  最后要有; 成功提示ALTER ROLE
 alter user postgres WITH ENCRYPTED PASSWORD '123456'  
 
-CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD 'yourpassword';
+CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
 \q  退出数据库
 ```
 # phpPgAdmin   http://ip/phpPgAdmin/
@@ -55,32 +55,72 @@ systemctl restart httpd
 # 主从配置
 ```sh
 配置master
+创建同步用户
+psql
+CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
+\du 查看
+
 vi /var/lib/pgsql/9.6/data/postgresql.conf
 listen_addresses = '*'          
 wal_level = replica             # 网上很多教程设置为hot_standby，均为老版本的选项
-max_wal_senders = 2                # 控制主库最多可以有多少个并发的standby数据库
+max_wal_senders = 2                # 控制主库最多可以有多少个并发的standby数据库,差不多有几个从，就设置多少
 wal_keep_segments = 64            # 配置保存wal日志的大小
 synchronous_standby_names = '*' #synchronous_standby_names 这个参数对应着slave配置文件中的recovery.conf 中的primary_conninfo
 log_connections = on             # 方便调试，下同
 log_line_prefix = '%t [%p-%l] %q%u@%d '
+wal_send_timeout = 60s 
+max_connections = 512 #从库的 max_connections要大于主库
+archive_mode = on #允许归档 
+
+
 
 vi /var/lib/pgsql/9.6/data/pg_hba.conf
-host    replication     rep     IP_address_of_slave/32  md5
-
-创建同步用户
-CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
-\du 查看
+host    replication     replica     IP_address_of_slave/32  md5
 
 配置Slave
+rm -rf /var/lib/pgsql/9.6/data/*  #开始没有启动从数据库，这一步可以省略 
+pg_basebackup -h ip-of-master -U repl -D /var/lib/pgsql/9.6/data -X stream -P
+cp /usr/pgsql-9.6/share/recovery.conf.sample /var/lib/pgsql/9.6/data/recovery.conf
+
+vi /var/lib/pgsql/9.6/data/recovery.conf
+standby_mode = on
+primary_conninfo = 'host=ip-of-master port=5432 user=replica password=123456'
+trigger_file = '/var/lib/pgsql/9.6/data/trigger.kenyon'    #主从切换时后的触发文件
+recovery_target_timeline = 'latest'
+
 vi /var/lib/pgsql/9.6/data/postgresql.conf
 listen_addresses = '*'          
 wal_level = replica             # 网上很多教程设置为hot_standby，均为老版本的选项
-hot_standby = on
-hot_standby_feedback = on
 max_wal_senders = 2
 wal_keep_segments = 64
 log_connections = on             # 方便调试，下同
 log_line_prefix = '%t [%p-%l] %q%u@%d '
+max_connections = 1000 #一般从的最大链接要大于主的。 
+hot_standby = on #说明这台机器不仅仅用于数据归档，也用于查询 
+max_standby_streaming_delay = 30s 
+wal_receiver_status_interval = 10s #多久向主报告一次从的状态。 
+hot_standby_feedback = on #如果有错误的数据复制，是否向主进行范例
+
+
+
+
+master库
+psql
+select client_addr,sync_state from pg_stat_replication;
+select * from pg_stat_replication;
+
+netstat -lntup|grep 5432 && ps -ef|grep postmaster
+ps -ef | grep postgres  可以看到wal sender/receiver process
+
+cd /var/lib/pgsql/9.6/data/trigger.kenyon
+touch trigger.kenyon  切换主从
+cd /usr/pgsql-9.6/bin
+./pg_controldata
+
+
+
+
+
 
 vi /var/lib/pgsql/9.6/data/pg_hba.conf
 host    replication     rep     IP_address_of_master/32  md5
