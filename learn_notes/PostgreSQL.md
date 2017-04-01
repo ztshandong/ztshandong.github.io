@@ -81,7 +81,7 @@ host    replication     replica     192.168.125.148/32  md5
 
 配置Slave  192.168.125.148
 rm -rf /var/lib/pgsql/9.6/data/*  #开始没有启动从数据库，这一步可以省略 
-pg_basebackup -h ip-of-master -U repl -D /var/lib/pgsql/9.6/data -X stream -P
+pg_basebackup -h 192.168.125.147 -U replica -D /var/lib/pgsql/9.6/data -X stream -P
 cp /usr/pgsql-9.6/share/recovery.conf.sample /var/lib/pgsql/9.6/data/recovery.conf
 
 vi /var/lib/pgsql/9.6/data/recovery.conf
