@@ -54,7 +54,7 @@ systemctl restart httpd
 - host  all    all    0.0.0.0/0    md5
 # 主从配置
 ```sh
-配置master
+配置master 192.168.125.147
 创建同步用户
 psql
 CREATE USER replica REPLICATION LOGIN ENCRYPTED PASSWORD '123456';
@@ -75,16 +75,16 @@ archive_mode = on #允许归档
 
 
 vi /var/lib/pgsql/9.6/data/pg_hba.conf
-host    replication     replica     IP_address_of_slave/32  md5
+host    replication     replica     192.168.125.148/32  md5
 
-配置Slave
+配置Slave  192.168.125.148
 rm -rf /var/lib/pgsql/9.6/data/*  #开始没有启动从数据库，这一步可以省略 
 pg_basebackup -h ip-of-master -U repl -D /var/lib/pgsql/9.6/data -X stream -P
 cp /usr/pgsql-9.6/share/recovery.conf.sample /var/lib/pgsql/9.6/data/recovery.conf
 
 vi /var/lib/pgsql/9.6/data/recovery.conf
 standby_mode = on
-primary_conninfo = 'host=ip-of-master port=5432 user=replica password=123456'
+primary_conninfo = 'host=192.168.125.147 port=5432 user=replica password=123456'
 trigger_file = '/var/lib/pgsql/9.6/data/trigger.kenyon'    #主从切换时后的触发文件
 recovery_target_timeline = 'latest'
 
@@ -111,6 +111,13 @@ select * from pg_stat_replication;
 
 netstat -lntup|grep 5432 && ps -ef|grep postmaster
 ps -ef | grep postgres  可以看到wal sender/receiver process
+
+CREATE TABLE rep_test (test varchar(40));
+INSERT INTO rep_test VALUES ('data one');
+SELECT * FROM rep_test;
+
+
+
 
 cd /var/lib/pgsql/9.6/data/trigger.kenyon
 touch trigger.kenyon  切换主从
