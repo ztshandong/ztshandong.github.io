@@ -1,3 +1,4 @@
+
 # Git 协议比较
 ### HTTPS方式, push 大文件可能引发错误
 ### SSH方式，使用加密通道读写仓库，无单次上传限制
@@ -68,6 +69,12 @@ git push github
 git remote add osc "OSC仓库的ssh格式地址"
 git push --set-upstream osc master
 git push osc
+
+
+git add .
+git commit -am 'Description'
+git push github master
+git push osc master
 ```
 - 将https切换到ssh
 ```sh
