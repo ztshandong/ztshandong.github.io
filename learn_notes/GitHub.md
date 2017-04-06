@@ -65,7 +65,7 @@ git remote rm origin
 git remote add github "Git仓库的ssh格式地址"
 git push --set-upstream github master
 git push github
-git remote add osc "Git仓库的ssh格式地址"
+git remote add osc "OSC仓库的ssh格式地址"
 git push --set-upstream osc master
 git push osc
 ```
