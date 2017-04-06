@@ -53,13 +53,31 @@ Host gitosc                          // 这个名字随便取，用来取代ssh�
   User git                           // @ 之前的内容
   IdentityFile ~/.ssh/id_rsa_gitosc  // 对应的私钥文件
 ```
-- 将https切换到ssh
+## 同时部署到github与osc上
+- 一、现在GitHub上创建一个空项目，然后下载到本地，用的是ssh
+``` sh
+git clone git@github.com:yourname/GitandOSC.git
+```
+- 二、在osc上将项目导入，要选https方式
+- 三、添加仓库
 ```sh
 git remote rm origin
+git remote add github "Git仓库的ssh格式地址"
+git push --set-upstream github master
+git push github
+git remote add osc "Git仓库的ssh格式地址"
+git push --set-upstream osc master
+git push osc
+```
+- 将https切换到ssh
+```sh
+origin可以是别的名字
+git remote rm origin
 git remote add origin "Git仓库的ssh格式地址"
-windows下先运行
 git push --set-upstream origin master
 git push origin
+
+
 ```
 
 ```unix
