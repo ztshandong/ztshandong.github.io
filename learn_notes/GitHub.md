@@ -28,6 +28,7 @@ $ ssh-agent bash
 bash-3.1$ ssh-add ~/.ssh/id_rsa_github
 ```
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
+- touch config
 ```unix
 使用的格式为ssh -T git@github.com
 Host github.com
