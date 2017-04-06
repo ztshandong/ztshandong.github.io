@@ -30,11 +30,16 @@ bash-3.1$ ssh-add ~/.ssh/id_rsa_github
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 - touch config
 ```unix
-使用的格式为ssh -T git@github.com
+使用的格式为ssh -T git@github.com  推荐
 Host github.com
     HostName github.com
     PreferredAuthentications publickey
-    IdentityFile ~/.ssh/github
+    IdentityFile ~/.ssh/git_rsa
+ Host git.oschina.net
+    HostName git.oschina.net
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/git_rsa 
+    
     
     
 使用的格式为ssh -T github
@@ -47,6 +52,14 @@ Host gitosc                          // 这个名字随便取，用来取代ssh�
   HostName git.oschina.net           // @ 与 : 之间的内容
   User git                           // @ 之前的内容
   IdentityFile ~/.ssh/id_rsa_gitosc  // 对应的私钥文件
+```
+- 将https切换到ssh
+```sh
+git remote rm origin
+git remote add origin "Git仓库的ssh格式地址"
+windows下先运行
+git push --set-upstream origin master
+git push origin
 ```
 
 ```unix
