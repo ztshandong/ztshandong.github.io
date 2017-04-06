@@ -63,22 +63,14 @@ git push origin
 ```
 
 ```unix
-$ ssh -T git@github.com              // wrong!
-Permission denied (publickey).
-$ ssh -T github                      // ok
-Hi baurine! You've successfully authenticated, ...
+$ ssh -T git@github.com              
+$ ssh -T github        使用别名 
 
-$ ssh -T git@git.oschina.net         // wrong!
-Permission denied (publickey).
-$ ssh -T gitosc                      // ok
-Welcome to Git@OSC, Baurine!
+$ ssh -T git@git.oschina.net        
+$ ssh -T gitosc                     
 
-$ ssh clone git@github.com:baurine/baurine.github.io.git   // wrong!
-Permission denied (publickey).
-fatal: Could not read from remote repository.
-
-$ ssh clone github:baurine/baurine.github.io.git           // ok
-Checking conectivity... done.
+$ ssh clone git@github.com:baurine/baurine.github.io.git   
+$ ssh clone github:baurine/baurine.github.io.git           
 ```
 
 ```unix
