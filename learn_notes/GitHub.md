@@ -1,7 +1,9 @@
 # Git 协议比较
 ### HTTPS方式, push 大文件可能引发错误
 ### SSH方式，使用加密通道读写仓库，无单次上传限制
-# 同时使用GitHub与Git@OSC[原文](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
+# 同时使用GitHub与Git@OSC
+### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
+### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
 - 第一步，先用 ssh-kengen 为 GitHub 和 Git@OSC 产生公钥私钥对，如果两个网站是用同一个邮箱注册的就不用分成两个
 - 分别保存为 id_rsa_github 和 id_rsa_gitosc 将相应的公钥添加到各自的网站。
 ```unix
