@@ -37,7 +37,7 @@ bash-3.1$ ssh-add ~/.ssh/id_rsa_github
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 - touch config
 ```unix
-使用的格式为ssh -T git@github.com  推荐
+使用的格式为ssh -vT git@github.com  推荐
 Host github.com
     HostName github.com
     PreferredAuthentications publickey
@@ -49,7 +49,7 @@ Host github.com
     
     
     
-使用的格式为ssh -T github
+使用的格式为ssh -vT github
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
   HostName github.com                // @ 与 : 之间的内容
   User git                           // @ 之前的内容
@@ -94,11 +94,11 @@ git push origin
 ```
 
 ```unix
-$ ssh -T git@github.com              
-$ ssh -T github        使用别名 
+$ ssh -vT git@github.com              
+$ ssh -vT github        使用别名 
 
-$ ssh -T git@git.oschina.net        
-$ ssh -T gitosc                     
+$ ssh -vT git@git.oschina.net        
+$ ssh -vT gitosc                     
 
 $ ssh clone git@github.com:baurine/baurine.github.io.git   
 $ ssh clone github:baurine/baurine.github.io.git           
