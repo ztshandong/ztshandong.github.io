@@ -5,12 +5,17 @@
 # 同时使用GitHub与Git@OSC
 ### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
 ### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
+# 如果登录名是中文要额外处理
+```sh
+管理员power shell
+C:\Users\张涛\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
+```
 - 第一步，先用 ssh-kengen 为 GitHub 和 Git@OSC 产生公钥私钥对，如果两个网站是用同一个邮箱注册的就不用分成两个
 - 分别保存为 id_rsa_github 和 id_rsa_gitosc 将相应的公钥添加到各自的网站。
 ```unix
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
-ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\username\.ssh\git_rsa
+ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\username\.ssh\git_rsa   用户名不要用中文
 -f表示路径,git_rsa是文件名
 $ ssh-keygen -t rsa -C "xxx@github.com"
 Generating public/private rsa key pair.
