@@ -15,14 +15,14 @@ $ git config --global i18n.commit.encoding utf-8	# 提交信息编码
 $ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
 $ export LESSCHARSET=utf-8
 ```
-- 第一步，先用 ssh-kengen 为 GitHub 和 Git@OSC 产生公钥私钥对，如果两个网站是用同一个邮箱注册的就不用分成两个
+- 第一步，先用 ssh-kengen 公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
 ```unix
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
 ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   装系统时用户名最好不要用中文
 -f表示路径,git_rsa是文件名
 ```
-- 如果邮箱不同要分别保存为 id_rsa_github 和 id_rsa_gitosc 
+- 如果邮箱不同要分别保存
 ```sh
 $ ssh-keygen -t rsa -C "xxx@github.com"
 Generating public/private rsa key pair.
@@ -31,8 +31,12 @@ Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_github
 $ ssh-keygen -t rsa -C "xxx@oschina.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitosc
+
+$ ssh-keygen -t rsa -C "xxx@gitlab.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitlab
 ```
-- 将相应的公钥添加到各自的网站
+- 将公钥添加到对应的网站
 ```sh
 cat git_rsa.pub
 ```
@@ -40,8 +44,10 @@ cat git_rsa.pub
 ```unix
 $ ssh-agent bash
 $ ssh-add c:\users\GitRSA\.ssh\git_rsa
+
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
+$ ssh-add ~/.ssh/id_ras_gitlab
 ```
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 - touch config
@@ -60,7 +66,7 @@ Host github.com
     PreferredAuthentications publickey
     IdentityFile c:\users\GitRSA\.ssh\git_rsa 
 
-使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改很多
+使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
   HostName github.com                // @ 与 : 之间的内容
   User git                           // @ 之前的内容
@@ -73,36 +79,18 @@ $ ssh -vT github        使用别名
 
 $ ssh -vT git@git.oschina.net 
 $ ssh -vT git@gitlab.com
-$ ssh clone git@github.com:baurine/baurine.github.io.git   
-$ ssh clone github:baurine/baurine.github.io.git           
+
+$ ssh clone git@github.com:name/projectname.github.io.git   
 ```
-- 第五步，使用ssh
+- 第五步，添加ssh，如果是private就用OSC与GitLab，public就再添加GitHub，
 ```sh
 git remote rm origin
-git remote add origin "OSC仓库的ssh格式地址"
-git push --set-upstream origin master
-git push origin
-```
-# 同时使用GitHub与Git@OSC和GitLab
-### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
-### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
-- 一、现在GitHub上创建一个空项目，然后下载到本地，用的是ssh
-``` sh
-git clone git@github.com:yourname/GitandOSC.git
-```
-- 二、在osc上将项目导入，要选https方式
-- 三、添加仓库
-```sh
-git remote rm origin
-git remote add github "Git仓库的ssh格式地址"
-git push --set-upstream github master
-git push github
 git remote add osc "OSC仓库的ssh格式地址"
 git push --set-upstream osc master
-git push osc
 git remote add gitlab "GitLab仓库的ssh格式地址"
 git push --set-upstream gitlab master
-git push gitlab
+git remote add github "Git仓库的ssh格式地址"
+git push --set-upstream github master
 
 git add .
 git commit -am 'Description'
@@ -114,6 +102,7 @@ git push osc master
 git push gitlab master
 以后运行./pushall.cmd即可同步多个
 ```
+
 
 
 
