@@ -15,7 +15,7 @@ C:\Users\张涛\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
 ```unix
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
-ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\username\.ssh\git_rsa   用户名不要用中文
+ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   用户名不要用中文
 -f表示路径,git_rsa是文件名
 $ ssh-keygen -t rsa -C "xxx@github.com"
 Generating public/private rsa key pair.
@@ -27,6 +27,7 @@ Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitosc
 ```
 - 第二步，使用 ssh-add 命令将新的 ssh 私钥添加到 ssh agent 中，因为默认只识别 id_rsa。
 ```unix
+ssh-add c:\users\GitRSA\.ssh\git_rsa
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
 如果提示 Could not open a connection to your authentication agent 错误，那么先使用 ssh-agent bash，再使用 ssh-add。
