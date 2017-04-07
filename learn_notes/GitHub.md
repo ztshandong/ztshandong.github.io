@@ -55,6 +55,10 @@ Host github.com
     HostName git.oschina.net
     PreferredAuthentications publickey
     IdentityFile c:\users\GitRSA\.ssh\git_rsa 
+ Host gitlab.com
+    HostName www.gitlab.com
+    PreferredAuthentications publickey
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa 
 
 使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改很多
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
@@ -68,7 +72,7 @@ $ ssh -vT git@github.com
 $ ssh -vT github        使用别名 
 
 $ ssh -vT git@git.oschina.net 
-
+$ ssh -vT git@gitlab.com
 $ ssh clone git@github.com:baurine/baurine.github.io.git   
 $ ssh clone github:baurine/baurine.github.io.git           
 ```
@@ -79,7 +83,7 @@ git remote add origin "OSC仓库的ssh格式地址"
 git push --set-upstream origin master
 git push origin
 ```
-# 同时使用GitHub与Git@OSC
+# 同时使用GitHub与Git@OSC和GitLab
 ### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
 ### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
 - 一、现在GitHub上创建一个空项目，然后下载到本地，用的是ssh
@@ -96,6 +100,9 @@ git push github
 git remote add osc "OSC仓库的ssh格式地址"
 git push --set-upstream osc master
 git push osc
+git remote add gitlab "GitLab仓库的ssh格式地址"
+git push --set-upstream gitlab master
+git push gitlab
 
 git add .
 git commit -am 'Description'
@@ -104,8 +111,8 @@ git commit -am 'Description'
 pushall.cmd   添加
 git push github master
 git push osc master
-
-以后运行./pushall.cmd即可同步两个
+git push gitlab master
+以后运行./pushall.cmd即可同步多个
 ```
 
 
