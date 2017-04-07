@@ -1,22 +1,29 @@
 
-# Git 协议比较
 ### HTTPS方式, push 大文件可能引发错误
 ### SSH方式，使用加密通道读写仓库，无单次上传限制
-# 同时使用GitHub与Git@OSC
-### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
-### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
-# 如果登录名是中文要额外处理
+
 ```sh
 管理员power shell
 C:\Users\张涛\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
 ```
+# 处理中文乱码
+```sh
+ssh-agent bash
+$ git config --global core.quotepath false  		# 显示 status 编码
+$ git config --global gui.encoding utf-8			# 图形界面编码
+$ git config --global i18n.commit.encoding utf-8	# 提交信息编码
+$ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
+$ export LESSCHARSET=utf-8
+```
 - 第一步，先用 ssh-kengen 为 GitHub 和 Git@OSC 产生公钥私钥对，如果两个网站是用同一个邮箱注册的就不用分成两个
-- 分别保存为 id_rsa_github 和 id_rsa_gitosc 将相应的公钥添加到各自的网站。
 ```unix
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
-ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   用户名不要用中文
+ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   装系统时用户名最好不要用中文
 -f表示路径,git_rsa是文件名
+```
+- 如果邮箱不同要分别保存为 id_rsa_github 和 id_rsa_gitosc 
+```sh
 $ ssh-keygen -t rsa -C "xxx@github.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_github
@@ -25,14 +32,16 @@ $ ssh-keygen -t rsa -C "xxx@oschina.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitosc
 ```
+- 将相应的公钥添加到各自的网站
+```sh
+cat git_rsa.pub
+```
 - 第二步，使用 ssh-add 命令将新的 ssh 私钥添加到 ssh agent 中，因为默认只识别 id_rsa。
 ```unix
-ssh-add c:\users\GitRSA\.ssh\git_rsa
+$ ssh-agent bash
+$ ssh-add c:\users\GitRSA\.ssh\git_rsa
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
-如果提示 Could not open a connection to your authentication agent 错误，那么先使用 ssh-agent bash，再使用 ssh-add。
-$ ssh-agent bash
-bash-3.1$ ssh-add ~/.ssh/id_rsa_github
 ```
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 - touch config
@@ -41,26 +50,38 @@ bash-3.1$ ssh-add ~/.ssh/id_rsa_github
 Host github.com
     HostName github.com
     PreferredAuthentications publickey
-    IdentityFile ~/.ssh/git_rsa
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa
  Host git.oschina.net
     HostName git.oschina.net
     PreferredAuthentications publickey
-    IdentityFile ~/.ssh/git_rsa 
-    
-    
-    
-使用的格式为ssh -vT github
-Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa 
+
+使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改很多
+Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
   HostName github.com                // @ 与 : 之间的内容
   User git                           // @ 之前的内容
   IdentityFile ~/.ssh/id_rsa_github  // 对应的私钥文件
-  
-Host gitosc                          // 这个名字随便取，用来取代ssh地址中的 git@git.oschina.net
-  HostName git.oschina.net           // @ 与 : 之间的内容
-  User git                           // @ 之前的内容
-  IdentityFile ~/.ssh/id_rsa_gitosc  // 对应的私钥文件
 ```
-## 同时部署到github与osc上
+- 第四步，连接
+```unix
+$ ssh -vT git@github.com              
+$ ssh -vT github        使用别名 
+
+$ ssh -vT git@git.oschina.net 
+
+$ ssh clone git@github.com:baurine/baurine.github.io.git   
+$ ssh clone github:baurine/baurine.github.io.git           
+```
+- 第五步，使用ssh
+```sh
+git remote rm origin
+git remote add origin "OSC仓库的ssh格式地址"
+git push --set-upstream origin master
+git push origin
+```
+# 同时使用GitHub与Git@OSC
+### [方法一](http://baurine.github.io/2015/02/09/github-gitosc-coexistence.html)
+### [方法二](http://www.jianshu.com/p/3e57bb0f8185)
 - 一、现在GitHub上创建一个空项目，然后下载到本地，用的是ssh
 ``` sh
 git clone git@github.com:yourname/GitandOSC.git
@@ -76,34 +97,22 @@ git remote add osc "OSC仓库的ssh格式地址"
 git push --set-upstream osc master
 git push osc
 
-
 git add .
 git commit -am 'Description'
+
+可以创建个脚本或者批处理
+pushall.cmd   添加
 git push github master
 git push osc master
-```
-- 将https切换到ssh
-```sh
-origin可以是别的名字
-git remote rm origin
-git remote add origin "Git仓库的ssh格式地址"
-git push --set-upstream origin master
-git push origin
 
-
+以后运行./pushall.cmd即可同步两个
 ```
 
-```unix
-$ ssh -vT git@github.com              
-$ ssh -vT github        使用别名 
 
-$ ssh -vT git@git.oschina.net        
-$ ssh -vT gitosc                     
 
-$ ssh clone git@github.com:baurine/baurine.github.io.git   
-$ ssh clone github:baurine/baurine.github.io.git           
-```
 
+
+# 下面的不用看了
 ```unix
 cd  ~/.ssh
 ls
