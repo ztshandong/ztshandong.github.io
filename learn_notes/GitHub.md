@@ -4,7 +4,7 @@
 
 ```sh
 管理员power shell
-C:\Users\张涛\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
+C:\Users\username\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
 ```
 # 处理中文乱码
 ```sh
