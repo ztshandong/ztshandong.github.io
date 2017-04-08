@@ -7,7 +7,8 @@
 - ⌥——alt
 - ⇧——Shift
 - ⇪——Caps Lock
-- fn——功能键就是fn  
+- fn——功能键就是fn   
+
 # 快捷键
 - ⌘+D 打开IOS模拟器调试菜单
 - ⌘+M 打开Android模拟器调试菜单
