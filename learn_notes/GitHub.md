@@ -31,6 +31,10 @@ $ ssh-keygen -t rsa -C "xxx@oschina.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitosc
 
+$ ssh-keygen -t rsa -C "xxx@bitbucket.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_bitbucket
+
 $ ssh-keygen -t rsa -C "xxx@gitlab.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitlab
@@ -47,6 +51,7 @@ $ ssh-add c:\users\GitRSA\.ssh\git_rsa
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
 $ ssh-add ~/.ssh/id_ras_gitlab
+$ ssh-add ~/.ssh/id_ras_bitbucket
 ```
 ### 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 ### touch config
@@ -64,6 +69,10 @@ Host github.com
     HostName www.gitlab.com
     PreferredAuthentications publickey
     IdentityFile c:\users\GitRSA\.ssh\git_rsa 
+ Host bitbucket.org
+    HostName bitbucket.org
+    PreferredAuthentications publickey
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa
 
 使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
@@ -73,15 +82,16 @@ Host github                          // 这个名字随便取，用�
 ```
 ### 第四步，连接
 ```sh
-$ ssh -vT git@github.com              
-$ ssh -vT github        使用别名 
-
+$ ssh -vT git@github.com    
 $ ssh -vT git@git.oschina.net 
 $ ssh -vT git@gitlab.com
+ssh -vT git@bitbucket.org
 
+$ ssh -vT github        使用别名 
 $ git clone git@github.com:name/projectname.github.io.git   
 ```
-### 第五步，在每个本地项目中添加ssh，如果是private就用OSC与GitLab，public就再添加GitHub，
+### 第五步，在每个本地项目中添加ssh，如果是private就用OSC,GitLab,BitBucket
+### public就再添加GitHub，
 ```sh
 git remote rm origin
 git remote add osc "OSC仓库的ssh格式地址"
@@ -90,6 +100,8 @@ git remote add gitlab "GitLab仓库的ssh格式地址"
 git push --set-upstream gitlab master
 git remote add github "Git仓库的ssh格式地址"
 git push --set-upstream github master
+git remote add bitbucket "bitbucket仓库的ssh格式地址"
+git push --set-upstream bitbucket master
 
 git add .
 git commit -am 'Description'
@@ -99,6 +111,7 @@ pushall.cmd   添加
 git push github master
 git push osc master
 git push gitlab master
+git push gitlab bitbucket
 以后运行./pushall.cmd即可同步多个
 ```
 
