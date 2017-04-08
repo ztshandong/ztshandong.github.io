@@ -80,9 +80,9 @@ $ ssh -vT github        使用别名
 $ ssh -vT git@git.oschina.net 
 $ ssh -vT git@gitlab.com
 
-$ ssh clone git@github.com:name/projectname.github.io.git   
+$ git clone git@github.com:name/projectname.github.io.git   
 ```
-- 第五步，添加ssh，如果是private就用OSC与GitLab，public就再添加GitHub，
+- 第五步，在每个本地项目中添加ssh，如果是private就用OSC与GitLab，public就再添加GitHub，
 ```sh
 git remote rm origin
 git remote add osc "OSC仓库的ssh格式地址"
