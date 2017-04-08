@@ -1,13 +1,13 @@
 # WebStorm
-* react-native init projectname
-* WebStorm的Terminal中即可运行
-* react-native run-ios   或  react-native run-android  (需要事先运行安卓模拟器)
-* ⌘——Command
-* ⌃ ——Control
-* ⌥——alt
-* ⇧——Shift
-* ⇪——Caps Lock
-* fn——功能键就是fn
+###### react-native init projectname
+###### WebStorm的Terminal中即可运行
+###### react-native run-ios   或  react-native run-android  (需要事先运行安卓模拟器)
+###### ⌘——Command
+###### ⌃——Control
+###### ⌥——alt
+###### ⇧——Shift
+###### ⇪——Caps Lock
+###### fn——功能键就是fn
 # 快捷键
 - ⌘+D 打开IOS模拟器调试菜单
 - ⌘+M 打开Android模拟器调试菜单
