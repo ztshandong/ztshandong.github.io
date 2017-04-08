@@ -108,10 +108,10 @@ git commit -am 'Description'
 
 可以创建个脚本或者批处理
 pushall.cmd   添加
-git push github master
 git push osc master
 git push gitlab master
 git push gitlab bitbucket
+git push github master   public
 以后运行./pushall.cmd即可同步多个
 ```
 
