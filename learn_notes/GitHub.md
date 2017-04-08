@@ -14,14 +14,14 @@ $ git config --global i18n.commit.encoding utf-8	# 提交信息编码
 $ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
 $ export LESSCHARSET=utf-8
 ```
-### 第一步，先用 ssh-kengen 公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
+### 第一步，先用ssh-kengen产生公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
 ```sh
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
 ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   装系统时用户名最好不要用中文
 -f表示路径,git_rsa是文件名
 ```
-### 如果邮箱不同要分别保存
+### 如果邮箱不同可能要分别保存，未验证
 ```sh
 $ ssh-keygen -t rsa -C "xxx@github.com"
 Generating public/private rsa key pair.
@@ -110,7 +110,7 @@ git commit -am 'Description'
 pushall.cmd   添加
 git push osc master
 git push gitlab master
-git push gitlab bitbucket
+git push bitbucket master
 git push github master   public
 以后运行./pushall.cmd即可同步多个
 ```
