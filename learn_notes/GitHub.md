@@ -16,6 +16,7 @@ $ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
 $ export LESSCHARSET=utf-8
 ```
 - 第一步，先用 ssh-kengen 公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
+
 ```sh
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 
