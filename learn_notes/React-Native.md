@@ -8,6 +8,7 @@
 - ⇧——Shift
 - ⇪——Caps Lock
 - fn——功能键就是fn
+---
 # 快捷键
 - ⌘+D 打开IOS模拟器调试菜单
 - ⌘+M 打开Android模拟器调试菜单
@@ -15,6 +16,7 @@
 - ⌘+Alt+L格式化
 - ⌘+E 打开最近文件
 - ⌘+⇧+u 切换所选字符大小写
+---
 # 定义组件，三种方式
 ```jsx
 
@@ -48,7 +50,7 @@ import * as Page from './Page'
 ```
 # 特定平台
 ```sh
-React Native会检测某个文件是否具有.ios.或是.android.的扩展名
+React Native会检测某个文件是否具有.ios.或是.android.的扩展名，创建两个文件
 BigButton.ios.js
 BigButton.android.js
 import BigButton from './components/BigButton';即可

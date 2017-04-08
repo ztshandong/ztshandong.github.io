@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37920330-4c00-4296-942e-d3de96ddde26" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/PostgreSQL.md" afterPath="$PROJECT_DIR$/learn_notes/PostgreSQL.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/React-Native.md" afterPath="$PROJECT_DIR$/learn_notes/React-Native.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -46,12 +46,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PostgreSQL.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PostgreSQL.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/learn_notes/PostgreSQL.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="1449">
-                <caret line="69" column="37" lean-forward="false" selection-start-line="69" selection-start-column="37" selection-end-line="69" selection-end-column="37" />
+              <first_editor relative-caret-position="315">
+                <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="React-Native.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/learn_notes/React-Native.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="420">
+                <caret line="20" column="6" lean-forward="true" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -69,6 +82,7 @@
       <list>
         <option value="$PROJECT_DIR$/learn_notes/GitHub.md" />
         <option value="$PROJECT_DIR$/learn_notes/PostgreSQL.md" />
+        <option value="$PROJECT_DIR$/learn_notes/React-Native.md" />
       </list>
     </option>
   </component>
@@ -208,12 +222,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1491619278082</updated>
-      <workItem from="1491619279471" duration="1737000" />
+      <workItem from="1491619279471" duration="2661000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1737000" />
+    <option name="totallyTimeSpent" value="2661000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
@@ -273,8 +287,19 @@
     <entry file="file://$PROJECT_DIR$/learn_notes/PostgreSQL.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1449">
-            <caret line="69" column="37" lean-forward="false" selection-start-line="69" selection-start-column="37" selection-end-line="69" selection-end-column="37" />
+          <first_editor relative-caret-position="315">
+            <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learn_notes/React-Native.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="420">
+            <caret line="20" column="6" lean-forward="true" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
             <folding />
           </first_editor>
           <second_editor />
