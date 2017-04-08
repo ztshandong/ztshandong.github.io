@@ -1,10 +1,10 @@
-# [查看最新版本，目前9.6](https://yum.postgresql.org/)
-- yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-- yum -y install postgresql96-server postgresql96-contrib
-- 初始化数据库
-- /usr/pgsql-9.6/bin/postgresql96-setup initdb
-- systemctl start postgresql-9.6.service
-- systemctl enable postgresql-9.6.service
+### [查看最新版本，目前9.6](https://yum.postgresql.org/)
+##### yum -y install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+##### yum -y install postgresql96-server postgresql96-contrib
+##### 初始化数据库
+##### /usr/pgsql-9.6/bin/postgresql96-setup initdb
+##### systemctl start postgresql-9.6.service
+##### systemctl enable postgresql-9.6.service
 
 # 修改密码
 ```sh
@@ -21,39 +21,22 @@ create role uername login encrypted password '123456';  
 alter role postgres with ENCRYPTED password '123456';  最后要有; 成功提示ALTER ROLE
 alter user postgres WITH ENCRYPTED PASSWORD '123456'  
 
+user 默认是可以登录的  role默认不可以登
+
 \q  退出数据库
 ```
-# phpPgAdmin   http://ip/phpPgAdmin/
-```sh
-yum -y install phpPgAdmin httpd
-systemctl start httpd
-systemctl enable httpd
 
-vi /etc/httpd/conf.d/phpPgAdmin.conf
-        # Apache 2.4
-        Require all granted
-        #Require host example.com
-
-        # Apache 2.2
-        Order deny,allow
-        Allow from all
-        # Allow from .example.com
-
-vi /etc/phpPgAdmin/config.inc.php
-$conf['extra_login_security'] = false;
-$conf['servers'][0]['host'] = '192.168.125.144';
-
-systemctl restart httpd
-```
 # 开启远程访问
-- vi /var/lib/pgsql/9.6/data/postgresql.conf
-- 修改#listen_addresses = 'localhost'  为  listen_addresses='*'
-- password_encryption=on
-- ‘*’也可以改为任何你想开放的服务器IP
-- vi /var/lib/pgsql/9.6/data/pg_hba.conf
-- IPv4 local connections:
-- host  all    all    192.168.125.1/24      trust   
-- host  all    all    0.0.0.0/0    md5
+```sh
+ vi /var/lib/pgsql/9.6/data/postgresql.conf
+ 修改#listen_addresses = 'localhost'  为  listen_addresses='*'
+ password_encryption=on
+ ‘*’也可以改为任何你想开放的服务器IP
+ vi /var/lib/pgsql/9.6/data/pg_hba.conf
+ IPv4 local connections:
+ host  all    all    192.168.125.1/24      trust   
+ host  all    all    0.0.0.0/0    md5
+```
 # 主从配置
 ```sh
 配置master 192.168.125.147
@@ -138,15 +121,36 @@ rsync -cva --inplace --exclude=*pg_xlog* /var/lib/pgsql/9.6/data/ IP_address_of_
 启动时Slave报错了
 psql -x -c "select * from pg_stat_replication;"
 ```
+### phpPgAdmin   http://ip/phpPgAdmin/
+```sh
+yum -y install phpPgAdmin httpd
+systemctl start httpd
+systemctl enable httpd
+
+vi /etc/httpd/conf.d/phpPgAdmin.conf
+        # Apache 2.4
+        Require all granted
+        #Require host example.com
+
+        # Apache 2.2
+        Order deny,allow
+        Allow from all
+        # Allow from .example.com
+
+vi /etc/phpPgAdmin/config.inc.php
+$conf['extra_login_security'] = false;
+$conf['servers'][0]['host'] = '192.168.125.144';
+
+systemctl restart httpd
+```
 # 防火墙
-- setsebool -P httpd_can_network_connect_db 1
-- firewall-cmd --permanent --zone=public --add-port=80/tcp
-- firewall-cmd --permanent --zone=public --add-service=postgresql
+##### setsebool -P httpd_can_network_connect_db 1
+##### firewall-cmd --permanent --zone=public --add-port=80/tcp
+##### firewall-cmd --permanent --zone=public --add-service=postgresql
 # 启动
 ```sh
 su postgres
 /usr/pgsql-9.6/bin/pg_ctl -D /var/lib/pgsql/9.6/data/ -l logfile start
-
 ```
 
 #### [xlgps](http://www.xlgps.com/article/343029.html)
