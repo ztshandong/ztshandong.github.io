@@ -16,10 +16,13 @@ $ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
 $ export LESSCHARSET=utf-8
 ```
 - 第一步，先用 ssh-kengen 公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
-```unix
+```sh
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
+
 windows系统要写成
+
 ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   装系统时用户名最好不要用中文
+
 -f表示路径,git_rsa是文件名
 ```
 - 如果邮箱不同要分别保存
@@ -41,7 +44,7 @@ Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitlab
 cat git_rsa.pub
 ```
 - 第二步，使用 ssh-add 命令将新的 ssh 私钥添加到 ssh agent 中，因为默认只识别 id_rsa。
-```unix
+```sh
 $ ssh-agent bash
 $ ssh-add c:\users\GitRSA\.ssh\git_rsa
 
@@ -51,7 +54,7 @@ $ ssh-add ~/.ssh/id_ras_gitlab
 ```
 - 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 - touch config
-```unix
+```sh
 使用的格式为ssh -vT git@github.com  推荐
 Host github.com
     HostName github.com
@@ -73,7 +76,7 @@ Host github                          // 这个名字随便取，用�
   IdentityFile ~/.ssh/id_rsa_github  // 对应的私钥文件
 ```
 - 第四步，连接
-```unix
+```sh
 $ ssh -vT git@github.com              
 $ ssh -vT github        使用别名 
 
