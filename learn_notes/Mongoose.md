@@ -13,6 +13,7 @@ mongoose.connect(uri);
 # model与schema
 - model模块建立nodejs中的对象，与mongodb中的文档对应，操作model即可对mongodb的文档增删改查
 - schema提供对model中类型和数据结构的定义，从而在无模式的mongodb中实现模式化数据存储
+
 ```sh
 文件名为model.js
 ar mongoose=require('mongoose');
