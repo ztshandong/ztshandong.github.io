@@ -105,7 +105,19 @@ git push --set-upstream bitbucket master
 
 git add .
 git commit -am 'Description'
+commit之后要merge然后push
+合并本地分支：$ git merge --no-ff [slave] ----将名称为[slave]的分支与当前分支合并
+masterPush.cmd
+//远程分支合并
+git push osc master:slaveBranch  // 提交本地master分支作为远程的slaveBranch分支
+git checkout slaveBranch
+git pull osc slaveBranch  pull相当于fetch后合并
 
+git fetch osc slaveBranch  取回osc的slaveBranch分支
+git merge osc/slaveBranch
+
+
+git diff master origin/master
 可以创建个脚本或者批处理
 pushall.cmd   添加
 git push osc master
@@ -122,16 +134,9 @@ git push github master   public
 创建本地分支：$ git branch [slave] ----注意新分支创建后不会自动切换为当前分支
 切换分支：$ git checkout [slave]
 创建新分支并立即切换到新分支：$ git checkout -b [slave]
+slavePush.cmd
 删除分支：$ git branch -d [slave] ---- -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项
 
-合并本地分支：$ git merge --no-ff [slave] ----将名称为[slave]的分支与当前分支合并
-masterPush.cmd
-然后
-git checkout slaveBranch
-git merge osc/master
-slavePush.cmd
-
-git diff master origin/master
 
 创建远程分支(本地分支push到远程)：
 git push osc [slave]
@@ -139,6 +144,6 @@ git push gitlab [slave]
 git push bitbucket [slave]
 git push github [slave]   public
 删除远程分支：git push osc --delete slaveBranch
-git fetch osc slave  取回osc的slave分支
+
 ```
 [git中merge与rebase区别](http://www.cnblogs.com/xueweihan/p/5743327.html)
