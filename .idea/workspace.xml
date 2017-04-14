@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37920330-4c00-4296-942e-d3de96ddde26" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/GitHub.md" afterPath="$PROJECT_DIR$/learn_notes/GitHub.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/MAC.md" afterPath="$PROJECT_DIR$/learn_notes/MAC.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -115,8 +115,8 @@
         <entry file="file://$PROJECT_DIR$/learn_notes/MAC.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="0">
-                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <first_editor relative-caret-position="165">
+                <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -163,6 +163,7 @@
         <option value="$PROJECT_DIR$/learn_notes/SQL_server.md" />
         <option value="$PROJECT_DIR$/learn_notes/PostgreSQL.md" />
         <option value="$PROJECT_DIR$/learn_notes/GitHub.md" />
+        <option value="$PROJECT_DIR$/learn_notes/MAC.md" />
       </list>
     </option>
   </component>
@@ -255,6 +256,13 @@
     <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
       <method />
     </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
     <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
       <config-file value="" />
       <node-interpreter value="project" />
@@ -327,12 +335,12 @@
       <workItem from="1491917639328" duration="70000" />
       <workItem from="1491995411778" duration="187000" />
       <workItem from="1492086802787" duration="867000" />
-      <workItem from="1492128209304" duration="250000" />
+      <workItem from="1492128209304" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35975000" />
+    <option name="totallyTimeSpent" value="36342000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1660" height="845" extended-state="6" />
@@ -571,8 +579,8 @@
     <entry file="file://$PROJECT_DIR$/learn_notes/MAC.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
-            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <first_editor relative-caret-position="165">
+            <caret line="11" column="4" lean-forward="true" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
             <folding />
           </first_editor>
           <second_editor />
