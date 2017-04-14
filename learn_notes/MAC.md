@@ -1,5 +1,9 @@
 ### sudo spctl --master-disable
 ### sudo su -
+```sh
+cp pushall.cmd pushall.sh
+chmod +x pushall.sh
+```
 # 安装Homebrew
 ```sh
  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
