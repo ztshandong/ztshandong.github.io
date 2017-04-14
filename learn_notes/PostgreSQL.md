@@ -23,7 +23,17 @@ alter user postgres WITH ENCRYPTED PASSWORD '123456'  
 
 user 默认是可以登录的  role默认不可以登
 
-\q  退出数据库
+\password           设置密码。
+\q                  退出。
+\h                  查看SQL命令的解释，比如\h select。
+\?                  查看psql命令列表。
+\l                  列出所有数据库。
+\c [database_name]  连接其他数据库。
+\d                  列出当前数据库的所有表格。
+\d [table_name]     列出某一张表格的结构。
+\du                 列出所有用户。
+\e                  打开文本编辑器。
+\conninfo           列出当前数据库和连接的信息。
 ```
 
 # 开启远程访问
