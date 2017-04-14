@@ -47,6 +47,20 @@ user 默认是可以登录的  role默认不可以登
  host  all    all    192.168.125.1/24      trust   
  host  all    all    0.0.0.0/0    md5
 ```
+# 存储过程，其实是函数，在函数体内部不能启用事务
+```sh
+创建
+CREATE OR REPLACE FUNCTION getTable(namepar TEXT)
+RETURNS TABLE(uname TEXT, upasswd TEXT)
+AS $$
+BEGIN
+	RETURN QUERY SELECT "public".myuser.* FROM "public".myuser where "public".myuser.uname=namepar;
+END;
+$$ LANGUAGE PLPGSQL;
+
+使用
+SELECT  gettable('lisi') 
+```
 # 主从配置
 ```sh
 配置master 192.168.125.147
