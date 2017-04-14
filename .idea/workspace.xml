@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37920330-4c00-4296-942e-d3de96ddde26" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/PostgreSQL.md" afterPath="$PROJECT_DIR$/learn_notes/PostgreSQL.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/learn_notes/GitHub.md" afterPath="$PROJECT_DIR$/learn_notes/GitHub.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -103,8 +102,21 @@
         <entry file="file://$PROJECT_DIR$/learn_notes/GitHub.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="105">
-                <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+              <first_editor relative-caret-position="587">
+                <caret line="113" column="37" lean-forward="false" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MAC.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/learn_notes/MAC.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -125,7 +137,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PostgreSQL.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PostgreSQL.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/learn_notes/PostgreSQL.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -149,8 +161,8 @@
         <option value="$PROJECT_DIR$/learn_notes/React-Native.md" />
         <option value="$PROJECT_DIR$/learn_notes/Mongoose.md" />
         <option value="$PROJECT_DIR$/learn_notes/SQL_server.md" />
-        <option value="$PROJECT_DIR$/learn_notes/GitHub.md" />
         <option value="$PROJECT_DIR$/learn_notes/PostgreSQL.md" />
+        <option value="$PROJECT_DIR$/learn_notes/GitHub.md" />
       </list>
     </option>
   </component>
@@ -315,12 +327,12 @@
       <workItem from="1491917639328" duration="70000" />
       <workItem from="1491995411778" duration="187000" />
       <workItem from="1492086802787" duration="867000" />
-      <workItem from="1492128209304" duration="53000" />
+      <workItem from="1492128209304" duration="250000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35778000" />
+    <option name="totallyTimeSpent" value="35975000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1660" height="845" extended-state="6" />
@@ -399,7 +411,6 @@
     <entry file="file://$PROJECT_DIR$/learn_notes/React-Native.md" />
     <entry file="file://$PROJECT_DIR$/learn_notes/Koa.md" />
     <entry file="file://$PROJECT_DIR$/learn_notes/Linux.md" />
-    <entry file="file://$PROJECT_DIR$/learn_notes/MAC.md" />
     <entry file="file://$PROJECT_DIR$/learn_notes/MongoDB.md" />
     <entry file="file://$PROJECT_DIR$/learn_notes/Mongoose.md" />
     <entry file="file://$PROJECT_DIR$/learn_notes/MySQL.md" />
@@ -523,23 +534,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/learn_notes/GitHub.md">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="105">
-            <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/learn_notes/PostgreSQL.md">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -551,6 +545,34 @@
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="405">
             <caret line="27" column="42" lean-forward="true" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learn_notes/GitHub.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="587">
+            <caret line="113" column="37" lean-forward="false" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/learn_notes/MAC.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
