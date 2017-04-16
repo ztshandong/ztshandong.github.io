@@ -1,4 +1,5 @@
 - 搜索引擎 http://www.google.com/search?q=%s    强制国际版ncr
+- http://yurl.sinaapp.com/crx.php
 ### [查看原文链接]( http://www.codeceo.com/article/15-chrome-extension.html?ref=myread)
 - [1.支持Chrome的Web Developer扩展，允许你通过添加一个小工具栏来使用不同的工具](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)
 - [2.Responsive Web Design Tester是一个超棒的扩展，能快速浏览你的网站在不同浏览器和设备上的行为。](https://chrome.google.com/webstore/detail/responsive-web-design-tes/objclahbaimlfnbjdeobicmmlnbhamkg?hl=en%20)

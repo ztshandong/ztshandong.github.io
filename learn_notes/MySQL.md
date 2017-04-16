@@ -11,6 +11,28 @@ grep "password" /var/log/mysqld.log 使用YUM安装并启动MySQL服务后，MyS
 /usr/bin/systemctl enable mysqld
 
 ```
+# 忘记密码
+```sh
+sudo vi /etc/my.cnf
+[mysqld] 
+skip-grant-tables 
+validate-password=OFF 
+user=root
+
+5.7mysql> update user set authentication_string=PASSWORD('newpass') where User='root';
+5.6mysql> update user set password=PASSWORD('newpass') where User='root';
+
+```
+# 创建
+```sh
+create database testDB default charset utf8 collate utf8_general_ci;
+CREATE USER 'test'@'%' IDENTIFIED BY '123456-Abc';  //不要偷懒去修改密码规则
+alter user 'test'@'%' password expire never;
+alter user 'test'@'%' password account lock/unloc;
+
+grant select,insert,update,delete on testDB.* to 'test'@'%';
+flush privileges; 
+```
 ```sh
 /usr/bin/mysql_secure_installation
 Set root password? [Y/n] Y
@@ -21,7 +43,7 @@ Reload privilege tables now? [Y/n] Y
 ```
 ```sh
 firewall-cmd --permanent --zone=trusted --add-source=192.0.2.10/32
-firewall-cmd --permanent --zone=trusted --add-port=3306/tcp
+firewall-cmd --permanent --zone=public --add-port=3306/tcp
 firewall-cmd  --reload
 ```
 ```sh
