@@ -1,13 +1,55 @@
 # [docker](https://github.com/alibaba/AliSQL/issues/14)
+# [dockerhub](https://hub.docker.com/r/tekintian/alisql/)
+# docker方式运行
 ```sh
 yum -y install deltarpm
 yum -y install docker
 systemctl start docker
+systemctl enable docker
 docker pull registry.cn-hangzhou.aliyuncs.com/acs-sample/alisql:latest
-docker run -p 3306:3306 -e MYSQL_ROOT_PASSWORD=hello1234 -d registry.cn-hangzhou.aliyuncs.com/acs-sample/alisql:latest mysqld
 
+firewall-cmd --permanent --zone=public --add-port=6657/tcp
+systemctl restart firewalld
+
+下面命令将mysqld换为/bin/bash也可跑起来但是无法连接数据库，貌似要安装mysql？
+我安装的是mysql5.7但是alisql好像是5.6
+docker run -it -p 6657:3306 -v /etc/my.cnf:/etc/my.cnf -e MYSQL_ROOT_PASSWORD=hello1234 --name alisql --restart=always -d registry.cn-hangzhou.aliyuncs.com/acs-sample/alisql:latest mysqld   
+
+修改docker的root用户密码
+docker exec -it alisql bash
+mysql -u root -p mysql
+update user set password=PASSWORD('12345678') where User='root'; //可以判断alisql不是5.7
+\q
+exit
+以后  docker start alisql  即可
+docker inspect alisql
+docker ps -a
+docker stop  alisql
+docker rm alisql
+
+COMMAND_FAILED: '/sbin/iptables -t nat -A Docker -p tcp -d 0/0 --dport 8111 -j DNAT --to-destination 172.17.0.6:8111 ! -i docker0' failed: iptables: No chain/target/match by that name.
+
+pkill docker
+iptables -t nat -F
+ifconfig docker0 down
+brctl delbr docker0
+systemctl restart docker
+
+/var/lib/docker/containers
 ```
+```sh
+[mysqld]
+basedir=/data/alisql/data
+datadir=/data/alisql/data
+socket=/data/alisql/data/mysql.sock
+symbolic-links=0
 
+[mysqld_safe]
+log-error=/data/alisql/log/mysqld.log
+pid-file=/data/alisql/log/mysqld.pid
+[client]
+socket=/data/alisql/log/mysql.sock
+```
 # 若已安装要先卸载
 - yum remove mysql
 - rm -rf /var/lib/mysql

@@ -17,3 +17,11 @@ mvn install
 
 - [maven数据库](maven repository)
 - [spring data](http://projects.spring.io/spring-data/)
+- [spring cloud](http://bbs.springcloud.cn/)
+- [spring boot](http://blog.didispace.com/Spring-Boot%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/)
+- [spring cloud](http://blog.didispace.com/Spring-Cloud%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/)
+- [spring](http://www.yiibai.com/spring/spring-tutorial-for-beginners.html)
+- [spring mvc](http://www.yiibai.com/spring_mvc/springmvc_overview.html)
+- [spring boot gitbook](https://www.gitbook.com/book/qbgbook/spring-boot-reference-guide-zh)
+
+
