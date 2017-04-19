@@ -10,7 +10,9 @@
       <url>http://maven.aliyun.com/nexus/content/groups/public</url>
     </mirror>
 ```
+- /src/main/resources/application使用yml格式，否则中文有乱码
 ```sh
+部署方法之一，在项目路径下
 mvn install
 会在target目录下新建一个jar包
 ```
