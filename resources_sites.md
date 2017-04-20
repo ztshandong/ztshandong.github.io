@@ -4,6 +4,7 @@
 - [alisql](https://github.com/alibaba/AliSQL)
 - [webscalesql](http://webscalesql.org/)
 - [bootstrap](http://www.bootcss.com/)
+- [bootcdn](http://www.bootcdn.cn/)
 - [react native_cn](https://reactnative.cn/)
 - [react_native](https://facebook.github.io/react-native/docs/getting-started.html)
 - [react](http://reactjs.cn/react/docs/getting-started-zh-CN.html)
@@ -41,6 +42,7 @@
 - [videojs](http://videojs.com/)
 
 ---
+- [图灵机器人](http://www.tuling123.com/)
 - [luosimao](https://luosimao.com/)
 - [nssm](https://nssm.cc/usage)
 - [鸠摩搜书](https://www.jiumodiary.com/)

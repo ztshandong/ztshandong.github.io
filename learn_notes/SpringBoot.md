@@ -25,5 +25,5 @@ mvn install
 - [spring](http://www.yiibai.com/spring/spring-tutorial-for-beginners.html)
 - [spring mvc](http://www.yiibai.com/spring_mvc/springmvc_overview.html)
 - [spring boot gitbook](https://www.gitbook.com/book/qbgbook/spring-boot-reference-guide-zh)
-
+- [springfox](https://springfox.github.io/springfox/docs/current/)
 

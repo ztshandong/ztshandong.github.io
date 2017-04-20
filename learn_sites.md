@@ -14,11 +14,13 @@
 #### [redis](https://redis.io/)
 #### [SpechtLite](https://github.com/zhuhaow/SpechtLite)
 ---
+#### [支付宝架构](https://www.zhihu.com/question/19907497)
 #### [devio](http://www.devio.org/)
 #### [imooc](http://www.imooc.com/)
 #### [163](http://study.163.com/)
 #### [newbiefly](http://www.newbiefly.com/)
 #### [yiibai](http://www.yiibai.com/r/)
+#### [java](http://www.programcreek.com/java-api-examples/index.php?api=java.util.List)
 ---
 #### [W3school](http://www.w3school.com.cn/)
 #### [runoob](http://www.runoob.com)
