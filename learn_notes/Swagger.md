@@ -103,7 +103,7 @@ public class Swagger2 {
                 .title("Spring Boot中使用Swagger2构建RESTful APIs")
                 .description("没做汉化，大家应该可以看懂吧")
                 .termsOfServiceUrl("https://ztshandong.github.io/")
-                .contact(new Contact("张涛","https://ztshandong.github.io/","ztshandong@gmail.com"))
+                .contact(new Contact("张涛","http://git.oschina.net/ztshandong/oschina.io/blob/master/learn_notes/Swagger.md","ztshandong@gmail.com"))
                 .version("2.0")
                 .license("ztshandong")
                 .licenseUrl("https://ztshandong.github.io/")
