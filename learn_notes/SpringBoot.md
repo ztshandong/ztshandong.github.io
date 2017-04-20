@@ -16,6 +16,50 @@
 mvn install
 会在target目录下新建一个jar包
 ```
+# 自定义异常
+```java
+//一、创建错误信息类
+public class ErrorInfo<T> {
+    public static final Integer OK = 0;
+    public static final Integer ERROR = 100;
+    private Integer code;
+    private String message;
+    private String url;
+    private T data;
+}
+//二、创建自定义异常，捕获异常
+public class MyException extends Exception {
+    public MyException(String message) {
+        super(message);
+    }
+}
+//三、处理异常
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+@ControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(value = MyException.class)
+    @ResponseBody
+    public ErrorInfo<String> jsonErrorHandler(HttpServletRequest req, MyException e) throws Exception {
+        ErrorInfo<String> r = new ErrorInfo<>();
+        r.setMessage(e.getMessage());
+        r.setCode(ErrorInfo.ERROR);
+        r.setData("Some Data");
+        r.setUrl(req.getRequestURL().toString());
+        return r;
+    }
+}
+//四、Controller增加映射
+@Controller
+public class HelloController {
+    @RequestMapping("/json")
+    public String json() throws MyException {
+        throw new MyException("发生错误2");
+    }
+}
+```
 
 - [maven数据库](maven repository)
 - [spring data](http://projects.spring.io/spring-data/)
