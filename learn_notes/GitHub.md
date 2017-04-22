@@ -38,20 +38,26 @@ Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_bitbucket
 $ ssh-keygen -t rsa -C "xxx@gitlab.com"
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_gitlab
+
+$ ssh-keygen -t rsa -C "xxx@aliyun.com"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_aliyun
 ```
 ### 将公钥添加到对应的网站
 ```sh
+cd C:\Users\GitRSA\.ssh
 cat git_rsa.pub
 ```
 ### 第二步，使用 ssh-add 命令将新的 ssh 私钥添加到 ssh agent 中，因为默认只识别 id_rsa。
 ```sh
 $ ssh-agent bash
 $ ssh-add c:\users\GitRSA\.ssh\git_rsa
-
+如果多个证书要添加多次
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
 $ ssh-add ~/.ssh/id_ras_gitlab
 $ ssh-add ~/.ssh/id_ras_bitbucket
+$ ssh-add ~/.ssh/id_ras_aliyun
 ```
 ### 第三步，配置 ~/.ssh/config 文件，如果此文件不存在，则新建一个。
 ### touch config
@@ -73,6 +79,9 @@ Host github.com
     HostName bitbucket.org
     PreferredAuthentications publickey
     IdentityFile c:\users\GitRSA\.ssh\git_rsa
+Host code.aliyun.com
+    HostName code.aliyun.com
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa
 
 使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
@@ -85,12 +94,13 @@ Host github                          // 这个名字随便取，用�
 $ ssh -vT git@github.com    
 $ ssh -vT git@git.oschina.net 
 $ ssh -vT git@gitlab.com
-ssh -vT git@bitbucket.org
+$ ssh -vT git@bitbucket.org
+$ ssh -vT git@code.aliyun.com
 
 $ ssh -vT github        使用别名 
 $ git clone git@github.com:name/projectname.github.io.git   
 ```
-### 第五步，在每个本地项目中添加ssh，如果是private就用OSC,GitLab,BitBucket
+### 第五步，在每个本地项目中添加ssh，如果是private就用OSC,GitLab,BitBucket,Aliyun
 ### public就再添加GitHub，
 ```sh
 git remote rm origin
@@ -102,6 +112,8 @@ git remote add github "Git仓库的ssh格式地址"
 git push --set-upstream github master
 git remote add bitbucket "bitbucket仓库的ssh格式地址"
 git push --set-upstream bitbucket master
+git remote add aliyun "aliyun仓库的ssh格式地址"
+git push --set-upstream aliyun master
 
 git add .
 git commit -am 'Description'
@@ -119,11 +131,10 @@ masterPush.cmd
 //远程分支合并
 git push osc master:slaveBranch  // 提交本地master分支作为远程的slaveBranch分支
 git checkout slaveBranch
-git pull osc slaveBranch  pull相当于fetch后合并
+git pull osc slaveBranch  pull相当于fetch后merge
 
 git fetch osc slaveBranch  取回osc的slaveBranch分支
 git merge osc/slaveBranch
-
 
 git diff master origin/master
 可以创建个脚本或者批处理
@@ -131,6 +142,7 @@ pushall.cmd   添加
 git push osc master
 git push gitlab master
 git push bitbucket master
+git push aliyun master
 git push github master   public
 以后运行./pushall.cmd即可同步多个
 ```
@@ -143,13 +155,14 @@ git push github master   public
 切换分支：$ git checkout [slave]
 创建新分支并立即切换到新分支：$ git checkout -b [slave]
 slavePush.cmd
-删除分支：$ git branch -d [slave] ---- -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项
+删除本地分支：$ git branch -d [slave] ---- -d选项只能删除已经参与了合并的分支，对于未有合并的分支是无法删除的。如果想强制删除一个分支，可以使用-D选项
 
 
 创建远程分支(本地分支push到远程)：
 git push osc [slave]
 git push gitlab [slave]
 git push bitbucket [slave]
+git push aliyun [slave]
 git push github [slave]   public
 删除远程分支：git push osc --delete slaveBranch
 
