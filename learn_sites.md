@@ -15,6 +15,7 @@
 #### [SpechtLite](https://github.com/zhuhaow/SpechtLite)
 ---
 #### [支付宝架构](https://www.zhihu.com/question/19907497)
+#### [阿里云资料](https://yq.aliyun.com/articles/placeholder?spm=5176.100239.blogcont57272.20.LfNkrW)
 #### [spring boot](http://www.bbsmax.com/R/6pdDmaBDzw/)
 #### [devio](http://www.devio.org/)
 #### [imooc](http://www.imooc.com/)
