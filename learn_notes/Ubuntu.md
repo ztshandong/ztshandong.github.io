@@ -1,7 +1,7 @@
 # 安装ssh
 ```sh
 ubuntu默认不能远程登录
-sudo apt-get install openssh-server
+sudo apt-get install openssh-server -y
 ps -e |grep ssh
 
 首先防火墙添加允许的端口
@@ -22,7 +22,7 @@ sudo ufw delete allow 80/tcp
 sudo ufw allow from 192.168.254.254
 sudo ufw delete allow from 192.168.254.254
 ```
-# 改源，用阿里云的最后好像有几个会报错，只添加清华和中科大的即可
+# 改源，用阿里云的最后好像有几个会报错，只编辑一下/etc/apt/sources.list添加清华和中科大的即可
 ```sh
 http://mirrors.aliyun.com/repo/
 sudo apt-get install -y wget
@@ -63,9 +63,12 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse
 
 ```
-# 阿里云安装docker
+# 阿里云安装docker，感谢阿里云，一行命令搞定
 ```sh
 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+提示If you would like to use Docker as a non-root user, you should now consider
+adding your user to the "docker" group with something like:
+sudo usermod -aG docker zhangtao
 如果提示有lock无法访问就删掉对应的lock文件
 sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json <<-'EOF'
@@ -75,8 +78,9 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+sudo apt-get update
 ```
-# 官方安装docker，慢到你想哭
+# 官方安装docker，流程复杂，慢到你想哭
 ```sh
 sudo apt-get update
 sudo apt-get -y install \
