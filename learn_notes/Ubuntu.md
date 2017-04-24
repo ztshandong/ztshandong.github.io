@@ -22,6 +22,10 @@ sudo ufw delete allow 80/tcp
 sudo ufw allow from 192.168.254.254
 sudo ufw delete allow from 192.168.254.254
 ```
+# 虚拟机共享
+```sh
+sudo apt-get install open-vm-dkms
+```
 # 改源，用阿里云的最后好像有几个会报错，只编辑一下/etc/apt/sources.list添加清华和中科大的即可
 ```sh
 http://mirrors.aliyun.com/repo/

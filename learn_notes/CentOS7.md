@@ -4,6 +4,37 @@
 Add-Ons中选择Development Tools即可，其他不用选
 选择硬盘界面虽然默认已选，但最好是先取消再重新选择
 ```
+#### 关闭SELINUX
+```sh
+是否要关闭自己决定
+vi /etc/selinux/config
+#SELINUX=enforcing #注释掉
+#SELINUXTYPE=targeted #注释掉
+SELINUX=disabled #增加
+:wq! #保存退出 
+setenforce 0 #使配置立即生效
+```
+#### 安装Vmtools
+```sh
+若是未安装图形界面貌似不用装这个
+cp vmtools.gz /tmp
+cd /tmp
+tar -zxf vmtools.gz
+cd vm-tools
+su root
+./vmware-install.pl -d
+/usr/bin/vmware-config-tools.pl
+vmware-hgfsclient
+vmhgfs-fuse .host:/D /mnt/hgfs
+```
+# [安装vscode](https://code.visualstudio.com/docs/setup/linux)
+```sh
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+yum check-update
+sudo yum install -y code
+
+```
 # network
 ```centos
 centos网卡默认不启用
@@ -14,6 +45,7 @@ systemctl restart network
 ```
 # yum提速
 - /etc/yum.conf
+
 #### 方法一，推荐阿里的
 ```sh
 http://mirrors.aliyun.com/repo/
@@ -65,26 +97,8 @@ systemctl restart vsftpd
 systemctl enable vsftpd 开机启动
 记得防火墙添加端口
 ```
-#### 安装Vmtools
-```sh
-若是未安装图形界面貌似不用装这个
-cp vmtools.gz /tmp
-cd /tmp
-tar -zxf vmtools.gz
-cd vm-tools
-su root
-./vmware-install.pl -d
-```
-#### 关闭SELINUX
-```sh
-是否要关闭自己决定
-vi /etc/selinux/config
-#SELINUX=enforcing #注释掉
-#SELINUXTYPE=targeted #注释掉
-SELINUX=disabled #增加
-:wq! #保存退出 
-setenforce 0 #使配置立即生效
-```
+
+
 # 修改SSH端口
 ```sh
 rpm -qa|grep ssh 查看已安装的ssh包
