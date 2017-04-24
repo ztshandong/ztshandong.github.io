@@ -27,6 +27,18 @@ su root
 vmware-hgfsclient
 vmhgfs-fuse .host:/D /mnt/hgfs
 ```
+# 安装docker
+```sh
+curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://0rnhdnox.mirror.aliyuncs.com"]
+}
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
 # [安装vscode](https://code.visualstudio.com/docs/setup/linux)
 ```sh
 sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
