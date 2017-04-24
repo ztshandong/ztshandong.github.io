@@ -95,6 +95,13 @@ mvn package  即可在${project.basedir}/docker下生成一个jar包，源码上
 mvn package docker:build  这样一并生成docker image，本机调试使用
 前两个是用maven生成
 docker build -t="dockername" .
+
+如果报错
+pkill docker
+iptables -t nat -F
+ifconfig docker0 down
+brctl delbr docker0
+systemctl restart docker
 ```
 # 常用命令
 ```sh
@@ -105,7 +112,7 @@ docker rmi <imageid>
 
 # 杀死所有容器
 docker kill $(docker ps -a -q)
-# 删除所有已经停止容器
+# 删除所有已经停止container
 docker rm $(docker ps -a -q)
 # 删除所有未打标签镜像
 docker rmi $(docker images -q -f dangling=true)

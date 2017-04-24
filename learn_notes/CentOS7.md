@@ -37,6 +37,7 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 sudo systemctl daemon-reload
+sudo systemctl enable docker
 sudo systemctl restart docker
 ```
 # [安装vscode](https://code.visualstudio.com/docs/setup/linux)

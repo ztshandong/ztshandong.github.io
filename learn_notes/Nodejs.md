@@ -4,12 +4,12 @@
 yum -y install gcc gcc-c++ kernel-devel
 查看最新版本
 https://nodejs.org/zh-cn/download/current/
-wget https://nodejs.org/dist/v7.7.3/node-v7.7.3.tar.gz
+wget https://nodejs.org/dist/v7.7.3/node-v7.7.3.tar.gz --no-check-certificate 
 tar -xf node-v4.5.0.tar.gz
 rm -f node-v4.5.0.tar.gz
 cd node-v4.5.0
 ./configure
-make
+make   要make好久好久，要有耐心
 sudo make install
 方法二：
 su root

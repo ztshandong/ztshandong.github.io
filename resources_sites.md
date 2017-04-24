@@ -1,6 +1,7 @@
 # Resources Sites
 - [xclient](http://xclient.info/)
 - [docker](https://cloud.docker.com)
+- [dokit](http://ued.qunar.com/dokit/index.html)
 - [hubdocker](https://hub.docker.com/explore/)
 - [EPEL](https://fedoraproject.org/wiki/EPEL/zh-cn)
 - [alisql](https://github.com/alibaba/AliSQL)
