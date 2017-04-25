@@ -12,7 +12,8 @@
 ```sh
 反正mac运行docker不怎么样
 brew install -y docker    其实就够了，安装下面这一堆只是为了本机调试方便
-创建docker虚拟机，首先下载DockerToolbox
+创建docker虚拟机，首先下载DockerToolbox，10.10.3以上的用docker-for-mac
+http://mirrors.aliyun.com/docker-toolbox/mac/docker-for-mac/
 sudo docker-machine rm default
 docker-machine create --engine-registry-mirror=https://0rnhdnox.mirror.aliyuncs.com --engine-insecure-registry=192.168.125.152：2375 -d virtualbox default
 上句命令会从github上下载最新的boot2docker，会很慢，你懂的，将提前下载好的boot2docker.iso复制到提示的缓存路径下/Users/zhangtao/.docker/machine/cache/
@@ -119,7 +120,8 @@ docker rmi $(docker images -q -f dangling=true)
 # 删除所有镜像
 docker rmi $(docker images -q)
 
-docker exec -it alisql bash  进入镜像
+docker ps
+docker exec -it containerid bash  进入镜像
 
 docker run ubuntu apt-get update
 # 上面命令会生成一个container，先获得其 id

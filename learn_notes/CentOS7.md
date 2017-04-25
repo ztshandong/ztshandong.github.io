@@ -27,6 +27,11 @@ su root
 vmware-hgfsclient
 vmhgfs-fuse .host:/D /mnt/hgfs
 ```
+# 安装JDK，首先卸载自带java
+```sh
+sudo yum -y remove java    
+sudo rpm -ivh jdk-7u80-linux-x64.rpm
+```
 # 安装docker
 ```sh
 curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -
@@ -288,6 +293,7 @@ systemctl enable iptables.service　
 ```
 # 常用命令
 ```sh
+source /etc/profile
 tail -f /var/log/secure 查看日志
 ps -aux | grep rstudio
 netstat -lnp|grep 88
