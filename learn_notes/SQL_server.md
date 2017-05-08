@@ -19,6 +19,32 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 sqlcmd -H 127.0.0.1 -U sa
 ```
+# 游标
+```sh
+BEGIN TRAN
+    DECLARE @isid INT
+    DECLARE CusCursor CURSOR FOR
+    SELECT isid FROM dbo.dt_CarInfo
+
+    OPEN CusCursor 
+    FETCH NEXT FROM CusCursor INTO @isid
+    WHILE (@@FETCH_STATUS = 0)
+         BEGIN
+
+		 SELECT * FROM dbo.dt_CarInfo WHERE isid=@isid
+
+		 IF(@@ERROR != 0)
+         BEGIN
+           ROLLBACK TRAN
+           RETURN
+         END
+         
+         FETCH NEXT FROM CusCursor INTO @isid
+         END
+     CLOSE CusCursor 
+     DEALLOCATE CusCursor 
+COMMIT TRAN
+```
 # 事务
 ```sh
 ALTER PROC usp_AccountTransaction  
