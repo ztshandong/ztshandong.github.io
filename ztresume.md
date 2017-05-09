@@ -1,20 +1,16 @@
 [![](
-http://ztshandong.oss-cn-shanghai.aliyuncs.com/AvatarSmall.jpg)](http://git.oschina.net/ztshandong/oschina.io)
-
----
+http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http://git.oschina.net/ztshandong/oschina.io)
 # 个人信息
 - 张涛/男/1982.1.8
 - 大连民族学院/计算机系/信息与计算科学专业/本科/2000.9~2004.7
 - 山东省桓台第一中学/高中/理科/1997.9~2000.7
 - GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果打不开可以点击我的头像)
 
----
 # 联系方式
 - 手机/LINE：+86-17091648421  （杭州）
 - Email： ztshandong@gmail.com  /  ztshandong@126.com
 - facebook：ztshandong
 - QQ： 28400798
----
 
 # 工作经历
 ## 上海誉友软件科技有限公司(2015.3~至今)
@@ -33,11 +29,11 @@ http://ztshandong.oss-cn-shanghai.aliyuncs.com/AvatarSmall.jpg)](http://git.osch
 - 工业园区网络管理员，兼职华通包装公司文员与质检员
 - 2008年带领团队获得浙江省质量知识竞赛一等奖
 
----
 # 技能简介
 - 精通如何使用google
 - 熟悉Windows，C#；SQL Server；Git；docker；阿里云；Swagger；
 - 了解centos，ubuntu，java，hibernate，mybatis，mysql，mongodb，redis，spring boot，spring cloud，maven，react native，jquery
+
 # 自我评价
 - 团队意识强，能吃苦耐劳，有自学能力
 
