@@ -35,6 +35,7 @@ http://ztshandong.oss-cn-shanghai.aliyuncs.com/AvatarSmall.jpg)](http://git.osch
 
 ---
 # 技能简介
+- 精通如何使用google
 - 熟悉Windows，C#；SQL Server；Git；docker；阿里云；Swagger；
 - 了解centos，ubuntu，java，hibernate，mybatis，mysql，mongodb，redis，spring boot，spring cloud，maven，react native，jquery
 # 自我评价
