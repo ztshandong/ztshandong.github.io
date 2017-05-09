@@ -21,7 +21,7 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 - C#+RESTFul+WinService+IIS+Swagger
 - 完全独立开发
 #### 智运天下Web系统(货主发布货源，司机进行报价)(使用TMS数据库，开发中)
-- Java+Hibernate+SQL Server+AngularJS+Nginx+OSC
+- java+Hibernate+SQL Server+AngularJS+Nginx+OSC
 - 前期策划及辅助开发
 ## 经商(2009.7~2015.2)
 - 上海起帆电缆有限公司安庆分公司
@@ -29,9 +29,9 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 - 工业园区网络管理员，兼职华通包装公司文员与质检员，2008年带领团队获得浙江省质量知识竞赛一等奖
 
 # 技能简介
-- 精通如何使用google
-- 熟悉Windows，C#，VS，SQL Server，Git，docker，阿里云，Swagger
-- 了解mac，centos，ubuntu，java，IDEA，WebStorm，XCode，AndroidStudio，hibernate，mybatis，mysql，mongodb，redis，spring boot，spring cloud，maven，nodejs，react native，jquery，Microsoft Azure，Google Cloud Platform
+- 精通如何使用Google
+- 熟悉Windows，C#，Visual Studio，SQL Server，Git，Docker，阿里云，Swagger
+- 了解MAC，CentOS，Ubuntu，java，IDEA，WebStorm，XCode，AndroidStudio，Hibernate，Mybatis，MySQL，MongoDB，Redis，Spring Boot，Spring Cloud，maven，Nodejs，React Native，JQuery，Microsoft Azure，Google Cloud Platform
 
 # 自我评价
 - 团队意识强，能吃苦耐劳，有自学能力
