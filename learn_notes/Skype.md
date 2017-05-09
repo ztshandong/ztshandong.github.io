@@ -1,4 +1,6 @@
-
+<table>
+<tr>
+<th>
 <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <div id="SkypeButton" style="margin:-25px" >
   <script type="text/javascript">
@@ -10,3 +12,6 @@
     });
   </script>
 </div>
+</th>
+</tr>
+</table>
