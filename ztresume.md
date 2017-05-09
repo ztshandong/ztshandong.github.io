@@ -12,29 +12,13 @@
 <tr>
 <th><font size="4">面貌</font></th>
 <th><font size="4">群众</font></th>
-<th>
-<div id="QQButton">
-<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=28400798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:28400798:41" alt="28400798" title="28400798"/></a>
-</div></th>
 </tr>
 <tr>
 <th><font size="4">手机/LINE</font></th>
 <th><font size="4">+86-17091648421</font></th>
 <th>
-<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
-<div id="SkypeButton" style="height:0px;margin:0px" >
-  <script type="text/javascript">
-    Skype.ui({
-      "name": "call",
-      "element": "SkypeButton",
-      "participants": ["live:ztshandong"],
-      "imageSize": 24    
-    });
-  </script>
-</div>
 </th>
 </tr>
-
 <tr>
 <th><font size="4">Facebook</font></th>
 <th><font size="4">ztshandong</font></font></th>
@@ -42,8 +26,13 @@
 <tr>
 <th><font size="4">Email</font></th>
 <th><font size="3">ztshandong@gmail.com<br>ztshandong@126.com</font></th>
-<th><font size="2">SkypeCall在<br>pdf格式中无效</font></th>
-
+</tr>
+<tr>
+<th><font size="4">QQ</font>
+<th><font size="4">28400798</font>
+<div id="QQButton">
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=28400798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:28400798:41" alt="28400798" title="28400798"/></a>
+</div></th>
 </tr>
 </table>
 
