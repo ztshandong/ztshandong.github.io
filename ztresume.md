@@ -1,16 +1,40 @@
-[![](
-http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http://git.oschina.net/ztshandong/oschina.io)
-# 个人信息
-- 张涛/男/1982.1.8/群众
+<table>
+<tr>
+<th rowspan="6">
+<a href="http://git.oschina.net/ztshandong/oschina.io">
+<img  src="http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg">
+</a><p><font size="4">张涛/男</font></p>
+</th>
+<th><font size="4">生日</font></th>
+<th><font size="4">1982.1.8</font></th>
+</tr>
+<tr>
+<th><font size="4">面貌</font></th>
+<th><font size="4">群众</font></th>
+</tr>
+<tr>
+<th><font size="4">手机</font></th>
+<th><font size="4">+86-17091648421 (杭州)</font></th>
+</tr>
+<tr>
+<th><font size="4">QQ</font></th>
+<th><font size="4">28400798</font></th>
+</tr>
+<tr>
+<th><font size="4">Facebook</font></th>
+<th><font size="4">ztshandong</font></th>
+</tr>
+<tr>
+<th><font size="4">Email</font></th>
+<th><font size="3">ztshandong@gmail.com<br>ztshandong@126.com</font></th>
+</tr>
+</table>
+
+### GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果无法访问可以点击我的头像)
+
+# 教育经历
 - 大连民族学院/计算机系/信息与计算科学专业/本科/2000.9~2004.7
 - 山东省桓台第一中学/高中/理科/1997.9~2000.7
-- GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果打不开可以点击我的头像)
-
-# 联系方式
-- 手机/LINE：+86-17091648421  （杭州）
-- Email： ztshandong@gmail.com  /  ztshandong@126.com
-- Facebook：ztshandong
-- QQ： 28400798
 
 # 工作经历
 ## 上海誉友软件科技有限公司(2015.3~至今)
