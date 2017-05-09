@@ -16,7 +16,7 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 ## 上海誉友软件科技有限公司(2015.3~至今)
 #### TMS系统(Transportation Management System运输管理系统)
 - .NET+C#+TFS+SQL SERVER
-- 前期团队开发（3人），后期独自维护，并根据公司发展情况不断迭代。近期增加货源及报价交易模块，并与与福佑平台与鸿运天下进行数据对接，为平台化做基础。
+- 前期团队开发（3人），后期独立维护，并根据公司发展情况不断迭代。近期增加货源及报价交易模块，并与与福佑平台与鸿运天下进行数据对接，为平台化做基础。
 #### TMS WebApi
 - C#+RESTFul+WinService+IIS+Swagger
 - 完全独立开发(暂时未启用)
