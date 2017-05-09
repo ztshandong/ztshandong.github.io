@@ -30,8 +30,8 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 
 # 技能简介
 - 精通如何使用Google
-- 熟悉Windows，C#，Visual Studio，SQL Server，Git，Docker，阿里云，Swagger
-- 了解MAC，CentOS，Ubuntu，java，IDEA，WebStorm，XCode，AndroidStudio，Hibernate，Mybatis，MySQL，MongoDB，Redis，Spring Boot，Spring Cloud，maven，Nodejs，React Native，JQuery，Microsoft Azure，Google Cloud Platform
+- 熟悉Windows，MAC，C#，Visual Studio，SQL Server，Git，Docker，阿里云，Swagger
+- 了解CentOS，Ubuntu，java，IDEA，WebStorm，XCode，AndroidStudio，Hibernate，Mybatis，MySQL，MongoDB，Redis，Spring Boot，Spring Cloud，maven，Nodejs，React Native，JQuery，Microsoft Azure，Google Cloud Platform
 
 # 自我评价
 - 团队意识强，能吃苦耐劳，有自学能力
