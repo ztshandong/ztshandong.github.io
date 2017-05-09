@@ -1,5 +1,6 @@
 # [my github blog](https://ztshandong.github.io/)
 
+#### [下面是markdown语法，直接复制过来的](https://github.com/geekcompany/DeerResume)
 #### [markdown教程](https://github.com/fan2/Markdown/blob/master/Markdown%20Tutorials.md)
 #### http://dillinger.io/
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)

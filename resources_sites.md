@@ -1,4 +1,6 @@
 # Resources Sites
+- [萌鹿简历，建议自己部署到github](https://github.com/geekcompany/DeerResume)
+
 - [xclient](http://xclient.info/)
 - [docker](https://cloud.docker.com)
 - [dokit](http://ued.qunar.com/dokit/index.html)

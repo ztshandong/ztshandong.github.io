@@ -6,7 +6,7 @@
 C:\Users\username\AppData\Local\GitHub> ./GitHub.appref-ms --open-shell
 ```
 # 处理中文乱码
-```sh
+```javascript
 ssh-agent bash
 $ git config --global core.quotepath false  		# 显示 status 编码
 $ git config --global gui.encoding utf-8			# 图形界面编码
@@ -15,7 +15,7 @@ $ git config --global i18n.logoutputencoding utf-8	# 输出 log 编码
 $ export LESSCHARSET=utf-8
 ```
 ### 第一步，先用ssh-kengen产生公钥私钥对，如果多个网站是用同一个邮箱注册的就不用分
-```sh
+```javascript
 ssh-keygen -t rsa -C "email@gmail.com" -f ~/.ssh/git_rsa
 windows系统要写成
 ssh-keygen -t rsa -C "email@gmail.com" -f c:\users\GitRSA\.ssh\git_rsa   装系统时用户名最好不要用中文
@@ -44,7 +44,7 @@ Generating public/private rsa key pair.
 Enter file in which to save the key (/home/bao/.ssh/id_rsa): id_rsa_aliyun
 ```
 ### 将公钥添加到对应的网站
-```sh
+```javascript
 cd C:\Users\GitRSA\.ssh
 cat git_rsa.pub
 ```

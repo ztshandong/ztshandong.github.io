@@ -2,7 +2,7 @@
 - GRANT EXECUTE ON SYS.XP_PROP_OLEDB_PROVIDER TO username;
 
 # CentOS7-SQLServer，你不会真的在CentOS上还要装SQLServer吧，看看就行
-```sh
+```java
 yum -y install wget
 wget https://packages.microsoft.com/config/rhel/7/mssql-server.repo
 wget https://packages.microsoft.com/config/rhel/7/prod.repo
@@ -20,7 +20,7 @@ source ~/.bashrc
 sqlcmd -H 127.0.0.1 -U sa
 ```
 # 游标
-```sh
+```sql
 BEGIN TRAN
     DECLARE @isid INT
     DECLARE CusCursor CURSOR FOR
@@ -46,7 +46,7 @@ BEGIN TRAN
 COMMIT TRAN
 ```
 # 事务
-```sh
+```sql
 ALTER PROC usp_AccountTransaction  
   
     @AccountNum INT,  
