@@ -19,7 +19,7 @@
 </tr>
 <tr>
 <th><font size="4">手机/LINE</font></th>
-<th><font size="4">+86-17091648421 (杭州)</font></th>
+<th><font size="4">+86-17091648421</font></th>
 <th>
 <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <div id="SkypeButton" style="height:0px;margin:0px" >
@@ -42,7 +42,7 @@
 <tr>
 <th><font size="4">Email</font></th>
 <th><font size="3">ztshandong@gmail.com<br>ztshandong@126.com</font></th>
-<th><font size="2">SkypeCall在pdf格式中无效</font></th>
+<th><font size="2">SkypeCall在<br>pdf格式中无效</font></th>
 
 </tr>
 </table>
