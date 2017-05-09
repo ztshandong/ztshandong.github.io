@@ -8,7 +8,7 @@
 #### [This is my AliCode](https://code.aliyun.com/zhuorui/aliyun.io)
 
 ### 我英文很烂，编不下去了，国内可能只有OSC和AliCode可以正常访问，内容都一样
-### [我的优酷，各行业教程的视频都是盗版，我承认。大家听说过Easton LaChappelle吗？](http://i.youku.com/zhangzhuorui)
+### [点击查看我的优酷，各行业教程的视频都是盗版，我承认。大家听说过Easton LaChappelle吗？](http://i.youku.com/zhangzhuorui)
 ### [如果您可以访问谷歌，可以看看我的youtube，都是儿子的录像](https://www.youtube.com/channel/UCPNp__Qp_tbehUzgLOjT-gA/playlists)
 ### [也可以看看我谷歌的博客，仍然还是儿子的录像，HOHO~](https://ztshandong.blogspot.com/)
 
