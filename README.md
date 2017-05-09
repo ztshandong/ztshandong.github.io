@@ -1,6 +1,6 @@
 # [Nice to meet you！This is my github blog，but may not be accessible，you know](https://ztshandong.github.io/)
 
-# [Skype：live:ztshandong](skype:live:ztshandong?call)
+#### Skype:live:ztshandong
 
 #### [This is my GitHub](https://github.com/ztshandong/ztshandong.github.io)
 #### [This is my GitLab](https://gitlab.com/ztshandongPublic/gitlab.io)
