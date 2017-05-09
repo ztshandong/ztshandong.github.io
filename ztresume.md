@@ -54,6 +54,10 @@
 
 </table>
 
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<div>
+<a href="skype:live:ztshandong?call"><style="border: none;" width="92" height="82" alt="Skype Me™!" /><font size="4">Skype</font></a>
+</div>
 
 ### GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果无法访问请点击我的头像)
 
