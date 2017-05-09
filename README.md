@@ -1,14 +1,6 @@
-<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
-<div id="SkypeButton" style="height:30px;margin:0px" >
-  <script type="text/javascript">
-    Skype.ui({
-      "name": "call",
-      "element": "SkypeButton",
-      "participants": ["live:ztshandong"],
-      "imageSize": 24    
-    });
-  </script>
-</div>
+
+
+
 
 # [Nice to meet you！This is my github blog，but may not be accessible，you know](https://ztshandong.github.io/)
 

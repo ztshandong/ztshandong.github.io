@@ -1,7 +1,7 @@
 
 <table>
 <tr>
-<th rowspan="6">
+<th rowspan="7">
 <a href="http://git.oschina.net/ztshandong/oschina.io">
 <img  src="http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg">
 </a><p><font size="4">张涛/男</font></p>
@@ -34,6 +34,24 @@
 <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=28400798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:28400798:41" alt="28400798" title="28400798"/></a>
 </div></th>
 </tr>
+
+<tr>
+<th><font size="4">Skype</font>
+<th><font size="4"></font>
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+<div id="SkypeButton" style="margin:-40px" >
+  <script type="text/javascript">
+    Skype.ui({
+      "name": "call",
+      "element": "SkypeButton",
+      "participants": ["live:ztshandong"],
+      "imageSize":24
+    });
+  </script>
+</div>
+</th>
+</tr>
+
 </table>
 
 
