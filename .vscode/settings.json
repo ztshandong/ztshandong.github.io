@@ -2,7 +2,6 @@
 {
   "markdownConverter.conversionType": [
     "HTML",
-    "PDF",
-    "PNG"
+    "PDF"
   ]
 }
