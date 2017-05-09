@@ -30,7 +30,7 @@
 </tr>
 </table>
 
-### GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果无法访问可以点击我的头像)
+### GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果无法访问请点击我的头像)
 
 # 教育经历
 - 大连民族学院/计算机系/信息与计算科学专业/本科/2000.9~2004.7
