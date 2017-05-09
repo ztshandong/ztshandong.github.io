@@ -1,7 +1,7 @@
 [![](
 http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http://git.oschina.net/ztshandong/oschina.io)
 # 个人信息
-- 张涛/男/1982.1.8
+- 张涛/男/1982.1.8/群众
 - 大连民族学院/计算机系/信息与计算科学专业/本科/2000.9~2004.7
 - 山东省桓台第一中学/高中/理科/1997.9~2000.7
 - GitHub： [https://ztshandong.github.io/](https://ztshandong.github.io/)(如果打不开可以点击我的头像)
