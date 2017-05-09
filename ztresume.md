@@ -31,10 +31,11 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 
 # 技能简介
 - 精通如何使用google
-- 熟悉Windows，C#；SQL Server；Git；docker；阿里云；Swagger；
-- 了解centos，ubuntu，java，hibernate，mybatis，mysql，mongodb，redis，spring boot，spring cloud，maven，react native，jquery
+- 熟悉Windows，C#；VS，SQL Server；Git；docker；阿里云；Swagger；
+- 了解mac，centos，ubuntu，java，IDEA，WebStorm，XCode，AndroidStudio，hibernate，mybatis，mysql，mongodb，redis，spring boot，spring cloud，maven，react native，jquery
 
 # 自我评价
 - 团队意识强，能吃苦耐劳，有自学能力
 
 # 谢谢
+- 期待与您共事
