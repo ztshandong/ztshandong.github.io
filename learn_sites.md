@@ -17,6 +17,7 @@
 #### [支付宝架构](https://www.zhihu.com/question/19907497)
 #### [阿里云资料](https://yq.aliyun.com/articles/placeholder?spm=5176.100239.blogcont57272.20.LfNkrW)
 #### [阿里实验室](https://www.aliyun.com/support/openlab)
+#### [阿里云大学](https://promotion.aliyun.com/ntms/bettervideos2016.html?spm=5176.8142029.738978.5.HnylA1)
 #### [云计算](https://yq.aliyun.com/articles/62910?spm=5176.8340944.687993.1.v54ZJv)
 #### [spring boot](http://www.bbsmax.com/R/6pdDmaBDzw/)
 #### [devio](http://www.devio.org/)
