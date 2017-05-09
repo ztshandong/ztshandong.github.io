@@ -36,7 +36,7 @@
 </tr>
 
 <tr>
-<th><font size="4">Facebook</font></th>
+<th><a href="skype:live:ztshandong?call">skype</a><font size="4">Facebook</font></th>
 <th><font size="4">ztshandong</font></font></th>
 </tr>
 <tr>
