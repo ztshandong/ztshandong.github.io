@@ -36,12 +36,14 @@
 </tr>
 
 <tr>
-<th><a href="skype:live:ztshandong?call">skype</a><font size="4">Facebook</font></th>
+<th><font size="4">Facebook</font></th>
 <th><font size="4">ztshandong</font></font></th>
 </tr>
 <tr>
 <th><font size="4">Email</font></th>
 <th><font size="3">ztshandong@gmail.com<br>ztshandong@126.com</font></th>
+<th><font size="2">SkypeCall在pdf格式中无效</font></th>
+
 </tr>
 </table>
 
