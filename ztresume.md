@@ -19,7 +19,7 @@ http://git.oschina.net/ztshandong/oschina.io/raw/master/AvatarSmall.jpg)](http:/
 - 前期团队开发（3人），后期独立维护，并根据公司发展情况不断迭代。近期增加货源及报价交易模块，并与与福佑平台与鸿运天下进行数据对接，为平台化做基础。
 #### TMS WebApi
 - C#+RESTFul+WinService+IIS+Swagger
-- 完全独立开发(暂时未启用)
+- 完全独立开发
 #### 智运天下Web系统(货主发布货源，司机进行报价)(使用TMS数据库，开发中)
 - Java+Hibernate+SQL Server+AngularJS+Nginx+OSC
 - 前期策划及辅助开发
