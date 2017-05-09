@@ -1,3 +1,6 @@
+
+![N|Solid](https://git.oschina.net/ztshandong/oschina.io/raw/master/learn_notes/Aria2.png)
+
 # [教程一](http://xclient.info/a/6b6c46df-3e4f-1b17-ae30-0c8b49df92cc.html)
 # [教程二](https://medium.com/@Justin___Smith/aria2%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B-mac%E5%92%8Cwindows-b31d0f64bd4e)
 # [教程三](http://www.jianshu.com/p/d7e01982e474)
