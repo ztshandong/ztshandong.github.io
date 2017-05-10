@@ -83,7 +83,9 @@ Host code.aliyun.com
     HostName code.aliyun.com
     IdentityFile c:\users\GitRSA\.ssh\git_rsa
 
-使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
+mac要改为IdentityFile ～／.ssh／git_rsa
+
+别名使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
   HostName github.com                // @ 与 : 之间的内容
   User git                           // @ 之前的内容
@@ -96,6 +98,12 @@ $ ssh -vT git@git.oschina.net
 $ ssh -vT git@gitlab.com
 $ ssh -vT git@bitbucket.org
 $ ssh -vT git@code.aliyun.com
+
+mac
+bad owner or permissions on .ssh/config
+chmod 600 ~/.ssh/config
+Permissions 0777 for '.ssh/git_rsa' are too open
+chmod 400 ~/.ssh/git_rsa
 
 $ ssh -vT github        使用别名 
 $ git clone git@github.com:name/projectname.github.io.git   
@@ -116,14 +124,14 @@ git remote add aliyun "aliyun仓库的ssh格式地址"
 git push --set-upstream aliyun master
 
 git add .
-git commit -am 'Description'
-
- git config --global user.name "Your Name"
-    git config --global user.email you@example.com
+mac commit 之前要设置
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
 
 After doing this, you may fix the identity used for this commit with:
+git commit --amend --reset-author
 
-    git commit --amend --reset-author
+git commit -am 'Description'
 
 commit之后要merge然后push
 合并本地分支：$ git merge --no-ff [slave] ----将名称为[slave]的分支与当前分支合并
