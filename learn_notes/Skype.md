@@ -12,3 +12,10 @@
     });
   </script>
 </div>
+
+
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
+
+<div>
+<a href="skype:live:ztshandong?call"><style="border: none;"alt="Skype Me™!" /><font size="4">live:ztshandong</font></a>
+</div>

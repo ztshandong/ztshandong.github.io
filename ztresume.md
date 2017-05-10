@@ -1,4 +1,4 @@
-
+<script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
 <table>
 <tr>
 <th rowspan="7">
@@ -29,9 +29,9 @@
 </tr>
 <tr>
 <th><font size="4">QQ</font>
-<th><font size="4">28400798</font>
-<div id="QQButton">
-<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=28400798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:28400798:41" alt="28400798" title="28400798"/></a>
+<th>
+<div id="QQButton" ><font size="4" style="vertical-align:middle;">28400798</font>
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=28400798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:28400798:41" alt="28400798" title="28400798" style="vertical-align:middle"/></a>
 </div></th>
 </tr>
 
@@ -39,8 +39,16 @@
 <th><font size="4">Skype</font>
 <th>
 <script type="text/javascript" src="http://www.skypeassets.com/i/scom/js/skype-uri.js"></script>
-<div>
-<a href="skype:live:ztshandong?call"><style="border: none;"alt="Skype Me™!" /><font size="4">live:ztshandong</font></a>
+<font size="4" style="vertical-align:middle;">live:ztshandong</font>
+<div id="SkypeButton" style="margin:-50px" >
+  <script type="text/javascript">
+    Skype.ui({
+      "name": "call",
+      "element": "SkypeButton",
+      "participants": ["live:ztshandong"],
+      "imageSize":24
+    });
+  </script>
 </div>
 
 </th>
