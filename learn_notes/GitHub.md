@@ -116,15 +116,15 @@ $ git clone git@github.com:name/projectname.github.io.git
 ### public就再添加GitHub，
 ```sh
 git remote rm origin
-git remote add osc "OSC仓库的ssh格式地址"
+git remote add osc "git@git.oschina.net:zhuorui/zhangtao.git"
 git push --set-upstream osc master
-git remote add gitlab "GitLab仓库的ssh格式地址"
+git remote add gitlab "git@gitlab.com:ztshandongPublic/gitlab.io.git"
 git push --set-upstream gitlab master
-git remote add github "Git仓库的ssh格式地址"
+git remote add github "git@github.com:ztshandong/ztshandong.github.io.git"
 git push --set-upstream github master
-git remote add bitbucket "bitbucket仓库的ssh格式地址"
+git remote add bitbucket "git@bitbucket.org:zhuorui/bitbucket.io.git"
 git push --set-upstream bitbucket master
-git remote add aliyun "aliyun仓库的ssh格式地址"
+git remote add aliyun "git@code.aliyun.com:zhuorui/aliyun.io.git"
 git push --set-upstream aliyun master
 git remote add vs "ssh://ztshandong@ztshandong.visualstudio.com:22/_git/learnotes"
 git push --set-upstream vs master
