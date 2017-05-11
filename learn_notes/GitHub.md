@@ -82,8 +82,11 @@ Host github.com
 Host code.aliyun.com
     HostName code.aliyun.com
     IdentityFile c:\users\GitRSA\.ssh\git_rsa
+Host ztshandong.visualstudio.com
+    HostName ztshandong.visualstudio.com
+    IdentityFile c:\users\GitRSA\.ssh\git_rsa
 
-mac要改为IdentityFile ～／.ssh／git_rsa
+mac要改为IdentityFile ~/.ssh/git_rsa
 
 别名使用的格式为ssh -vT github   这个格式其实不方便，clone的时候要改
 Host github                          // 这个名字随便取，用来取代ssh地址中的 git@github.com
@@ -98,6 +101,7 @@ $ ssh -vT git@git.oschina.net
 $ ssh -vT git@gitlab.com
 $ ssh -vT git@bitbucket.org
 $ ssh -vT git@code.aliyun.com
+$ ssh -vT ztshandong@ztshandong.visualstudio.com
 
 mac
 bad owner or permissions on .ssh/config
@@ -122,11 +126,13 @@ git remote add bitbucket "bitbucket仓库的ssh格式地址"
 git push --set-upstream bitbucket master
 git remote add aliyun "aliyun仓库的ssh格式地址"
 git push --set-upstream aliyun master
+git remote add vs "ssh://ztshandong@ztshandong.visualstudio.com:22/_git/learnotes"
+git push --set-upstream vs master
 
 git add .
 mac commit 之前要设置
-git config --global user.name "Your Name"
-git config --global user.email you@example.com
+git config --global user.name "ztshandong"
+git config --global user.email your@email.com
 
 After doing this, you may fix the identity used for this commit with:
 git commit --amend --reset-author
@@ -149,9 +155,10 @@ git diff master origin/master
 可以创建个脚本或者批处理
 pushall.cmd   添加
 git push osc master
+git push aliyun master
 git push gitlab master
 git push bitbucket master
-git push aliyun master
+git push vs master
 git push github master   public
 以后运行./pushall.cmd即可同步多个
 ```
@@ -169,9 +176,10 @@ slavePush.cmd
 
 创建远程分支(本地分支push到远程)：
 git push osc [slave]
+git push aliyun [slave]
 git push gitlab [slave]
 git push bitbucket [slave]
-git push aliyun [slave]
+git push vs [slave]
 git push github [slave]   public
 删除远程分支：git push osc --delete slaveBranch
 
