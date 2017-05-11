@@ -176,4 +176,5 @@ git push github [slave]   public
 删除远程分支：git push osc --delete slaveBranch
 
 ```
+#### 发生冲突可以手动编辑，也可以执行 git mergetool 启动图形化工具
 [git中merge与rebase区别](http://www.cnblogs.com/xueweihan/p/5743327.html)
