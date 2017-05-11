@@ -140,6 +140,7 @@ masterPush.cmd
 git push osc master:slaveBranch  // 提交本地master分支作为远程的slaveBranch分支
 git checkout slaveBranch
 git pull osc slaveBranch  pull相当于fetch后merge
+如果有多个源，pull之后可能会显示与其中某个不同步，例如显示与aliyun不一样，再pull一下aliyun就可以
 
 git fetch osc slaveBranch  取回osc的slaveBranch分支
 git merge osc/slaveBranch
