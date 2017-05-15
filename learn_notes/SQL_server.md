@@ -94,5 +94,36 @@ ERROR_LINE()	返回发生错误的行号
 ERROR_MESSAGE()	返回导致 CATCH 块运行的错误消息的完整文本
 
 ```
+# 分页
+```sql
+(
+    @tablename NVARCHAR(4000),--表名
+	@selcolumn NVARCHAR(1000),--查询字段
+	@where NVARCHAR(1000),--where条件
+	@sortcolumn  NVARCHAR(255),--排序字段
+	@pagecount  INT,--每页记录数
+	@pageindex  INT--页号
+)
+
+    DECLARE @beginrow INT
+	DECLARE @endrow INT
+
+	SET @beginrow=0
+	SET @endrow=0
+    SET @beginrow=(@pageindex-1)*@pagecount+1
+	SET @endrow=@pageindex*@pagecount
+
+	DECLARE @sqlstr NVARCHAR(4000)=''
+	--SET @sqlstr='with table1 as(select '+ @selcolumn +',ROW_NUMBER() OVER(ORDER BY '+ @sortcolumn+' ) AS ROW'+
+	--			' FROM '+@tablename+' WHERE '+@where+') '
+	--set @sqlstr=@sqlstr +' SELECT '+ @selcolumn +' FROM TABLE1 WHERE ROW BETWEEN '+cast(@beginrow as nvarchar )+' and '+cast(@endrow as nvarchar)
+	--SET @sqlstr=@sqlstr +' SELECT * FROM TABLE1 WHERE ROW BETWEEN '+CAST(@beginrow AS NVARCHAR )+' and '+CAST(@endrow AS NVARCHAR)
+
+	SET @sqlstr=@sqlstr +' SELECT * FROM (select '+ @selcolumn +',ROW_NUMBER() OVER(ORDER BY '+ @sortcolumn+' ) AS ROW'+
+				' FROM '+@tablename+' WHERE '+@where+') AS a WHERE ROW BETWEEN '+CAST(@beginrow AS NVARCHAR )+' and '+CAST(@endrow AS NVARCHAR)
+
+	PRINT @sqlstr
+	EXEC(@sqlstr)
+```
 1. Sql Server插入数据并返回自增ID：@@IDENTITY，SCOPE_IDENTITY和IDENT_CURRENT的区别：@@IDENTITY是取全局操作的最后一步操作所产生的自增域的值的。如果在写存储过程时，向表中新增了一条数据，需要返回该IDENTITY值，则使用 SCOPE_IDENTITY()，因为它和当前会话相关联，不会返回一个你不需要的值。如果你仅仅想得到某个IDENTITY列的最后一个值，则使用 IDENT_CURRENT()最方便。[原文链接](http://www.bbsmax.com/A/q4zVVyylzK/)
 2. 117.18.232.200 是redgate的认证IP，你懂的
