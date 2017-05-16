@@ -110,7 +110,8 @@ Permissions 0777 for '.ssh/git_rsa' are too open
 chmod 400 ~/.ssh/git_rsa
 
 $ ssh -vT github        使用别名 
-$ git clone git@github.com:name/projectname.github.io.git   
+$ git clone git@github.com:name/projectname.github.io.git  
+如果将现有项目添加代码管理就进入项目目录然后git init 
 ```
 ### 第五步，在每个本地项目中添加ssh，如果是private就用OSC,GitLab,BitBucket,Aliyun
 ### public就再添加GitHub，
