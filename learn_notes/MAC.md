@@ -41,3 +41,23 @@ brew upgrade 更新软件
 ```
 # 安装vscode
 brew cask install visual-studio-code
+
+# 安装环境
+```java
+brew search tomcat
+brew install tomcat@7
+echo 'export PATH="/usr/local/opt/tomcat@7/bin:$PATH"' >> ~/.bash_profile
+
+brew install tomcat-native
+vi $CATALINA_HOME/bin/setenv.sh
+添加
+CATALINA_OPTS="$CATALINA_OPTS -Djava.library.path=/usr/local/opt/tomcat-native/lib"
+
+apr
+echo 'export PATH="/usr/local/opt/apr/bin:$PATH"' >> ~/.bash_profile
+
+java
+export PATH="/usr/local/opt/tomcat@7/bin:$PATH;.;$PATH:$JAVA_HOME/bin"
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
+export CLASS_PATH="$JAVA_HOME/lib"
+```
