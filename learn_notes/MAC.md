@@ -60,4 +60,6 @@ java
 export PATH="/usr/local/opt/tomcat@7/bin:$PATH;.;$PATH:$JAVA_HOME/bin"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 export CLASS_PATH="$JAVA_HOME/lib"
+
+eclipse的java api项目主要更新build下的文件就可以，注意某些配置文件不用更新
 ```
