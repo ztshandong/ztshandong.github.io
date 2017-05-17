@@ -11,9 +11,12 @@
 # MAC
 ```sh
 反正mac运行docker不怎么样
-brew install -y docker    其实就够了，安装下面这一堆只是为了本机调试方便
 创建docker虚拟机，首先下载DockerToolbox，10.10.3以上的用docker-for-mac
 http://mirrors.aliyun.com/docker-toolbox/mac/docker-for-mac/
+装完后记得配置加速镜像
+
+docker-for-mac安装过就不用执行下面的了
+brew install -y docker   
 sudo docker-machine rm default
 docker-machine create --engine-registry-mirror=https://0rnhdnox.mirror.aliyuncs.com --engine-insecure-registry=192.168.125.152：2375 -d virtualbox default
 上句命令会从github上下载最新的boot2docker，会很慢，你懂的，将提前下载好的boot2docker.iso复制到提示的缓存路径下/Users/zhangtao/.docker/machine/cache/
@@ -35,7 +38,6 @@ systemctl daemon-reload
 systemctl restart docker
 netstat -anp | grep 2375
 
-mac客户端，mac也有不行的时候，mac下docker login要在vmbox中运行
 vi ~/.bash_profile
 export DOCKER_HOST=tcp://192.168.125.152:2375
 source ~/.bash_profile
