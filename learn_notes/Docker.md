@@ -150,8 +150,47 @@ docker pull mysql
 docker run -p 3306:3306 --name mysql -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=19820108 -eMYSQL_DATABASE=testDB -e MYSQL_USER=testuser -e MYSQL_PASSWORD=12345678 --restart=always -d mysql
 ```
 
+# docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样,这个还是有点价值的
+```java
+centos删除自带jdk，后面不知道哪一步又装上了，可能是装eclipse依赖的那些，不过没关系
+rpm -e --nodeps `rpm -qa | grep java`
+安装官方jdk
+rpm -ivh jdk-7u79-linux-x64.rpm
+查看安装路径,rpm安装方式默认会把jdk安装到/usr/java/jdk1.7.0_79，然后通过三层链接，链接到/usr/bin
+find / -name java
+vi /etc/profile
+export PATH=".;$PATH:$JAVA_HOME/bin"
+export JAVA_HOME=/usr/java/jdk1.7.0_79
+export CLASS_PATH="$JAVA_HOME/lib"
 
+source /etc/profile 
 
+查看链接
+cd /bin 
+ll | grep java
 
+tomcat
+考虑后面要做tomcat集群，所以建立新目录并将解压好的tomcat移进去：
+mkdir /wocloud/tomcat_cluster/
+mkdir /wocloud/tomcat_cluster/tomcat1
+mv /download/apache-tomcat-7.0.77/ /wocloud/tomcat_cluster/tomcat1/
+配置一下tomcat的环境变量和内存设置，vi /wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77/bin/catalina.sh文件，并在其中加入如下配置：
+JAVA_OPTS="-Xms512m -Xmx1024m -Xss1024K -XX:PermSize=512m -XX:MaxPermSize=1024m"
+export TOMCAT_HOME=/wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77
+export CATALINA_HOME=/wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77
+export JRE_HOME=/usr/java/jdk1.7.0_79/jre
+export JAVA_HOME=/usr/java/jdk1.7.0_79
+
+cd /wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77/bin/
+./startup.sh
+
+安装eclipse
+yum install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
+启动eclipse，图形化总是失败，后来发现--net=host就可以，不知道GNOME有没有必要安装，待日后测试，最后是为了防止关闭eclipse之后会退出镜像
+docker run -it -p 8080:8080 -v /eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipse  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
+但是要记得，如果修改了eclipse的配置就要docker commit了
+yum groups install "GNOME Desktop"
+--net=host之后就不用再加-e DISPLAY
+```
 
 
