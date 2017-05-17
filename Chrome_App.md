@@ -3,6 +3,13 @@
 - [yaaw](https://chrome.google.com/webstore/detail/yaaw/hbjpfaalboebibgfmedmjijhbjapcnki?hl=zh-CN)
 - [115](https://chrome.google.com/webstore/detail/115exporter/ojafklbojgenkohhdgdjeaepnbjffdjf)
 - [baidu](https://github.com/acgotaku/BaiduExporter)
+- centos7安装
+
+```sh
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+sudo yum install ./google-chrome-stable_current_*.rpm
+google-chrome &
+```
 
 ### [查看原文链接]( http://www.codeceo.com/article/15-chrome-extension.html?ref=myread)
 - [1.支持Chrome的Web Developer扩展，允许你通过添加一个小工具栏来使用不同的工具](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)
