@@ -209,7 +209,7 @@ docker rm eclipsex
 ```sh
 sudo docker pull registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518      
 
-docker run  -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download -v /tmp/.X11-unix:/tmp/.X11-unix  --net=host -e DISPLAY=0:0 registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
+docker run  -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download -v /tmp/.X11-unix:/tmp/.X11-unix  --net=host -e DISPLAY=$DISPLAY registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
 docker start alieclipse    
 docker stop alieclipse
 docker rm alieclipse
