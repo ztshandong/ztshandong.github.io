@@ -186,11 +186,19 @@ cd /wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77/bin/
 ./startup.sh
 
 解压eclipse
-yum -y install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
+yum -y install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686 ghostscript-chinese-zh_CN.noarch kde-l10n-Chinese，glibc-common
+
+vim /etc/profile
+export PATH USER LOGNAME MAIL HOSTNAME HISTSIZE HISTCONTROL LC_ALL
+export LC_ALL=en_US.UTF-8
+
+真linux内核不装GNOME也可以，MAC装了也不行
 yum -y groups install "GNOME Desktop"
-启动eclipse，图形化总是失败，后来发现加上--net=host就可以，--net=host之后就不用再加-e DISPLAY，最后加bash是为了防止关闭eclipse之后会退出容器
+
+最后加bash是为了防止关闭eclipse之后会退出容器
 可以给容器起个名字，参照导入导出
-docker run -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipsex  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
+
+docker run  -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/Downloads -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -e DISPLAY=$DISPLAY eclipse7 env LANG=en_US.UTF-8 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
 
 如果修改了eclipse的配置就要docker commit了
 ```
@@ -199,17 +207,17 @@ docker run -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download
 docker save [ImageID] > eclipsex.tar
 docker load < eclipsex.tar
 load之后名字和版本都是null，所以要tag一下
-docker tag [ImageId] eclipsex:marsjdk7
-docker run --name=eclipsex -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipsex:marsjdk7  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'     容器起个名字
-docker start eclipsex    不带-it参数的话关闭eclipse就会退出容器
-docker stop eclipsex
-docker rm eclipsex
+docker tag [ImageId] eclipse:marsjdk7
+docker run --name=eclipse7 -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/Downloads -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -e DISPLAY=$DISPLAY eclipse:marsjdk7 env LANG=en_US.UTF-8 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    容器起个名字
+docker start eclipse7    不带-it参数的话关闭eclipse就会退出容器
+docker stop eclipse7
+docker rm eclipse7
 ```
 # 使用阿里镜像，体积会压缩到大概一半左右的样子
 ```sh
-sudo docker pull registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518      
+sudo docker pull registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:170518      
 
-docker run  -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download -v /tmp/.X11-unix:/tmp/.X11-unix  --net=host -e DISPLAY=$DISPLAY registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
+docker run --name=alieclipse -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/Downloads -v /tmp/.X11-unix:/tmp/.X11-unix --net=host -e DISPLAY=$DISPLAY registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:170518  env LANG=en_US.UTF-8 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
 docker start alieclipse    
 docker stop alieclipse
 docker rm alieclipse
