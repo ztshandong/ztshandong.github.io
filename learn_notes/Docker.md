@@ -150,7 +150,8 @@ docker pull mysql
 docker run -p 3306:3306 --name mysql -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=19820108 -eMYSQL_DATABASE=testDB -e MYSQL_USER=testuser -e MYSQL_PASSWORD=12345678 --restart=always -d mysql
 ```
 
-# docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样,这个还是有点价值的
+# docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样
+# centos下亲测可用，mac还不行，windows未测
 ```java
 centos删除自带jdk，安装GNOME的时候又会装上openjdk，不过没关系
 rpm -e --nodeps `rpm -qa | grep java`
@@ -208,7 +209,7 @@ docker rm eclipsex
 ```sh
 sudo docker pull registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518      
 
-docker run --name=alieclipse -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
+docker run  -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download -v /tmp/.X11-unix:/tmp/.X11-unix  --net=host -e DISPLAY=0:0 registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
 docker start alieclipse    
 docker stop alieclipse
 docker rm alieclipse
