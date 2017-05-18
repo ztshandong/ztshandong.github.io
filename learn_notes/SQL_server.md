@@ -19,6 +19,29 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 sqlcmd -H 127.0.0.1 -U sa
 ```
+# 常用方法
+```sql
+select REPLACE(replace(replace(CONVERT(VARCHAR(10), getdate(), 120 ),'-',''),' ',''),':','')
+```
+# 序号
+```sql
+UPDATE x
+SET x.Queue = x.QueueNo,x.QKNO=@QKNO
+FROM (
+      SELECT QKNO,Queue, ROW_NUMBER() OVER (ORDER BY isid) AS QueueNo
+      FROM #tb_ACC_FeeApplyDetail WHERE DepartmentCode=@DepartmentCode AND OrgCode=@OrgCode
+      ) x
+```
+# 多行转一行
+```sql
+SELECT TOP 100 A.YDNO,A.DocDate, ZZANDDT=
+STUFF(
+(SELECT ','+B.DocNo FROM dbo.tb_TMS_CKs AS B
+WHERE B.YDNO=A.YDNO FOR XML PATH (''))
+,1,1,'')
+FROM dbo.tb_TMS_YD A WHERE 1=1
+ORDER BY A.CreationDate DESC
+```
 # 游标
 ```sql
 BEGIN TRAN
