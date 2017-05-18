@@ -108,12 +108,12 @@ systemctl restart docker
 ```
 # 常用命令
 ```sh
-docker ps -a
+docker ps -a   显示所有container
 docker images
 docker rm <containerid>
 docker rmi <imageid>
 
-# 杀死所有容器
+# 杀死所有container
 docker kill $(docker ps -a -q)
 # 删除所有已经停止container
 docker rm $(docker ps -a -q)
@@ -123,7 +123,7 @@ docker rmi $(docker images -q -f dangling=true)
 docker rmi $(docker images -q)
 
 docker ps
-docker exec -it containerid bash  进入镜像
+docker exec -it containerid bash  进入容器
 
 docker run ubuntu apt-get update
 # 上面命令会生成一个container，先获得其 id
@@ -152,7 +152,7 @@ docker run -p 3306:3306 --name mysql -v /data/mysql:/var/lib/mysql -e MYSQL_ROOT
 
 # docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样,这个还是有点价值的
 ```java
-centos删除自带jdk，后面不知道哪一步又装上了，可能是装eclipse依赖的那些，不过没关系
+centos删除自带jdk，安装GNOME的时候又会装上openjdk，不过没关系
 rpm -e --nodeps `rpm -qa | grep java`
 安装官方jdk
 rpm -ivh jdk-7u79-linux-x64.rpm
@@ -170,7 +170,7 @@ cd /bin
 ll | grep java
 
 tomcat
-考虑后面要做tomcat集群，所以建立新目录并将解压好的tomcat移进去：
+这样可以做tomcat集群
 mkdir /wocloud/tomcat_cluster/
 mkdir /wocloud/tomcat_cluster/tomcat1
 mv /download/apache-tomcat-7.0.77/ /wocloud/tomcat_cluster/tomcat1/
@@ -184,14 +184,33 @@ export JAVA_HOME=/usr/java/jdk1.7.0_79
 cd /wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77/bin/
 ./startup.sh
 
-安装eclipse
-启动eclipse，图形化总是失败，后来发现加上--net=host就可以，GNOME没有必要安装，最后加bash是为了防止关闭eclipse之后会退出镜像
-docker run -it -p 8080:8080 -v /eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipse  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
-但是要记得，如果修改了eclipse的配置就要docker commit了
---net=host之后就不用再加-e DISPLAY，也不用装下面这一堆东西
+解压eclipse
+yum -y install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
+yum -y groups install "GNOME Desktop"
+启动eclipse，图形化总是失败，后来发现加上--net=host就可以，--net=host之后就不用再加-e DISPLAY，最后加bash是为了防止关闭eclipse之后会退出容器
+可以给容器起个名字，参照导入导出
+docker run -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipsex  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
 
-yum install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
-yum groups install "GNOME Desktop"
+如果修改了eclipse的配置就要docker commit了
 ```
+# 导入导出，建议用save，也大不了多少
+```sh
+docker save [ImageID] > eclipsex.tar
+docker load < eclipsex.tar
+load之后名字和版本都是null，所以要tag一下
+docker tag [ImageId] eclipsex:marsjdk7
+docker run --name=eclipsex -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipsex:marsjdk7  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'     容器起个名字
+docker start eclipsex    不带-it参数的话关闭eclipse就会退出容器
+docker stop eclipsex
+docker rm eclipsex
+```
+# 使用阿里镜像，体积会压缩到大概一半左右的样子
+```sh
+sudo docker pull registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518      
 
+docker run --name=alieclipse -it -p 8080:8080 -v ~/eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host registry.cn-hangzhou.aliyuncs.com/ztshandong/eclipsex:070518 sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'    
+docker start alieclipse    
+docker stop alieclipse
+docker rm alieclipse
+```
 
