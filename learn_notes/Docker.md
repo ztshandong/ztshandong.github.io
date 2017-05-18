@@ -185,12 +185,13 @@ cd /wocloud/tomcat_cluster/tomcat1/apache-tomcat-7.0.77/bin/
 ./startup.sh
 
 安装eclipse
-yum install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
-启动eclipse，图形化总是失败，后来发现--net=host就可以，不知道GNOME有没有必要安装，待日后测试，最后是为了防止关闭eclipse之后会退出镜像
+启动eclipse，图形化总是失败，后来发现加上--net=host就可以，GNOME没有必要安装，最后加bash是为了防止关闭eclipse之后会退出镜像
 docker run -it -p 8080:8080 -v /eclipsepro:/eclipsepro -v ~/Downloads:/download --net=host eclipse  sh -c 'cd /eclipse&&/eclipse/./eclipse&&bash'
 但是要记得，如果修改了eclipse的配置就要docker commit了
+--net=host之后就不用再加-e DISPLAY，也不用装下面这一堆东西
+
+yum install gtk2.i686 gtk2-engines.i686 PackageKit-gtk-module.i686 PackageKit-gtk-module.x86_64 libcanberra-gtk2.x86_64 libcanberra-gtk2.i686
 yum groups install "GNOME Desktop"
---net=host之后就不用再加-e DISPLAY
 ```
 
 
