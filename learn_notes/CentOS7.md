@@ -67,6 +67,7 @@ systemctl restart network
 #### 方法一，推荐阿里的
 ```sh
 http://mirrors.aliyun.com/repo/
+su root
 yum -y install wget
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
