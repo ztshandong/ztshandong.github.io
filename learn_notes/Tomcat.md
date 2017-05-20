@@ -1,3 +1,27 @@
+
+# 配置api，开发环境为eclipse mars + jdk 7 + tomcat 7
+```sh 
+一、将服务器上tomcat/webapps文件夹清空，再建一个app1name文件夹
+二、新建eclipse项目使用默认输出路径build\classes，最后一步WebContent改名为WebRoot
+三、复制自己WebRoot下所有文件，拷到服务器的app1name文件夹下，相当于将自己的WebRoot文件夹改名为app1name，然后拷到服务器的tomcat/webapps文件夹下
+四、复制自己的build/classes文件夹，拷到服务器app1name/WEB-INF文件夹里面
+五、以后修改java代码只要复制build/classes即可，
+```
+# 配置tomcat/conf/server.xml，需要配合host文件
+# 如果要是java的api后台，建议使用单独的tomcat，如果是纯静态的web，可以公用一个tomcat
+```sh
+将默认Host内容注释掉
+ <Host name="app1name" appBase="webapps" unpackWARs="false" autoDeploy="false" xmlValidation="false" xmlNamespaceAware="false">
+      	<Context path="" docBase="app1name" reloadable="true" caseSensitive="false" debug="0"></Context>
+     	</Host>
+ <Host name="app2name" appBase="webapps" unpackWARs="false" autoDeploy="false" xmlValidation="false" xmlNamespaceAware="false">
+      	<Context path="" docBase="app2name" reloadable="true" caseSensitive="false" debug="0"></Context>
+     	</Host>
+ <Host name="app3name" appBase="webapps" unpackWARs="false" autoDeploy="false" xmlValidation="false" xmlNamespaceAware="false">
+      	<Context path="" docBase="app3name" reloadable="true" caseSensitive="false" debug="0"></Context>
+     	</Host>
+```
+
 # MAC
 ```sh
 brew install tomcat-native
