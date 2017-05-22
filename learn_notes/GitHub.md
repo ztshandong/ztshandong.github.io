@@ -52,6 +52,9 @@ cat git_rsa.pub
 ```sh
 $ ssh-agent bash
 $ ssh-add c:\users\GitRSA\.ssh\git_rsa
+windows没有ssh-agent要安装git for windows，然后用git bash
+ssh-add c:/users/GitRSA/.ssh/git_rsa
+
 如果多个证书要添加多次
 $ ssh-add ~/.ssh/id_rsa_github
 $ ssh-add ~/.ssh/id_ras_gitosc
