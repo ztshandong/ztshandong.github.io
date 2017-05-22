@@ -110,8 +110,11 @@ Permissions 0777 for '.ssh/git_rsa' are too open
 chmod 400 ~/.ssh/git_rsa
 
 $ ssh -vT github        使用别名 
-$ git clone git@github.com:name/projectname.github.io.git  
-如果将现有项目添加代码管理就进入项目目录然后git init 
+$ git clone git@github.com:name/projectname.github.io.git LearnNotes
+如果将现有项目添加代码管理就进入项目目录然后
+git init 
+git remote add osc "git@git.oschina.net:zhuorui/zhangtao.git"
+git pull osc master
 ```
 ### 第五步，在每个本地项目中添加ssh，如果是private就用OSC,GitLab,BitBucket,Aliyun
 ### public就再添加GitHub，
@@ -278,3 +281,50 @@ rebase之后，不需要执行commit，也不存在新的修改需要提交，�
 默认该.orig文件可能不会自动删除，需要手动删掉。
 ```
 [git中merge与rebase区别](http://www.cnblogs.com/xueweihan/p/5743327.html)
+### pull时冲突
+```sh
+error: The following untracked working tree files would be overwritten by merge:
+bin/AndroidManifest.xml
+Please move or remove them before you can merge.
+Aborting
+
+
+方案1：
+git clean  -d  -fx ""
+其中 
+x  -----删除忽略文件已经对git来说不识别的文件
+d  -----删除未被添加到git的路径中的文件
+f  -----强制运行
+
+方案2：
+如果希望保留生产服务器上所做的改动,仅仅并入新配置项:
+git stash
+git pull
+git stash pop
+然后可以使用git diff -w +文件名 来确认代码自动合并的情况.
+如果希望用代码库中的文件完全覆盖本地工作版本. 方法如下:
+git reset --hard
+git pull
+```
+
+### 代码仓库不同步
+```sh
+[root@~]# git pull  
+Enter passphrase for key '/root/.ssh/id_rsa':  
+Updating 70e8b93..a0f1a6c  
+error: Your local changes to the following files would be overwritten by merge:  
+        rest/lib/Business/Inventory/ProductStatus.php  
+Please, commit your changes or stash them before you can merge.  
+Aborting 
+
+方案：
+git checkout -f，然后再执行git pull重新checkout
+```
+
+### commit -am报错
+```sh
+fatal: Paths with -a does not make sense.
+
+方案:
+git commit -am '不要用空格'
+```
