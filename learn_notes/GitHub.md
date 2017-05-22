@@ -325,6 +325,8 @@ git checkout -f，然后再执行git pull重新checkout
 ```sh
 fatal: Paths with -a does not make sense.
 
-方案:
-git commit -am '不要用空格'
+方案1:
+git commit -am '单引号不要用空格'
+方案2：
+git commit -am "双引号 可以"
 ```
