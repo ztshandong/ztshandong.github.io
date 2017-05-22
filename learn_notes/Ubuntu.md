@@ -114,3 +114,19 @@ wget -qO- https://get.docker.com/ | sh
 
 curl https://raw.githubusercontent.com/docker/docker/master/hack/install.sh | bash
 ```
+
+# 阿里云ubuntu服务器
+```sh
+apt-get install vsftpd
+whereis vsftpd
+
+vi /etc/vsftpd.conf
+write_enable=YES
+
+vi /etc/ftpusers  这个文件是禁止连接的用户表
+#root
+
+vi /var/log/vsftpd.log
+可查看是否成功登录
+如果显示无法显示远程文件夹，把会话属性的使用被动模式选项去掉
+```
