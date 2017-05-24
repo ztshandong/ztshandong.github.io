@@ -130,3 +130,73 @@ vi /var/log/vsftpd.log
 可查看是否成功登录
 如果显示无法显示远程文件夹，把会话属性的使用被动模式选项去掉
 ```
+
+# ubuntu1604 tomcat8 nginx
+```sh
+apt-cache search tomcat
+atp-get -y install tomcat8
+安装目录为/usr/share/tomcat8
+cp -r app1name /var/lib/tomcat8/webapps/
+/var/lib/tomcat8/webapps/app1name
+chmod -R +rx app1name
+
+/etc/tomcat8/server.xml
+/etc/hosts
+
+apt-cache search nginx
+apt-get -y install nginx
+/etc/nginx/nginx.conf
+
+systemctl start tomcat8
+实时查看tomcat输出
+tail -f /var/log/tomcat8/catalina.out
+systemctl start nginx
+
+netstat -na | grep ':80.*LISTEN'
+nginx -t
+nginx -s reload
+
+ protocol="org.apache.coyote.http11.Http11NioProtocol"
+
+```
+# SSL
+```sh
+
+nginx
+ server {
+    listen 443;
+    server_name www.web.com;
+    rewrite ^(.*)$  https://$host$1 permanent;
+    ssl on;
+    ssl_certificate   /etc/nginx/cert/123.pem;
+    ssl_certificate_key  /etc/nginx/cert/123.key;
+    ssl_session_timeout 5m;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    location / {
+         proxy_pass http://app1name:8080;
+    }
+}
+
+
+tomcat  不用安装JKS，页面中如果调用了其他网站资源也可能会提示不是安全链接
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+                 SSLEnabled="true"
+                 scheme="https"
+                 secure="true"
+                keystoreFile="/usr/share/tomcat8/cert/123.pfx"
+                keystoreType="PKCS12"
+                 keystorePass="keypass"    
+                 clientAuth="false"
+    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
+ciphers="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+SSLCipherSuite="ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4"
+
+```
+# 运行多个jar包
+```sh
+nohup java -jar 启动1.jar &
+nohup java -jar 启动2.jar &
+nohup java -jar 启动3.jar &
+```

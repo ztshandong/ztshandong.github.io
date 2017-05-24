@@ -38,3 +38,14 @@ http {
 127.0.0.1		app2name
 127.0.0.1       app3name
 ```
+
+# dockernginx
+```sh
+/etc/nginx
+/var/log/nginx
+```
+
+# dockertomcat
+```sh
+/usr/local/tomcat/webapps
+```
