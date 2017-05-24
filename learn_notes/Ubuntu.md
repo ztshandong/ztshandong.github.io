@@ -159,6 +159,15 @@ nginx -s reload
  protocol="org.apache.coyote.http11.Http11NioProtocol"
 
 ```
+# dockernginx
+```sh
+/etc/nginx
+/var/log/nginx
+```
+# dockertomcat
+```sh
+/usr/local/tomcat/webapps
+```
 # SSL
 ```sh
 
