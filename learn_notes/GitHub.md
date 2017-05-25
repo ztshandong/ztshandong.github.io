@@ -191,6 +191,12 @@ git push github [slave]   public
 删除远程分支：git push osc --delete slaveBranch
 
 ```
+# 回滚
+```sh
+已经git push 之后，但这样可能会覆盖其他人的push
+git reset --hard HEAD~1
+git push --force osc master
+```
 # 冲突
 ### 冲突的产生
 ```java
