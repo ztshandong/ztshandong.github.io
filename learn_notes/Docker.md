@@ -151,13 +151,16 @@ vi /etc/docker/daemon.json
 # MySQL
 ```sh
 docker pull mysql:5.7
-第一步只是为了建立自己的数据库和用户，这个镜像运行一下马上删掉就可以
-docker run -p 3306:3306 -v /data/mysql57:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB -e MYSQL_USER=testuser -e MYSQL_PASSWORD=12345678 -d mysql:5.7
-docker kill $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+第一步只是为了建立自己的数据库和用户，这个镜像运行一下稍微等一会再停掉就可以，不要马上停止，因为可能还没创建好数据库
+docker run -p 3306:3306 -v /data/mysql57-1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB1 -e MYSQL_USER=testuser1 -e MYSQL_PASSWORD=12345678 -d mysql:5.7
 第二步才是真正要用的镜像，起个名字并且开机启动
-docker run -p 3306:3306 --name=mysql5.7 -v /data/mysql57:/var/lib/mysql --restart=always -d mysql:5.7
+docker run -p 3306:3306 --name=mysql5.7-1 -v /data/mysql57-1:/var/lib/mysql --restart=always -d mysql:5.7
+然后删除第一步的container
 
+创建第多个就很方便了
+docker run -p 3306:3306 -v /data/mysql57-2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB2 -e MYSQL_USER=testuser2 -e MYSQL_PASSWORD=12345678 -d mysql:5.7
+
+docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --restart=always -d mysql:5.7
 ```
 
 # docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样

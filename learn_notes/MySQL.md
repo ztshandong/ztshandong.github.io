@@ -11,6 +11,14 @@ grep "password" /var/log/mysqld.log 使用YUM安装并启动MySQL服务后，MyS
 /usr/bin/systemctl enable mysqld
 
 ```
+#  拒绝登录
+```sh
+Access denied for user 'root'@'localhost' (using password: YES)
+mysqld stop 
+mysqld_safe --user=mysql --skip-grant-tables --skip-networking & 
+mysql -u root mysql 
+
+```
 # 忘记密码
 ```sh
 sudo vi /etc/my.cnf
