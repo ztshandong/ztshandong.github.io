@@ -108,6 +108,10 @@ systemctl restart docker
 ```
 # 常用命令
 ```sh
+将docker里的文件拷出来
+docker cp <Container ID>:<Container path> <host path>
+将主机里的文件拷进去
+docker cp <Host path> <Container ID>:<Container path>
 docker ps -a   显示所有container
 docker images
 docker rm <containerid>
