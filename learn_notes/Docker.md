@@ -162,6 +162,12 @@ docker run -p 3306:3306 -v /data/mysql57-2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD
 
 docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --restart=always -d mysql:5.7
 ```
+# RabbitMQ
+```sh
+docker pull rabbitmq:3-management
+docker run -d -p 15672:15672 --name rabbit3 -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
+http://ip:15672  即可访问
+```
 
 # docker安装eclipse,tomcat,jdk,这样可以确保和服务器的环境是一样
 # centos下亲测可用，mac还不行，windows未测
