@@ -193,8 +193,11 @@ git push github [slave]   public
 ```
 # 回滚
 ```sh
-已经git push 之后，但这样可能会覆盖其他人的push
+未git add之前
+git checkout . && git clean -xdf
+已经git add 或commit后
 git reset --hard HEAD~1
+已经git push，但这样可能会覆盖其他人的push
 git push --force osc master
 ```
 # 冲突
