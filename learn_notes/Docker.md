@@ -148,6 +148,22 @@ docker run -it centos  这样就会自动进入到docker里
 - docker build . --build-arg APT_MIRROR="http://mirrors.163.com"
 vi /etc/docker/daemon.json
 ```
+# Node ReactNative
+```sh
+docker pull centos
+yum -y install npm
+npm config set registry https://registry.npm.taobao.org --global
+npm config set disturl https://npm.taobao.org/dist --global
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+yum -y install curl 
+cnpm install -g n
+n stable
+npm install --global vue-cli browserify gulp babel
+
+npm install -g yarn react-native-cli
+yarn config set registry https://registry.npm.taobao.org --global
+yarn config set disturl https://npm.taobao.org/dist --global
+```
 # MySQL
 ```sh
 docker pull mysql:5.7
