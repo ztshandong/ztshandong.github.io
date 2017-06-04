@@ -19,6 +19,12 @@ echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 source ~/.bashrc
 sqlcmd -H 127.0.0.1 -U sa
 ```
+# docker
+```sh
+docker pull microsoft/mssql-server-linux
+docker run -it -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678-Abc' -p 1433:1433  -d microsoft/mssql-server-linux bash
+docker inspect --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" id
+```
 # 常用方法
 ```sql
 select REPLACE(replace(replace(CONVERT(VARCHAR(10), getdate(), 120 ),'-',''),' ',''),':','')
