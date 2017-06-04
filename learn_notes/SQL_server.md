@@ -22,7 +22,10 @@ sqlcmd -H 127.0.0.1 -U sa
 # docker
 ```sh
 docker pull microsoft/mssql-server-linux
-docker run -it -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678-Abc' -p 1433:1433  -d microsoft/mssql-server-linux bash
+docker create -v /var/opt/mssql --name mssql microsoft/mssql-server-linux /bin/true
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678@Abc'  -p 1433:1433 --volumes-from mssql -d microsoft/mssql-server-linux
+docker run -p 1433:1433 -v ~/DB/mssql:/var/opt/mssql/data -d microsoft/mssql-server-linux
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678@Abc'  -p 1433:1433  -d microsoft/mssql-server-linux
 docker inspect --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" id
 ```
 # 常用方法
