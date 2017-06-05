@@ -99,10 +99,10 @@ local ip = 192.168.100.1
 refuse pap = yes
 require authentication = yes
 ;ppp debug = yes
-pppoptfile = /etc/ppp/options.xl2tpd
+pppoptfile = /etc/ppp/options
 length bit = yes
 ```
-##### vi /etc/ppp/options.xl2tpd
+##### vi /etc/ppp/options
 ```sh
 require-mschap-v2
 ms-dns 114.114.114.114
@@ -128,7 +128,7 @@ zhangsan l2tpd password1 *
 ```sh
 ipsec restart
 service xl2tpd restart
-
+ipsec statusall
 /var/log/syslog
 /var/log/auth.log
 
@@ -140,6 +140,7 @@ service xl2tpd restart
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PolicyAgent  dword AssumeUDPEncapsulationContextOnSendRule=2
 
 HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Rasman\Parameters  dword ProhibitIpSec=1
+去掉在远程网络上使用默认网关
 ```
 # 虚拟机共享
 ```sh
