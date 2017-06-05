@@ -22,6 +22,125 @@ sudo ufw delete allow 80/tcp
 sudo ufw allow from 192.168.254.254
 sudo ufw delete allow from 192.168.254.254
 ```
+# ubuntu1604 vpn server  UDP 1701 500 4500
+##### 安装
+```sh
+apt-get -y install strongswan xl2tpd ppp lsof
+echo "net.ipv4.ip_forward = 1" | tee -a /etc/sysctl.conf
+echo "net.ipv4.conf.all.accept_redirects = 0" | tee -a /etc/sysctl.conf
+echo "net.ipv4.conf.all.send_redirects = 0" | tee -a /etc/sysctl.conf
+echo "net.ipv4.conf.default.rp_filter = 0" | tee -a /etc/sysctl.conf
+echo "net.ipv4.conf.default.accept_source_route = 0" | tee -a /etc/sysctl.conf
+echo "net.ipv4.conf.default.send_redirects = 0" | tee -a /etc/sysctl.conf
+echo "net.ipv4.icmp_ignore_bogus_error_responses = 1" | tee -a /etc/sysctl.conf
+for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 > $vpn/accept_redirects; echo 0 > $vpn/send_redirects; done
+```
+##### vi /etc/ipsec.conf
+```sh
+version 2 # conforms to second version of ipsec.conf specification
+
+config setup
+conn L2TP-PSK-noNAT
+    authby=secret
+    #shared secret. Use rsasig for certificates.
+
+    auto=add
+    #the ipsec tunnel should be started and routes created when the ipsec daemon itself starts.
+
+    keyingtries=3
+    #Only negotiate a conn. 3 times.
+
+    ikelifetime=8h
+    keylife=1h
+
+    ike=aes256-sha1,aes128-sha1,3des-sha1
+
+    type=transport
+    #because we use l2tp as tunnel protocol
+
+    left=%any
+    #fill in server IP above
+
+    leftprotoport=17/1701
+    right=%any
+    rightprotoport=17/%any
+
+    dpddelay=10
+    # Dead Peer Dectection (RFC 3706) keepalives delay
+    dpdtimeout=20
+    #  length of time (in seconds) we will idle without hearing either an R_U_THERE poll from our peer, or an R_U_THERE_ACK reply.
+    dpdaction=clear
+    # When a DPD enabled peer is declared dead, what action should be taken. clear means the eroute and SA with both be cleared.
+```
+
+##### vi /etc/ipsec.secrets
+```sh
+# This file holds shared secrets or RSA private keys for authentication.
+
+# RSA private key for this host, authenticating it to any other host
+# which knows the public part.
+
+%any : PSK "PASSWORD"
+```
+##### vi /etc/xl2tpd/xl2tpd.conf
+```sh
+[global]
+ipsec saref = yes
+saref refinfo = 30
+
+;debug avp = yes
+;debug network = yes
+;debug state = yes
+;debug tunnel = yes
+
+[lns default]
+ip range = 192.168.100.100 - 192.168.100.200
+local ip = 192.168.100.1
+refuse pap = yes
+require authentication = yes
+;ppp debug = yes
+pppoptfile = /etc/ppp/options.xl2tpd
+length bit = yes
+```
+##### vi /etc/ppp/options.xl2tpd
+```sh
+require-mschap-v2
+ms-dns 114.114.114.114
+auth
+mtu 1200
+mru 1000
+crtscts
+hide-password
+modem
+name l2tpd
+proxyarp
+lcp-echo-interval 30
+lcp-echo-failure 4
+```
+
+##### vi /etc/ppp/chap-secrets
+```sh
+# Secrets for authentication using CHAP
+# client server secret IP addresses
+zhangsan l2tpd password1 *
+```
+##### 启动
+```sh
+ipsec restart
+service xl2tpd restart
+
+/var/log/syslog
+/var/log/auth.log
+
+```
+##### win10连接
+```sh
+无法建立计算机与 VPN 服务器之间的网络连接，因为远程服务器未响应。这可能是因为未将计算机与远程服务器之间的某种网络设备(如防火墙、NAT、路由器等)配置为允许 VPN 连接。请与管理员或服务提供商联系以确定哪种设备可能产生此问题。
+
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PolicyAgent  dword AssumeUDPEncapsulationContextOnSendRule=2
+
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Rasman\Parameters  dword ProhibitIpSec=1
+```
 # 虚拟机共享
 ```sh
 sudo apt-get install open-vm-dkms
