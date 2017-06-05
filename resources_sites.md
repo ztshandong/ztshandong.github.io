@@ -1,6 +1,8 @@
 # Resources Sites
 - [萌鹿简历，建议自己部署到github](https://github.com/geekcompany/DeerResume)
-
+- [dataconverter](https://shancarter.github.io/mr-data-converter/)
+- [data2json](http://www.csvjson.com/csv2json)
+- [json2data](http://www.json-xls.com/)
 - [xclient](http://xclient.info/)
 - [docker](https://cloud.docker.com)
 - [dokit](http://ued.qunar.com/dokit/index.html)
