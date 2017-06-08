@@ -72,6 +72,7 @@ tmsck.hbm.xml
 <!-- 如果Tmszz外键不是id列，例如用supplieCode，则此处增加 property-ref="supplieCode" ，Tmszz的supplieCode字段增加unique="true" -->
 <!-- 只设置many-to-one就不返回DocNo字段，要靠数据库设置外键更新此列，但这一列又不是外键，所以还要有docNo对应 -->
 <!-- DocNo对应多个字段，这里update与insert要设置为false -->
+<!-- 如果不设置Tmszz的话unique要设置为false-->
 <hibernate-mapping>
 		<class name="com.firs.api.tms.pojo.Tmsck" table="tb_TMS_CKs">
 		<id name="id" type="java.lang.Integer">
@@ -86,7 +87,7 @@ tmsck.hbm.xml
 		</property>
 		<many-to-one name="tmszzs"
                 class="com.firs.api.tms.pojo.Tmszz"
-                unique="true" 
+                unique="false" 
                 column="DocNo"
                 not-found="ignore"
                 fetch="join"
@@ -97,7 +98,7 @@ tmsck.hbm.xml
                 />
          <many-to-one name="tmsdbs"
                 class="com.firs.api.tms.pojo.Tmsdb"
-                unique="true" 
+                unique="false" 
                 column="DocNo"
                 not-found="ignore"
                 fetch="join"
