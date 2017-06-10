@@ -196,4 +196,5 @@ PrivateTmp=false
 三、视图全虚拟要用select 1 as TypeId的格式。
 四、每句最后有分号；
 五、存储过程定义方式，参数方式，isnull,if else日期转换等诸多语法
+六、设置默认值不能有括号
 ```
