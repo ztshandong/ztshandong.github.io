@@ -198,3 +198,12 @@ TimeoutSec=60
 Restart=on-failure
 PrivateTmp=false
 ```
+# 移植
+```sh
+一、mysql只能有一个自增序列，并且此列必须要有唯一索引，多数情况是作为主键，否则报错说自增必须为key
+二、longblob与text不能有索引，否则报错说未指定长度
+三、视图全虚拟要用select 1 as TypeId的格式。
+四、每句最后有分号；
+五、存储过程定义方式，参数方式，isnull,if else日期转换等诸多语法
+六、设置默认值不能有括号
+```
