@@ -11,6 +11,15 @@ grep "password" /var/log/mysqld.log 使用YUM安装并启动MySQL服务后，MyS
 /usr/bin/systemctl enable mysqld
 
 ```
+#  clause is not in GROUP BY clause 
+```sh
+
+set sql_mode =(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
+show VARIABLES LIKE '%sql_mode%';
+
+ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
 #  拒绝登录
 ```sh
 Access denied for user 'root'@'localhost' (using password: YES)

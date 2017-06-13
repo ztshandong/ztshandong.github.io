@@ -1,6 +1,7 @@
 - 链接服务器229Err
 - GRANT EXECUTE ON SYS.XP_PROP_OLEDB_PROVIDER TO username;
-
+- [mysql与sqlserver互转](http://blog.csdn.net/zzq900503/article/details/17505295)
+- [mysql与sqlserver互转](https://www.bbsmax.com/A/GBJrnDxBJ0/)
 # CentOS7-SQLServer，你不会真的在CentOS上还要装SQLServer吧，看看就行
 ```java
 yum -y install wget
