@@ -39,14 +39,10 @@ spring:
     config:
       server:
         git:
-          uri: https://code.aliyun.com/ztshandong/configserver.git
-#         username:
-#         password: 
-#         uri: https://username:password@code.aliyun.com/group/project.git
+          uri: git@code.aliyun.com/ztshandong/configserver.git
   application:
     name: conf
-# application:name不起作用，可能是文件名有特殊符号的缘故，不管
-# 不知为何，private总是认证失败
+# 使用ssh
 ```
 # 五、访问server，git文件名是conf-dev，但是访问时要conf/dev
 - http://serverip:8001/conf/dev/

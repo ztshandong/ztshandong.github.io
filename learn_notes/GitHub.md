@@ -74,6 +74,11 @@ Host github.com
     HostName git.oschina.net
     PreferredAuthentications publickey
     IdentityFile c:\users\GitRSA\.ssh\git_rsa 
+    
+    trictHostKeyChecking no
+    User ztshandong@gmail.com
+    IdentitiesOnly yes   //spring cloud config server git ssh
+
  Host gitlab.com
     HostName www.gitlab.com
     PreferredAuthentications publickey
