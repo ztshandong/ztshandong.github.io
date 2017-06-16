@@ -141,6 +141,10 @@ git push --set-upstream aliyun master
 git remote add vs "ssh://ztshandong@ztshandong.visualstudio.com:22/_git/learnotes"
 git push --set-upstream vs master
 
+如果本地git init之后直接push可能报错：failed to push some refs to 
+原因：github中的README.md文件不在本地代码目录中
+解决git pull --rebase osc master
+
 git add .
 mac commit 之前要设置
 git config --global user.name "ztshandong"
