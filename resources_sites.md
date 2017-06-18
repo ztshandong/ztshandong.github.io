@@ -58,3 +58,11 @@
 - [创意](http://www.topys.cn/)
 - [video](http://www.flvcd.com/)
 - [表情包](http://www.doubean.com/)
+
+```sh
+删除XX-Net-master\data\gae_proxy下的整个certs文件夹和CA.crt文件
+删除已导入的证书文件（运行certmgr.msc和certlm.msc，然后自己找到xxnet删），
+在xx-net根目录，右键start.bat管理员身份运行一次 （据说直接这一个步骤就会好了但是我无效）
+
+检查浏览器设置ctrl+F5
+```
