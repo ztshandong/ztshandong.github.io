@@ -179,19 +179,31 @@ docker run -p 3306:3306 -v /data/mysql57-2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD
 docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --restart=always -d mysql:5.7
 
 ```
+# Redis
+```sh
+docker pull redis:3
+docker run -d -p 6378:6379 --name=redis1 redis:3
+docker exec -it redis1 redis-cli
+config set requirepass 12345678
+auth 12345678
+config get requirepass
+
+用另一个docker连接上面的docker
+docker exec -it redis1 redis-cli -h 111.111.111.111 -p 6378 -a 12345678
+```
 # MySql Cluster
 ```sh
 docker pull mysql/mysql-cluster:7.5
 docker network create cluster --subnet=192.168.0.0/16
-docker run -d --net=cluster --name=management1 --ip=192.168.1.2 mysql/mysql-cluster:7.5 ndb_mgmd
-docker run -d --net=cluster --name=ndb1 --ip=192.168.1.3 mysql/mysql-cluster:7.5 ndbd
-docker run -d --net=cluster --name=ndb2 --ip=192.168.1.4 mysql/mysql-cluster:7.5 ndbd
-docker run -d --net=cluster --name=mysql1 --ip=192.168.1.10 mysql/mysql-cluster:7.5 mysqld
+docker run -d --net=cluster -p 8587:3306 --name=management1 --ip=192.168.0.2 mysql/mysql-cluster:7.5 ndb_mgmd
+docker run -d --net=cluster --name=ndb1 --ip=192.168.0.3 mysql/mysql-cluster:7.5 ndbd
+docker run -d --net=cluster --name=ndb2 --ip=192.168.0.4 mysql/mysql-cluster:7.5 ndbd
+docker run -d --net=cluster --name=mysql1 --ip=192.168.0.10 mysql/mysql-cluster:7.5 mysqld
 docker logs mysql1 2>&1 | grep password
 docker exec -it mysql1 mysql -uroot -p
 ALTER USER 'root'@'localhost' IDENTIFIED BY '12345678';
 
-docker run -d --net=cluster --name=mysql2 --ip=192.168.1.11 mysql/mysql-cluster:7.5 mysqld
+docker run -d --net=cluster --name=mysql2 --ip=192.168.0.11 mysql/mysql-cluster:7.5 mysqld
 docker logs mysql2 2>&1 | grep password
 docker exec -it mysql2 mysql -uroot -p
 ALTER USER 'root'@'localhost' IDENTIFIED BY '12345678';
