@@ -27,6 +27,9 @@ mysqld stop
 mysqld_safe --user=mysql --skip-grant-tables --skip-networking & 
 mysql -u root mysql 
 
+use mysql
+
+
 ```
 # 忘记密码
 ```sh

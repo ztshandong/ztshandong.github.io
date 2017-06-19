@@ -173,10 +173,34 @@ docker run -p 3306:3306 -v /data/mysql57-1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD
 docker run -p 3306:3306 --name=mysql5.7-1 -v /data/mysql57-1:/var/lib/mysql --restart=always -d mysql:5.7
 然后删除第一步的container
 
-创建第多个就很方便了
+创建多个就很方便了
 docker run -p 3306:3306 -v /data/mysql57-2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB2 -e MYSQL_USER=testuser2 -e MYSQL_PASSWORD=12345678 -d mysql:5.7
 
 docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --restart=always -d mysql:5.7
+
+```
+# MySql Cluster
+```sh
+docker pull mysql/mysql-cluster:7.5
+docker network create cluster --subnet=192.168.0.0/16
+docker run -d --net=cluster --name=management1 --ip=192.168.1.2 mysql/mysql-cluster:7.5 ndb_mgmd
+docker run -d --net=cluster --name=ndb1 --ip=192.168.1.3 mysql/mysql-cluster:7.5 ndbd
+docker run -d --net=cluster --name=ndb2 --ip=192.168.1.4 mysql/mysql-cluster:7.5 ndbd
+docker run -d --net=cluster --name=mysql1 --ip=192.168.1.10 mysql/mysql-cluster:7.5 mysqld
+docker logs mysql1 2>&1 | grep password
+docker exec -it mysql1 mysql -uroot -p
+ALTER USER 'root'@'localhost' IDENTIFIED BY '12345678';
+
+docker run -d --net=cluster --name=mysql2 --ip=192.168.1.11 mysql/mysql-cluster:7.5 mysqld
+docker logs mysql2 2>&1 | grep password
+docker exec -it mysql2 mysql -uroot -p
+ALTER USER 'root'@'localhost' IDENTIFIED BY '12345678';
+
+use mysql;
+select user,host from user where user='root';
+update user set host='%' where user = 'root';
+
+docker run -it --net=cluster mysql/mysql-cluster:7.5
 ```
 # RabbitMQ
 ```sh
