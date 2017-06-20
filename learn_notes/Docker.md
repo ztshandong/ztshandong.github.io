@@ -179,6 +179,160 @@ docker run -p 3306:3306 -v /data/mysql57-2:/var/lib/mysql -e MYSQL_ROOT_PASSWORD
 docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --restart=always -d mysql:5.7
 
 ```
+# MySQL主从复制
+```sh
+创建my-master.cnf
+
+# Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL Community Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[client]
+port        = 3306
+socket      = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+nice        = 0
+
+[mysqld]
+user        = mysql
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+lc-messages-dir = /usr/share/mysql
+explicit_defaults_for_timestamp
+
+log-bin = mysql-bin 
+server-id = 1 
+
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+#bind-address   = 127.0.0.1
+
+#log-error  = /var/log/mysql/error.log
+
+# Recommended in standard MySQL setup
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+# * IMPORTANT: Additional settings that can override those from this file!
+#   The files must end with '.cnf', otherwise they'll be ignored.
+#
+!includedir /etc/mysql/conf.d/
+
+创建my-slave.cnf
+
+# Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL Community Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[client]
+port        = 3306
+socket      = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+nice        = 0
+
+[mysqld]
+user        = mysql
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+lc-messages-dir = /usr/share/mysql
+explicit_defaults_for_timestamp
+
+log-bin = mysql-bin 
+server-id = 2
+
+# Instead of skip-networking the default is now to listen only on
+# localhost which is more compatible and is not less secure.
+#bind-address   = 127.0.0.1
+
+#log-error  = /var/log/mysql/error.log
+
+# Recommended in standard MySQL setup
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+# * IMPORTANT: Additional settings that can override those from this file!
+#   The files must end with '.cnf', otherwise they'll be ignored.
+#
+!includedir /etc/mysql/conf.d/
+
+启动主库
+docker run -p 3307:3306 -v /data/mysql57-master:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678  -d mysql:5.7
+docker run -p 3307:3306 --name=mysql57-master -v /data/mysql57-master:/var/lib/mysql -v ~/my-master.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
+启动从库
+docker run -p 3308:3306 -v /data/mysql57-slave:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678  -d mysql:5.7
+docker run -p 3308:3306 --name=mysql57-slave -v /data/mysql57-slave:/var/lib/mysql -v ~/my-slave.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
+
+主库
+GRANT REPLICATION SLAVE ON *.* TO 'repuser'@'%' IDENTIFIED BY '12345678';
+flush privileges; 
+flush tables with read lock;
+show master status;
+此例中File是mysql-bin.000001， Position是2602
+navicat同步数据
+unlock tables;
+
+从库
+若是操作了从库可能导致同步失败，可先将从库的停止，清除，然后重新同步
+stop slave;
+reset slave; 
+
+change master to master_host='111.111.111.111',master_user='repuser',master_password='12345678',
+master_log_file='mysql-bin.000001',master_log_pos=2602,master_port=3307;
+start slave;
+show slave status;
+```
 # Redis
 ```sh
 docker pull redis:3
