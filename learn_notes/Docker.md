@@ -182,28 +182,6 @@ docker run -p 3306:3306 --name=mysql5.7-2 -v /data/mysql57-2:/var/lib/mysql --re
 # MySQL主从复制
 ```sh
 创建my-master.cnf
-
-# Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-#
-# The MySQL Community Server configuration file.
-#
-# For explanations see
-# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
-
 [client]
 port        = 3306
 socket      = /var/run/mysqld/mysqld.sock
@@ -226,6 +204,10 @@ explicit_defaults_for_timestamp
 
 log-bin = mysql-bin 
 server-id = 1 
+#auto-increment-increment = 2
+#auto-increment-offset = 1
+#binlog-do-db=dbTest 
+#replicate-do-db=dbTest 
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
@@ -238,35 +220,9 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
-
-# * IMPORTANT: Additional settings that can override those from this file!
-#   The files must end with '.cnf', otherwise they'll be ignored.
-#
 !includedir /etc/mysql/conf.d/
 
 创建my-slave.cnf
-
-# Copyright (c) 2014, Oracle and/or its affiliates. All rights reserved.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
-
-#
-# The MySQL Community Server configuration file.
-#
-# For explanations see
-# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
-
 [client]
 port        = 3306
 socket      = /var/run/mysqld/mysqld.sock
@@ -289,23 +245,22 @@ explicit_defaults_for_timestamp
 
 log-bin = mysql-bin 
 server-id = 2
+#auto-increment-increment = 2
+#auto-increment-offset = 2
+#binlog-do-db=dbTest 
+#replicate-do-db=dbTest 
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 #bind-address   = 127.0.0.1
-
 #log-error  = /var/log/mysql/error.log
-
 # Recommended in standard MySQL setup
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
-
-# * IMPORTANT: Additional settings that can override those from this file!
-#   The files must end with '.cnf', otherwise they'll be ignored.
-#
 !includedir /etc/mysql/conf.d/
+
 
 启动主库
 docker run -p 3307:3306 -v /data/mysql57-master:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678  -d mysql:5.7
@@ -328,8 +283,16 @@ unlock tables;
 stop slave;
 reset slave; 
 
-change master to master_host='111.111.111.111',master_user='repuser',master_password='12345678',
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql57-slave
+ip addr show docker0 终端中运行，不是数据库，本人是172.17.0.1，就是docker的网关
+
+这种方法要自己手动建好数据库并且同步完数据后进行
+change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
 master_log_file='mysql-bin.000001',master_log_pos=2602,master_port=3307;
+
+如果报错就把slave中自定义数据库删掉，master_log_pos=4，这样slave会自动创建数据库并同步数据
+change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
+master_log_file='mysql-bin.000001',master_log_pos=4,master_port=3307;
 start slave;
 show slave status;
 ```
@@ -342,7 +305,7 @@ config set requirepass 12345678
 auth 12345678
 config get requirepass
 
-用另一个docker连接上面的docker
+用另一个redis连接上面的redis
 docker exec -it redis1 redis-cli -h 111.111.111.111 -p 6378 -a 12345678
 ```
 # MySql Cluster
