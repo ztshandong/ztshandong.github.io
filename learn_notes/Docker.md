@@ -288,7 +288,7 @@ ip addr show docker0 终端中运行，不是数据库，本人是172.17.0.1，�
 
 这种方法要自己手动建好数据库并且同步完数据后进行
 change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
-master_log_file='mysql-bin.000001',master_log_pos=2602,master_port=3307;
+master_log_file='mysql-bin.000001',master_log_pos=594,master_port=3307;
 
 如果报错就把slave中自定义数据库删掉，master_log_pos=4，这样slave会自动创建数据库并同步数据
 change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
