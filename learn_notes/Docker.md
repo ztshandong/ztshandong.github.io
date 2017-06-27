@@ -264,10 +264,10 @@ symbolic-links=0
 
 启动主库
 docker run -p 3307:3306 -v ~/DB/mysql/mysql57-master:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678  -d mysql:5.7
-docker run -p 3307:3306 --name=mysql57-master -v ~/DB/mysql/mysql57-master:/var/lib/mysql -v ~/my-master.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
+docker run -p 3307:3306 --name=mysql57-master -v ~/DB/mysql/mysql57-master:/var/lib/mysql -v ~/DB/mysql/my-master.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
 启动从库
 docker run -p 3308:3306 -v ~/DB/mysql/mysql57-slave:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678  -d mysql:5.7
-docker run -p 3308:3306 --name=mysql57-slave -v ~/DB/mysql/mysql57-slave:/var/lib/mysql -v ~/my-slave.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
+docker run -p 3308:3306 --name=mysql57-slave -v ~/DB/mysql/mysql57-slave:/var/lib/mysql -v ~/DB/mysql/my-slave.cnf:/etc/mysql/my.cnf --restart=always -d mysql:5.7
 
 主库
 GRANT REPLICATION SLAVE ON *.* TO 'repuser'@'%' IDENTIFIED BY '12345678';
