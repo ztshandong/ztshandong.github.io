@@ -28,6 +28,7 @@
 2、创建文件conf-dev.yml，内容name: lisi
 3、创建文件conf-test.yml，内容name: zhangsan
 4、注意上面键值对中的：后面要用空格
+curl username:password@localhost:8016/encrypt -d mysqlpassword
 ```
 # 四、application.yml
 ```java
@@ -124,3 +125,4 @@ http://clientip:8002/name
 curl -X POST http://clientip:8002/refresh
 
 ```
+
