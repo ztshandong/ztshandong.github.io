@@ -145,6 +145,14 @@ git push --set-upstream vs master
 原因：github中的README.md文件不在本地代码目录中
 解决git pull --rebase osc master
 
+如果没有生成README.md
+git init
+touch README.md
+git add README.md
+git commit -m "first commit"
+git remote add osc git@git.oschina.net:zhuorui/zhangtao.git
+git push -u osc master
+
 git add .
 mac commit 之前要设置
 git config --global user.name "ztshandong"
