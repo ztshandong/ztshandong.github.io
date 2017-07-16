@@ -60,6 +60,20 @@ docker inspect --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 	SELECT * FROM dt_tabel WHERE isid IN (SELECT isid FROM #tmp)
 
 ```
+# 执行顺序
+```sql
+(8)SELECT 
+(9)DISTINCT
+(11)<TOP_specification> <select_list>
+(1)FROM <left_table>
+(3)　<join_type> JOIN <right_table>
+(2)　 ON <join_condition>
+(4)WHERE <where_condition>
+(5)GROUP BY <group_by_list>
+(6)WITH {CUBE | ROLLUP}
+(7)HAVING <having_condition>
+(10)ORDER BY <order_by_list>
+```
 # 常用方法
 ```sql
 select REPLACE(replace(replace(CONVERT(VARCHAR(10), getdate(), 120 ),'-',''),' ',''),':','')
