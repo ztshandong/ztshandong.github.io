@@ -308,6 +308,33 @@ config get requirepass
 用另一个redis连接上面的redis
 docker exec -it redis1 redis-cli -h 111.111.111.111 -p 6378 -a 12345678
 ```
+# Mongo
+```sh
+docker pull mongo:3.4
+
+docker run -v ~/DB/mongo/mongo-log1:/data/db -p 27017:27017  -d mongo:3.4
+docker exec -it 9a1e bash
+mongo
+use admin
+db.createUser({user:"zhangtao",pwd:"12345678",roles:[{role:"userAdminAnyDatabase",db:"admin"}]});
+db.auth("zhangtao","12345678")
+exit
+exit
+docker rm 9a1e
+
+docker run -v ~/DB/mongo/mongo-log1:/data/db -p 27017:27017  -d mongo:3.4 --auth
+docker exec -it ac3b bash
+mongo admin -u zhangtao -p 12345678
+use restlog
+db.createUser({user: "restlogger",pwd: "12345678",roles: [ { role: "readWrite", db: "restlog" } ]})
+db.auth("restlogger","12345678")
+exit
+exti
+docker rm ac3b
+
+docker run  --name mongo-log1 -it -v ~/DB/mongo/mongo-log1:/data/db -p 27017:27017 --restart=always  -d mongo:3.4 --auth
+
+```
 # MySql Cluster
 ```sh
 docker pull mysql/mysql-cluster:7.5
