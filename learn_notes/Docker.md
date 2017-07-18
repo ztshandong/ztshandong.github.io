@@ -361,7 +361,7 @@ docker run -it --net=cluster mysql/mysql-cluster:7.5
 # RabbitMQ
 ```sh
 docker pull rabbitmq:3-management
-docker run -d -p 15672:15672 -p 5672:5672  --name rabbit3 -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management
+docker run -d -p 15672:15672 -p 5672:5672  --name rabbit3 -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASS=password --restart=always rabbitmq:3-management
 http://ip:15672  即可访问
 ```
 
