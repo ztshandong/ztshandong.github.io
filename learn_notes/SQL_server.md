@@ -162,7 +162,20 @@ BEGIN
         RAISERROR(ERROR_MESSAGE(), ERROR_SEVERITY(), 1)  
   
     END CATCH  
-  
+
+    --CATCH 方法2
+    BEGIN CATCH
+        IF ( XACT_STATE() ) = -1
+            BEGIN
+                RAISERROR ('操作发生错误！', 16, 1) WITH NOWAIT; 
+                ROLLBACK TRANSACTION;
+            END;
+    
+        IF ( XACT_STATE() ) = 1
+            BEGIN
+                COMMIT TRANSACTION;   
+            END;
+    END CATCH;
 END  
 ERROR_NUMBER()	返回导致运行 CATCH 块的错误消息的错误号。
 ERROR_SEVERITY()	返回导致 CATCH 块运行的错误消息的严重级别
@@ -202,6 +215,385 @@ ERROR_MESSAGE()	返回导致 CATCH 块运行的错误消息的完整文本
 
 	PRINT @sqlstr
 	EXEC(@sqlstr)
+```
+# 同步数据
+```sql
+SET QUOTED_IDENTIFIER ON
+SET ANSI_NULLS ON
+GO
+
+
+CREAT PROCEDURE [dbo].[usp_sys_SynData]
+AS
+BEGIN
+/*
+usp_sys_SynData
+*/
+Select Name INTO #AllTable FROM ProductionDB..SysObjects WHERE 1=1
+AND XType='U' 
+--AND name<>'tb_MyMenu'
+--AND name<>'tb_MyRole'
+--AND name<>'tb_MyUser'
+--AND name<>'tb_MyUserRoles'
+--AND name<>'tb_MyGroup'
+--AND name<>'tb_MyGroupRole'
+--AND name<>'tb_MyGroupUser'
+--AND name<>'dbo.tb_MyRoleActions'
+--AND name<>'dt_notes'
+--AND name<>'sys_SystemSettings'
+--AND name<>'sys_SystemSettingsByUser'
+--AND name<>'sys_DataSN'
+ORDER BY Name
+DELETE #AllTable WHERE NAME='dt_City1'
+DELETE #AllTable WHERE NAME='dt_City3'
+--DELETE #AllTable WHERE NAME='tb_MyMenu'
+--DELETE #AllTable WHERE NAME='tb_MyRole'
+--DELETE #AllTable WHERE NAME='tb_MyUser'
+--DELETE #AllTable WHERE NAME='tb_MyUserRoles'
+--DELETE #AllTable WHERE NAME='tb_MyGroup'
+--DELETE #AllTable WHERE NAME='tb_MyGroupRole'
+--DELETE #AllTable WHERE NAME='tb_MyGroupUser'
+--DELETE #AllTable WHERE NAME='dbo.tb_MyRoleActions'
+--DELETE #AllTable WHERE NAME='dt_notes'
+--DELETE #AllTable WHERE NAME='sys_SystemSettings'
+--DELETE #AllTable WHERE NAME='sys_SystemSettingsByUser'
+--DELETE #AllTable WHERE NAME='sys_DataSN'
+SELECT   
+--表名              =   CASE   WHEN   A.COLORDER=1   THEN   D.NAME   ELSE   ' '   END, 
+表名              =     D.NAME  , 
+表说明          =   CASE   WHEN   A.COLORDER=1   THEN   ISNULL(F.VALUE, ' ')   ELSE   ' '   END, 
+字段序号      =   A.COLORDER, 
+字段名          =   A.NAME, 
+标识自增字段              =   CASE   WHEN   COLUMNPROPERTY(   A.ID,A.NAME, 'ISIDENTITY ')=1   THEN   'Y'ELSE   ' '   END, 
+主键              =   CASE   WHEN   EXISTS(Select   1   FROM   SYSOBJECTS   Where   XTYPE= 'PK '   AND   PARENT_OBJ=A.ID   AND   NAME   IN   ( 
+SELECT   NAME   FROM   SYSINDEXES   Where   INDID   IN( 
+SELECT   INDID   FROM   SYSINDEXKEYS   Where   ID   =   A.ID   AND   COLID=A.COLID)))   THEN   'Y'   ELSE   ' '   END, 
+类型              =   B.NAME, 
+字段长度  =   A.LENGTH, 
+精度              =   COLUMNPROPERTY(A.ID,A.NAME, 'PRECISION '), 
+小数位数      =   ISNULL(COLUMNPROPERTY(A.ID,A.NAME, 'SCALE '),0), 
+允许空          =   CASE   WHEN   A.ISNULLABLE=1   THEN   'Y'ELSE   ' '   END, 
+缺省值          =   ISNULL(E.TEXT, ' '), 
+字段说明      =   ISNULL(G.[VALUE], ' ') 
+INTO #All 
+FROM   
+SYSCOLUMNS   A 
+LEFT   JOIN SYSTYPES   B   
+    ON  A.XUSERTYPE=B.XUSERTYPE 
+INNER   JOIN   SYSOBJECTS   D   
+    ON  A.ID=D.ID     AND   D.XTYPE= 'U '   AND     D.NAME <> 'DTPROPERTIES ' 
+LEFT   JOIN SYSCOMMENTS   E   
+    ON  A.CDEFAULT=E.ID 
+LEFT   JOIN sys.extended_properties   G   
+    ON  A.ID=G.major_id   AND   A.COLID=G.minor_id     
+LEFT   JOIN sys.extended_properties   F   
+    ON  D.ID=F.major_id   AND   F.minor_id=0
+WHERE D.name IN (SELECT * FROM #AllTable)
+--SELECT * FROM #All
+SELECT DISTINCT 字段名 AS Col INTO #ExceptColumn FROM #All WHERE 标识自增字段='Y' 
+UNION
+SELECT DISTINCT 字段名 AS Col  FROM #All WHERE 类型='timestamp'
+DROP TABLE #All
+
+declare @columnlist varchar(8000)=''
+DECLARE @DEL VARCHAR(max)=''
+--DECLARE @On VARCHAR(max)=''
+--DECLARE @Off VARCHAR(max)=''
+DECLARE @INSERT VARCHAR(max)=''
+DECLARE OneCursor CURSOR    
+FOR SELECT Name FROM  #AllTable
+OPEN OneCursor
+DECLARE @noToUpdate VARCHAR(200)    
+FETCH NEXT FROM OneCursor INTO @noToUpdate
+ WHILE @@fetch_status=0    
+     BEGIN
+     --drop table 之后直接 insert 会导致表结构不同步，无主键
+     set @DEL='USE BackDB EXEC [dbo].[usp_Truncate_Table] '+@noToUpdate+''     
+     EXEC (@DEL)
+     select   @columnlist=@columnlist+name+ ','   from   syscolumns   where   id   =   object_id(@noToUpdate)   and   name NOT IN (SELECT Col FROM #ExceptColumn)
+     select   @columnlist=left(@columnlist,len(@columnlist)-1)
+     --SET @On='SET IDENTITY_INSERT '+@noToUpdate+' ON'--如果表没有IDENTITY字段会报错
+     set @INSERT='insert into BackDB.dbo.'+@noToUpdate+' ('+@columnlist+') select '+@columnlist+' from ProductionDB.dbo.'+@noToUpdate
+     PRINT (@INSERT)
+	 --set @INSERT='USE BackDB insert into '+@noToUpdate+' ('+@columnlist+') select '+@columnlist+' from ProductionDB.dbo.'+@noToUpdate
+     --SET @Off='SET IDENTITY_INSERT '+@noToUpdate+' OFF'
+     --EXEC (@On)
+     EXEC (@INSERT)
+     --EXEC (@Off)
+     select   @columnlist   =   ''
+     FETCH NEXT FROM OneCursor INTO @noToUpdate
+     END 
+ CLOSE OneCursor     
+ DEALLOCATE OneCursor 
+DROP TABLE #AllTable
+DROP TABLE #ExceptColumn
+
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='FYUSER_URL'
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='否' WHERE ParamCode='HYConnectFuYou'
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='否' WHERE ParamCode='HYConnectHongBaoShangHai'
+										
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='Ali_Bucket'
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='Ali_Endpoint'
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='Ali_KeyID'
+UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='Ali_KeySecret'
+
+
+INSERT INTO BackDB.dbo.dt_Customer
+        ( OrgCode,DataType,CustomerSN,CustomerCode,CustomerName ,
+          ShortName,ZJM,Station,Contacts,Tel ,
+          Mobile,Address,Fax,Email,TrustLevel ,
+          Tax,Bank,BankAccount,SalesPerson,SalesDeputy ,
+          ProjectManager,PaymentTerm,PaymentDays,ContractNo,ContractDate1 ,
+          ContractDate2,InUse,InvoiceFax,FlagInvoice,Remark ,
+          CreationDate,CreatedBy,LastUpdateDate,LastUpdatedBy,SettleType ,
+          DepotPerson,FinancePerson,ReconciliationPerson,DepotTel ,
+          FinanceTel,ReconciliationTel,AccountName,DepartmentCode
+        )
+VALUES  ('SH','U','KH4TEST','A33D83C6815749EB8524737CEE4AB94B','API专用测试客户',
+'APITEST','APITEST','SH','张三','13812345678',
+'13812345678','上海','021-1234567','test@email.com','VIP',
+'','','','admin','admin',
+'admin',1,1,'',NULL,
+NULL,'Y',6,'Y','',
+GETDATE(),'admin',GETDATE(),'admin',6,
+'','','','',
+'','','','F01'
+ )
+
+
+
+ INSERT INTO BackDB.dbo.dt_UserAccount
+        ( CustomerCode ,
+          CustomerChildAccountName ,
+          CustomerChildAccountID ,
+          AccountPassWord ,
+          Remark ,
+          DepartmentName ,
+          LastUpdateDate ,
+          LastUpdatedBy ,
+          AccountEMail ,
+          OrgCode ,
+          IsCustomerAdmin ,
+          ShowOtherDoc
+        )
+VALUES  ( 'A33D83C6815749EB8524737CEE4AB94B' , -- CustomerCode - varchar(32)
+          '张三' , -- AccountName - varchar(50)
+          '17012345678' , -- CustomerChildAccountID - varchar(11)
+          '' , -- AccountPassWord - varchar(50)
+          '' , -- Remark - varchar(200)
+          '' , -- DepartmentName - varchar(30)
+          GETDATE() , -- LastUpdateDate - datetime
+          'admin' , -- LastUpdatedBy - varchar(20)
+          '' , -- AccountEMail - varchar(30)
+          'SH' , -- OrgCode - varchar(10)
+          'Y' , -- IsCustomerAdmin - char(1)
+          'Y'  -- ShowOtherDoc - char(1)
+        )
+
+
+
+
+
+
+
+
+/**********************************************************************************
+declare   @columnlist1   varchar(8000),   @tablename   varchar(255)   --定义两个变量 
+select   @columnlist1   =   ' ',   @tablename= 'dt_CarInfo '   --变量赋值 
+select   @columnlist1=@columnlist1+name+ ','   from   syscolumns   where   id   =   object_id(@tablename)   and   name <>'isid' AND name <>'TS'--循环生成所有查询需要的列（除去你不要的列） 
+select   @columnlist1=left(@columnlist1,len(@columnlist1)-1)   --去掉构造的语句中最后一个‘，’号 
+SELECT @columnlist1
+exec( 'select   '+@columnlist1+ '   from   '   +@tablename)   --执行动态语句
+select  *   from   syscolumns   where   id   =   object_id('dt_CarInfo')
+***********************************************************************************/
+END
+
+GO
+```
+# usp_Truncate_Table
+```sql
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[usp_Truncate_Table]
+  @TableToTruncate VARCHAR(64)
+AS 
+
+BEGIN
+
+SET NOCOUNT ON
+
+--==变量定义
+DECLARE @i int
+DECLARE @Debug bit
+DECLARE @Recycle bit
+DECLARE @Verbose bit
+DECLARE @TableName varchar(80)
+DECLARE @ColumnName varchar(80)
+DECLARE @ReferencedTableName varchar(80)
+DECLARE @ReferencedColumnName varchar(80)
+DECLARE @ConstraintName varchar(250)
+
+DECLARE @CreateStatement varchar(max)
+DECLARE @DropStatement varchar(max)   
+DECLARE @TruncateStatement varchar(max)
+DECLARE @CreateStatementTemp varchar(max)
+DECLARE @DropStatementTemp varchar(max)
+DECLARE @TruncateStatementTemp varchar(max)
+DECLARE @Statement varchar(max)
+
+ SET @Debug = 0--(0:将执行相关语句|1:不执行语句)
+ SET @Recycle = 0--(0:不创建/不清除存储表|1:将创建/清理存储表)
+ set @Verbose = 1--(1:每步执行均打印消息|0:不打印消息)
+
+ SET @i = 1
+    SET @CreateStatement = 'ALTER TABLE [dbo].[<tablename>]  WITH NOCHECK ADD  CONSTRAINT [<constraintname>] FOREIGN KEY([<column>]) REFERENCES [dbo].[<reftable>] ([<refcolumn>])'
+    SET @DropStatement = 'ALTER TABLE [dbo].[<tablename>] DROP CONSTRAINT [<constraintname>]'
+    SET @TruncateStatement = 'TRUNCATE TABLE [<tablename>]'
+
+-- 创建外键临时表
+IF OBJECT_ID('tempdb..#FKs') IS NOT NULL
+    DROP TABLE #FKs
+
+-- 获取外键
+SELECT ROW_NUMBER() OVER (ORDER BY OBJECT_NAME(parent_object_id), clm1.name) as isid,
+       OBJECT_NAME(constraint_object_id) as ConstraintName,
+       OBJECT_NAME(parent_object_id) as TableName,
+       clm1.name as ColumnName, 
+       OBJECT_NAME(referenced_object_id) as ReferencedTableName,
+       clm2.name as ReferencedColumnName
+  INTO #FKs
+  FROM sys.foreign_key_columns fk
+       JOIN sys.columns clm1 ON fk.parent_column_id = clm1.column_id AND fk.parent_object_id = clm1.object_id
+       JOIN sys.columns clm2 ON fk.referenced_column_id = clm2.column_id AND fk.referenced_object_id= clm2.object_id
+ --WHERE OBJECT_NAME(parent_object_id) not in ('//tables that you do not wont to be truncated')
+ WHERE OBJECT_NAME(referenced_object_id) = @TableToTruncate
+ ORDER BY OBJECT_NAME(parent_object_id)
+
+-- 外键操作(删除|重建)表
+IF Not EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Internal_FK_Definition_Storage')
+BEGIN
+    IF @Verbose = 1
+        PRINT '1. 正在创建表(Internal_FK_Definition_Storage)...'
+    CREATE TABLE [Internal_FK_Definition_Storage] 
+    (
+        isid int not null identity(1,1) primary key,
+        FK_Name varchar(250) not null,
+        FK_CreationStatement varchar(max) not null,
+        FK_DestructionStatement varchar(max) not null,
+        Table_TruncationStatement varchar(max) not null
+    ) 
+END 
+ELSE
+BEGIN
+    IF @Recycle = 0
+    BEGIN
+        IF @Verbose = 1
+        PRINT '1. 正在清理表(Internal_FK_Definition_Storage)...'
+        TRUNCATE TABLE [Internal_FK_Definition_Storage]    
+    END
+    ELSE
+        PRINT '1. 正在清理表(Internal_FK_Definition_Storage)...'
+END
+
+IF @Recycle = 0
+BEGIN
+    IF @Verbose = 1
+        PRINT '2. 正在备份外键定义...'           
+    WHILE (@i <= (SELECT MAX(isid) FROM #FKs))
+    BEGIN
+        SET @ConstraintName = (SELECT ConstraintName FROM #FKs WHERE isid = @i)
+        SET @TableName = (SELECT TableName FROM #FKs WHERE isid = @i)
+        SET @ColumnName = (SELECT ColumnName FROM #FKs WHERE isid = @i)
+        SET @ReferencedTableName = (SELECT ReferencedTableName FROM #FKs WHERE isid = @i)
+        SET @ReferencedColumnName = (SELECT ReferencedColumnName FROM #FKs WHERE isid = @i)
+
+        SET @DropStatementTemp = REPLACE(REPLACE(@DropStatement,'<tablename>',@TableName),'<constraintname>',@ConstraintName)
+        SET @CreateStatementTemp = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@CreateStatement,'<tablename>',@TableName),'<column>',@ColumnName),'<constraintname>',@ConstraintName),'<reftable>',@ReferencedTableName),'<refcolumn>',@ReferencedColumnName)
+        SET @TruncateStatementTemp = REPLACE(@TruncateStatement,'<tablename>',@TableName) 
+
+        INSERT INTO [Internal_FK_Definition_Storage]
+        SELECT @ConstraintName, @CreateStatementTemp, @DropStatementTemp, @TruncateStatementTemp
+        
+        SET @i = @i + 1
+        
+        IF @Verbose = 1
+            PRINT '  > 已备份外键:[' + @ConstraintName + '] 所属表: [' + @TableName + ']'
+    END   
+END   
+ELSE 
+    PRINT '2. 正在备份外键定义...'
+
+IF @Verbose = 1
+    PRINT '3. 正在删除外键...'
+BEGIN TRAN    
+BEGIN TRY
+SET @i = 1
+WHILE (@i <= (SELECT MAX(isid) FROM [Internal_FK_Definition_Storage]))
+BEGIN
+    SET @ConstraintName = (SELECT FK_Name FROM [Internal_FK_Definition_Storage] WHERE isid = @i)
+    SET @Statement = (SELECT FK_DestructionStatement FROM [Internal_FK_Definition_Storage] WITH (NOLOCK) WHERE isid = @i)
+    IF @Debug = 1 
+        PRINT @Statement
+    ELSE
+        EXEC(@Statement)
+    SET @i = @i + 1
+    IF @Verbose = 1
+        PRINT '  > 已删除外键:[' + @ConstraintName + ']'
+END     
+
+IF @Verbose = 1
+    PRINT '4. 正在清理数据表...'
+--先清除该外键所在表(由于外键所在表仍可能又被其他外键所引用，因此需要循环递归处理)(注：本处理未实现)
+--请不要使用下面注释代码
+/*    
+SET @i = 1
+WHILE (@i <= (SELECT MAX(isid) FROM [Internal_FK_Definition_Storage]))
+BEGIN
+    SET @Statement = (SELECT Table_TruncationStatement FROM [Internal_FK_Definition_Storage] WHERE isid = @i)
+    IF @Debug = 1 
+        PRINT @Statement
+    ELSE
+        EXEC(@Statement)
+    SET @i = @i + 1
+    IF @Verbose = 1
+        PRINT '  > ' + @Statement
+END
+*/
+
+IF @Debug = 1 
+    PRINT 'TRUNCATE TABLE [' + @TableToTruncate + ']'
+ELSE
+    EXEC('TRUNCATE TABLE [' + @TableToTruncate + ']')
+IF @Verbose = 1
+    PRINT '  > 已清理数据表[' + @TableToTruncate + ']'
+    
+IF @Verbose = 1
+    PRINT '5. 正在重建外键...'
+SET @i = 1
+WHILE (@i <= (SELECT MAX(isid) FROM [Internal_FK_Definition_Storage]))
+BEGIN
+    SET @ConstraintName = (SELECT FK_Name FROM [Internal_FK_Definition_Storage] WHERE isid = @i)
+    SET @Statement = (SELECT FK_CreationStatement FROM [Internal_FK_Definition_Storage] WHERE isid = @i)
+    IF @Debug = 1 
+        PRINT @Statement
+    ELSE
+        EXEC(@Statement)
+    SET @i = @i + 1
+    IF @Verbose = 1
+    PRINT '  > 已重建外键:[' + @ConstraintName + ']'
+END
+    COMMIT
+END TRY
+BEGIN CATCH
+    ROLLBACK 
+    PRINT '出错信息:'+ERROR_MESSAGE()
+END CATCH
+IF @Verbose = 1
+    PRINT '6. 处理完成！'
+END
 ```
 # 求和
 ```sql

@@ -53,6 +53,8 @@ Visual Studio Code是个牛逼的编辑器，启动非常快，完全可以用�
 *   向上向下复制一行： `Shift+Alt+Up`或`Shift+Alt+Down`
 *   在当前行下边插入一行`Ctrl+Enter`
 *   在当前行上方插入一行`Ctrl+Shift+Enter`
+*   整块右移`Tab`
+*   整块左移`Shift+Tab`
 
 ### 光标相关
 
