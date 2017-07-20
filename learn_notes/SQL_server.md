@@ -30,6 +30,384 @@ docker run -p 1433:1433 -v ~/DB/mssql:/var/opt/mssql/data -d microsoft/mssql-ser
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678@Abc'  -p 1433:1433  -d microsoft/mssql-server-linux
 docker inspect --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" id
 ```
+# 通用动态拼接防注入分页查询
+```sql
+
+CREAT PROCEDURE [dbo].[zt_usp_TablePageEx]
+    @plan INT = 1 ,--方案
+    @tablename VARCHAR(50) ,--表名
+    @keyname VARCHAR(50) ,--聚合索引列名
+    @keyvalue VARCHAR(50) = '' ,--此参数有值即为查找单条数据
+    @selectcolumn VARCHAR(255) = '' ,--返回字段
+    @sortcolumn VARCHAR(255) = '' ,--排序字段
+    @pagecount INT = 1 ,--每页记录数
+    @pageindex INT = 1 ,--页号
+    @indexparam1 VARCHAR(20) = '' ,
+    @indexop1 VARCHAR(10) = '' ,
+    @indexvalue1 VARCHAR(1000) = '' ,
+    @indexparam2 VARCHAR(20) = '' ,
+    @indexop2 VARCHAR(10) = '' ,
+    @indexvalue2 VARCHAR(1000) = '' ,
+    @indexparam3 VARCHAR(20) = '' ,
+    @indexop3 VARCHAR(10) = '' ,
+    @indexvalue3 VARCHAR(1000) = '' ,
+    @datename1 VARCHAR(20) = '' ,
+    @fdate1 VARCHAR(10) = '' ,
+    @ddate1 VARCHAR(10) = '' ,
+    @datename2 VARCHAR(20) = '' ,
+    @fdate2 VARCHAR(10) = '' ,
+    @ddate2 VARCHAR(10) = '' ,
+    @indexparam4 VARCHAR(20) = '' ,
+    @indexop4 VARCHAR(10) = '' ,
+    @indexvalue4 VARCHAR(1000) = '' ,
+    @indexparam5 VARCHAR(20) = '' ,
+    @indexop5 VARCHAR(10) = '' ,
+    @indexvalue5 VARCHAR(1000) = '' ,
+    @indexparam6 VARCHAR(20) = '' ,
+    @indexop6 VARCHAR(10) = '' ,
+    @indexvalue6 VARCHAR(1000) = '' ,
+    @indexparam7 VARCHAR(20) = '' ,
+    @indexop7 VARCHAR(10) = '' ,
+    @indexvalue7 VARCHAR(1000) = '' ,
+    @indexparam8 VARCHAR(20) = '' ,
+    @indexop8 VARCHAR(10) = '' ,
+    @indexvalue8 VARCHAR(1000) = '' ,
+    @indexparam9 VARCHAR(20) = '' ,
+    @indexop9 VARCHAR(10) = '' ,
+    @indexvalue9 VARCHAR(1000) = '' ,
+    @noindexparam1 VARCHAR(20) = '' ,
+    @noindexop1 VARCHAR(10) = '' ,
+    @noindexvalue1 VARCHAR(1000) = '' ,
+    @noindexparam2 VARCHAR(20) = '' ,
+    @noindexop2 VARCHAR(10) = '' ,
+    @noindexvalue2 VARCHAR(1000) = '' ,
+    @noindexparam3 VARCHAR(20) = '' ,
+    @noindexop3 VARCHAR(10) = '' ,
+    @noindexvalue3 VARCHAR(1000) = ''
+AS
+    BEGIN
+	/***************************************************
+	作者：张涛  QQ:28400798
+	功能：通用预编译防注入分页查询
+	预留3个非索引查询位，尽量不要用
+	@sortcolumn留空为@keyname
+	方案一：直接查询，所有条件包括返回列全走索引最快，@selectcolumn留空返回@keyname
+	方案二：直接查询，@selectcolumn留空返回所有列
+	方案三：返回所有列，@selectcolumn无效，配合@keyvalue可当作GetBussinessByKey
+	方案四：若指定@selectcolumn则每个列名需添加固定前缀a.，留空返回@keyname
+	zt_usp_TablePageEx 2,'tb_TMS_YD','YDNO','','','',2000,1,'YDNO','LIKE','sh'
+
+	如果能全走索引就用方案一，否则用方案三
+	***************************************************/
+        SET NOCOUNT ON;	
+        DECLARE @beginrow INT;
+        DECLARE @endrow INT;
+        SET @beginrow = 0;
+        SET @endrow = 0;
+        SET @beginrow = ( @pageindex - 1 ) * @pagecount + 1;
+        SET @endrow = @pageindex * @pagecount;
+        DECLARE @sqlstr NVARCHAR(4000)= '';
+        DECLARE @getcolname NVARCHAR(1000) ,
+            @selcolumn VARCHAR(MAX) ,
+            @wheresql NVARCHAR(MAX)= '';
+        IF @sortcolumn = ''
+            SELECT  @sortcolumn = @keyname;
+		----------------------------------------------------
+		--拼接where条件，用的是预编译形式传参，必须一个一个写
+        IF ISNULL(@keyvalue, '') <> ''
+            BEGIN
+                SET @wheresql = @wheresql + ' AND ' + @keyname
+                    + ' =  @keyvalue ';
+            END; 
+        ELSE
+            BEGIN
+                IF ISNULL(@indexparam1, '') <> ''
+                    AND ( ISNULL(@indexop1, '') = '='
+                          OR ISNULL(@indexop1, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue1, '') <> ''
+                    BEGIN
+                        IF @indexop1 = '='
+                            SET @indexop1 = @indexop1;
+                        ELSE
+                            IF @indexop1 = 'LIKE'
+                                SET @indexvalue1 = '' + @indexvalue1 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam1
+                            + ' ' + @indexop1 + ' @indexvalue1 ';
+                    END;
+                IF ISNULL(@indexparam2, '') <> ''
+                    AND ( ISNULL(@indexop2, '') = '='
+                          OR ISNULL(@indexop2, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue2, '') <> ''
+                    BEGIN
+                        IF @indexop2 = '='
+                            SET @indexop2 = @indexop2;
+                        ELSE
+                            IF @indexop2 = 'LIKE'
+                                SET @indexvalue2 = '' + @indexvalue2 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam2
+                            + ' ' + @indexop2 + ' @indexvalue2 ';
+                    END;
+                IF ISNULL(@indexparam3, '') <> ''
+                    AND ( ISNULL(@indexop3, '') = '='
+                          OR ISNULL(@indexop3, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue3, '') <> ''
+                    BEGIN
+                        IF @indexop3 = '='
+                            SET @indexop3 = @indexop3;
+                        ELSE
+                            IF @indexop3 = 'LIKE'
+                                SET @indexvalue3 = '' + @indexvalue3 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam3
+                            + ' ' + @indexop3 + ' @indexvalue3 ';
+                    END;
+                IF ISNULL(@datename1, '') <> ''
+                    BEGIN
+                        IF ISNULL(@ddate1, '') = ''
+                            SELECT  @ddate1 = CONVERT(VARCHAR(10), DATEADD(DAY,
+                                                              1, GETDATE()), 120);
+                        IF ISNULL(@fdate1, '') = ''
+                            SELECT  @fdate1 = CONVERT(VARCHAR(10), DATEADD(DAY,
+                                                              -180, @ddate1), 120);
+                        SET @wheresql = @wheresql + ' AND ' + @datename1
+                            + '   BETWEEN @fdate1 AND @ddate1  ';
+                    END;
+                IF ISNULL(@datename2, '') <> ''
+                    BEGIN
+                        IF ISNULL(@ddate2, '') = ''
+                            SELECT  @ddate2 = CONVERT(VARCHAR(10), DATEADD(DAY,
+                                                              1, GETDATE()), 120);
+                        IF ISNULL(@fdate2, '') = ''
+                            SELECT  @fdate2 = CONVERT(VARCHAR(10), DATEADD(DAY,
+                                                              -180, @ddate2), 120);
+                        SET @wheresql = @wheresql + ' AND ' + @datename2
+                            + '   BETWEEN @fdate2 AND @ddate2 ';
+                    END;
+                
+                IF ISNULL(@indexparam4, '') <> ''
+                    AND ( ISNULL(@indexop4, '') = '='
+                          OR ISNULL(@indexop4, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue4, '') <> ''
+                    BEGIN
+                        IF @indexop4 = '='
+                            SET @indexop4 = @indexop4;
+                        ELSE
+                            IF @indexop4 = 'LIKE'
+                                SET @indexvalue4 = '' + @indexvalue4 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam4
+                            + ' ' + @indexop4 + ' @indexvalue4 ';
+                    END;
+                IF ISNULL(@indexparam5, '') <> ''
+                    AND ( ISNULL(@indexop5, '') = '='
+                          OR ISNULL(@indexop5, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue5, '') <> ''
+                    BEGIN
+                        IF @indexop5 = '='
+                            SET @indexop5 = @indexop5;
+                        ELSE
+                            IF @indexop5 = 'LIKE'
+                                SET @indexvalue5 = '' + @indexvalue5 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam5
+                            + ' ' + @indexop5 + ' @indexvalue5 ';
+                    END;
+                IF ISNULL(@indexparam6, '') <> ''
+                    AND ( ISNULL(@indexop6, '') = '='
+                          OR ISNULL(@indexop6, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue6, '') <> ''
+                    BEGIN
+                        IF @indexop6 = '='
+                            SET @indexop6 = @indexop6;
+                        ELSE
+                            IF @indexop6 = 'LIKE'
+                                SET @indexvalue6 = '' + @indexvalue6 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam6
+                            + ' ' + @indexop6 + ' @indexvalue6 ';
+                    END;
+                IF ISNULL(@indexparam7, '') <> ''
+                    AND ( ISNULL(@indexop7, '') = '='
+                          OR ISNULL(@indexop7, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue7, '') <> ''
+                    BEGIN
+                        IF @indexop7 = '='
+                            SET @indexop7 = @indexop7;
+                        ELSE
+                            IF @indexop7 = 'LIKE'
+                                SET @indexvalue7 = '' + @indexvalue7 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam7
+                            + ' ' + @indexop7 + ' @indexvalue7 ';
+                    END;
+                IF ISNULL(@indexparam8, '') <> ''
+                    AND ( ISNULL(@indexop8, '') = '='
+                          OR ISNULL(@indexop8, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue8, '') <> ''
+                    BEGIN
+                        IF @indexop8 = '='
+                            SET @indexop8 = @indexop8;
+                        ELSE
+                            IF @indexop8 = 'LIKE'
+                                SET @indexvalue8 = '' + @indexvalue8 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam8
+                            + ' ' + @indexop8 + ' @indexvalue8 ';
+                    END;
+                IF ISNULL(@indexparam9, '') <> ''
+                    AND ( ISNULL(@indexop9, '') = '='
+                          OR ISNULL(@indexop9, '') = 'LIKE'
+                        )
+                    AND ISNULL(@indexvalue9, '') <> ''
+                    BEGIN
+                        IF @indexop9 = '='
+                            SET @indexop9 = @indexop9;
+                        ELSE
+                            IF @indexop9 = 'LIKE'
+                                SET @indexvalue9 = '' + @indexvalue9 + '%';
+                        SET @wheresql = @wheresql + ' AND ' + @indexparam9
+                            + ' ' + @indexop9 + ' @indexvalue9 ';
+                    END;
+                IF ISNULL(@noindexparam1, '') <> ''
+                    AND ( ISNULL(@noindexop1, '') = '='
+                          OR ISNULL(@noindexop1, '') = 'LIKE'
+                        )
+                    AND ISNULL(@noindexvalue1, '') <> ''
+                    BEGIN
+                        IF @noindexop1 = '='
+                            SET @wheresql = @wheresql + ' AND '
+                                + @noindexparam1 + ' ' + @noindexop1 + ' '
+                                + @noindexvalue1;
+                        ELSE
+                            IF @noindexop1 = 'LIKE'
+                                SET @wheresql = @wheresql
+                                    + ' AND CHARINDEX(@noindexvalue1,'
+                                    + @noindexparam1 + ')>0';
+                    END;
+                IF ISNULL(@noindexparam2, '') <> ''
+                    AND ( ISNULL(@noindexop2, '') = '='
+                          OR ISNULL(@noindexop2, '') = 'LIKE'
+                        )
+                    AND ISNULL(@noindexvalue2, '') <> ''
+                    BEGIN
+                        IF @noindexop2 = '='
+                            SET @wheresql = @wheresql + ' AND '
+                                + @noindexparam2 + ' ' + @noindexop2 + ' '
+                                + @noindexvalue2;
+                        ELSE
+                            IF @noindexop2 = 'LIKE'
+                                SET @wheresql = @wheresql
+                                    + ' AND CHARINDEX(@noindexvalue2,'
+                                    + @noindexparam2 + ')>0';
+                    END;
+                IF ISNULL(@noindexparam3, '') <> ''
+                    AND ( ISNULL(@noindexop3, '') = '='
+                          OR ISNULL(@noindexop3, '') = 'LIKE'
+                        )
+                    AND ISNULL(@noindexvalue3, '') <> ''
+                    BEGIN
+                        IF @noindexop3 = '='
+                            SET @wheresql = @wheresql + ' AND '
+                                + @noindexparam3 + ' ' + @noindexop3 + ' '
+                                + @noindexvalue3;
+                        ELSE
+                            IF @noindexop3 = 'LIKE'
+                                SET @wheresql = @wheresql
+                                    + ' AND CHARINDEX(@noindexvalue3,'
+                                    + @noindexparam3 + ')>0';
+                    END;
+            END;
+		----------------------------------------------------
+		--方案一，查询一次，返回列全在索引中效率最高
+        IF @plan = 1
+            BEGIN
+                IF @selectcolumn = ''
+                    SELECT  @selectcolumn = @keyname;
+                SELECT  @selcolumn = @selectcolumn;
+                SET @sqlstr = 'with T as(select ' + @selcolumn
+                    + ',ROW_NUMBER() OVER(ORDER BY ' + @sortcolumn
+                    + ' ) AS ROWNUM' + ' FROM ' + @tablename + ' WHERE 1=1 ';
+                
+                SET @sqlstr = @sqlstr + @wheresql + ') ';
+                SET @sqlstr = @sqlstr + ' SELECT ' + @selcolumn + ' FROM T ';         
+            END;
+		----------------------------------------------------
+		--方案二，查询一次，返回所有列
+        IF @plan = 2
+            BEGIN
+                IF @selectcolumn = ''
+                    BEGIN
+                        SELECT  @getcolname = ' SELECT @selcolumn=dbo.ufn_GetAllColumns(@tablename,'''','''') ';
+                        EXEC sp_executesql @getcolname,
+                            N'@tablename NVARCHAR(4000),@selcolumn varchar(max) out',
+                            @tablename = @tablename,
+                            @selcolumn = @selcolumn OUT;
+                    END;
+                SET @sqlstr = 'with T as(select ' + @selcolumn
+                    + ',ROW_NUMBER() OVER(ORDER BY ' + @sortcolumn
+                    + ' ) AS ROWNUM' + ' FROM ' + @tablename + ' WHERE 1=1 ';
+                
+                SET @sqlstr = @sqlstr + @wheresql + ') ';
+                SET @sqlstr = @sqlstr + ' SELECT ' + @selcolumn + ' FROM T ';         
+            END;
+		----------------------------------------------------
+		--方案三，先查唯一列再联表，返回所有列，必须启用别名。
+        IF @plan = 3
+            BEGIN
+                SELECT  @getcolname = ' SELECT @selcolumn=dbo.ufn_GetAllColumns(@tablename,''a'','''') ';
+                EXEC sp_executesql @getcolname,
+                    N'@tablename NVARCHAR(4000),@selcolumn varchar(max) out',
+                    @tablename = @tablename, @selcolumn = @selcolumn OUT;
+           
+                SET @sqlstr = 'with T as(select ' + @keyname
+                    + ',ROW_NUMBER() OVER(ORDER BY ' + @sortcolumn
+                    + ' ) AS ROWNUM' + ' FROM ' + @tablename + ' WHERE 1=1 ';
+                
+                SET @sqlstr = @sqlstr + @wheresql + ') ';
+                SET @sqlstr = @sqlstr + ' SELECT ' + @selcolumn + ' FROM T 
+			LEFT JOIN ' + @tablename + ' a ON T.' + @keyname + ' = a.'
+                    + @keyname;
+            END;
+		----------------------------------------------------
+		--方案四，先查唯一列再联表，返回指定列，指定列必须添加别名前缀。
+        IF @plan = 4
+            BEGIN
+                IF @selectcolumn = ''
+                    SELECT  @selectcolumn = @keyname;
+                SELECT  @selcolumn = @selectcolumn;
+                SET @sqlstr = 'with T as(select ' + @selcolumn
+                    + ',ROW_NUMBER() OVER(ORDER BY ' + @sortcolumn
+                    + ' ) AS ROWNUM' + ' FROM ' + @tablename + ' a WHERE 1=1 ';
+                
+                SET @sqlstr = @sqlstr + @wheresql + ') ';
+                IF SUBSTRING(@selcolumn, 1, 2) <> 'a.'
+                    SELECT  @selcolumn = 'a.' + @selcolumn;
+                SET @sqlstr = @sqlstr + ' SELECT ' + @selcolumn + ' FROM T 
+			LEFT JOIN ' + @tablename + ' a ON T.' + @keyname + ' = a.'
+                    + @keyname;
+            END;
+		----------------------------------------------------
+        IF ISNULL(@keyvalue, '') = ''
+            SET @sqlstr = @sqlstr
+                + ' WHERE T.ROWNUM BETWEEN @beginrow AND @endrow ';
+
+        PRINT @sqlstr;
+        EXEC sp_executesql @sqlstr,
+            N'@indexvalue1 VARCHAR(1000),@indexvalue2 VARCHAR(1000),@indexvalue3 VARCHAR(1000),@indexvalue4 VARCHAR(1000),@indexvalue5 VARCHAR(1000),@indexvalue6 VARCHAR(1000),@indexvalue7 VARCHAR(1000),@indexvalue8 VARCHAR(1000),@indexvalue9 VARCHAR(1000),@fdate1 VARCHAR(10),@ddate1 VARCHAR(10),@fdate2 VARCHAR(10),@ddate2 VARCHAR(10),@keyvalue VARCHAR(50),@beginrow INT,@endrow INT,@noindexvalue1 VARCHAR(1000),@noindexvalue2 VARCHAR(1000),@noindexvalue3 VARCHAR(1000)',
+            @indexvalue1, @indexvalue2, @indexvalue3, @indexvalue4,
+            @indexvalue5, @indexvalue6, @indexvalue7, @indexvalue8,
+            @indexvalue9, @fdate1, @ddate1, @fdate2, @ddate2, @keyvalue,
+            @beginrow, @endrow, @noindexvalue1, @noindexvalue2, @noindexvalue3;
+           
+        SET NOCOUNT OFF;
+    END;
+
+GO
+
+
+```
 # 动态拼接防注入分页查询
 ```sql
     DECLARE @SQL NVARCHAR(MAX)--sp_executesql需要用NVARCHAR类型
@@ -184,6 +562,42 @@ ERROR_PROCEDURE()	返回出现错误的存储过程名称
 ERROR_LINE()	返回发生错误的行号
 ERROR_MESSAGE()	返回导致 CATCH 块运行的错误消息的完整文本
 
+```
+# 分割字符串
+```sql
+CREATE FUNCTION ufn_SplitStr
+    (
+      @str VARCHAR(MAX) ,  --要分割的字符串
+      @split VARCHAR(10) ,  --分隔符号
+      @index INT --取第几个元素
+    )
+RETURNS VARCHAR(1024)
+AS
+    BEGIN
+        DECLARE @location INT;
+        DECLARE @start INT;
+        DECLARE @next INT;
+        DECLARE @seed INT;
+
+        SET @str = LTRIM(RTRIM(@str));
+        SET @start = 1;
+        SET @next = 1;
+        SET @seed = LEN(@split);
+  
+        SET @location = CHARINDEX(@split, @str);
+        WHILE @location <> 0
+            AND @index > @next
+            BEGIN
+                SET @start = @location + @seed;
+                SET @location = CHARINDEX(@split, @str, @start);
+                SET @next = @next + 1;
+            END;
+        IF @location = 0
+            SELECT  @location = LEN(@str) + 1;
+ --这儿存在两种情况：1、字符串不存在分隔符号 2、字符串中存在分隔符号，跳出while循环后，@location为0，那默认为字符串后边有一个分隔符号。
+  
+        RETURN SUBSTRING(@str,@start,@location-@start);
+    END;
 ```
 # 分页
 ```sql
