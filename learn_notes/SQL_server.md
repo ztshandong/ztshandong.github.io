@@ -406,6 +406,54 @@ AS
 
 GO
 
+```
+# 获取所有列名
+```sql
+
+CREATE FUNCTION ufn_GetAllColumns
+    (
+      @tablename VARCHAR(50) ,
+      @tablealias VARCHAR(10) = '' ,
+      @columalias VARCHAR(10) = ''
+	)
+RETURNS VARCHAR(MAX)
+AS
+    BEGIN
+        DECLARE @columnlist1 VARCHAR(MAX)= ' ' ,
+            @lastchar CHAR(1);
+        IF @tablealias <> ''
+            BEGIN
+                SELECT  @lastchar = RIGHT(@tablealias, 1);
+                IF @lastchar <> '.'
+                    SET @tablealias = @tablealias + '.';
+            END;
+        IF @columalias <> ''
+            BEGIN
+                SELECT  @lastchar = RIGHT(@columalias, 1);
+                IF @lastchar <> '_'
+                    SET @columalias = @columalias + '_';
+                SELECT  @columnlist1 = @columnlist1 + @tablealias +'['+NAME+']'
+                        + ' as ' + @columalias + name + ' ,'
+                FROM    syscolumns
+                WHERE   id = OBJECT_ID(@tablename);
+                SELECT  @columnlist1 = LEFT(@columnlist1,
+                                            LEN(@columnlist1) - 1);
+            END;
+        ELSE
+            IF @columalias = ''
+                BEGIN
+                    SELECT  @columnlist1 = @columnlist1 + @tablealias + '['+NAME+']'
+                            + ' ,'
+                    FROM    syscolumns
+                    WHERE   id = OBJECT_ID(@tablename);
+                    SELECT  @columnlist1 = LEFT(@columnlist1,
+                                                LEN(@columnlist1) - 1);
+                END;
+        RETURN  ISNULL(@columnlist1,'');
+    END;
+
+GO
+
 
 ```
 # 动态拼接防注入分页查询
