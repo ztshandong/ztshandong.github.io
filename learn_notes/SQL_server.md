@@ -33,11 +33,11 @@ docker inspect --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 # 通用动态拼接防注入分页查询
 ```sql
 
-CREAT PROCEDURE [dbo].[zt_usp_TablePageEx]
+ALTER PROCEDURE [dbo].[zt_usp_TablePageEx]
     @plan INT = 1 ,--方案
     @tablename VARCHAR(50) ,--表名
-    @keyname VARCHAR(50) ,--聚合索引列名
-    @keyvalue VARCHAR(50) = '' ,--此参数有值即为查找单条数据
+    @keyname VARCHAR(50) ,--聚合索引列名，或从表外键
+    @keyvalue VARCHAR(50) = '' ,--此参数有值不匹配where
     @selectcolumn VARCHAR(255) = '' ,--返回字段
     @sortcolumn VARCHAR(255) = '' ,--排序字段
     @pagecount INT = 1 ,--每页记录数
@@ -88,16 +88,21 @@ AS
     BEGIN
 	/***************************************************
 	作者：张涛  QQ:28400798
-	功能：通用预编译防注入分页查询
+	功能：通用预编译防注入分页查询，只有=与LIKE
 	预留3个非索引查询位，尽量不要用
 	@sortcolumn留空为@keyname
 	方案一：直接查询，所有条件包括返回列全走索引最快，@selectcolumn留空返回@keyname
 	方案二：直接查询，@selectcolumn留空返回所有列
 	方案三：返回所有列，@selectcolumn无效，配合@keyvalue可当作GetBussinessByKey
 	方案四：若指定@selectcolumn则每个列名需添加固定前缀a.，留空返回@keyname
-	zt_usp_TablePageEx 2,'tb_TMS_YD','YDNO','','','',2000,1,'YDNO','LIKE','sh'
+	方案五：不指定@keyvalue返回两个表，第一个是总条数，指定@keyvalue同方案三一样
+	zt_usp_TablePageEx 3,'tb_TMS_YD','YDNO','SHSSS1','','',2000,1,'YDNO','LIKE','sh'
+
+	zt_usp_TablePageEx 5,'tb_TMS_YD','YDNO','','','',2000,1
 
 	如果能全走索引就用方案一，否则用方案三
+	需要分页总条数用方案五，@keyvalue留空
+	主从表查询主表方案三,查从表只能用方案二
 	***************************************************/
         SET NOCOUNT ON;	
         DECLARE @beginrow INT;
@@ -389,6 +394,75 @@ AS
                     + @keyname;
             END;
 		----------------------------------------------------
+		--方案五
+        IF @plan = 5
+            BEGIN
+                SELECT  @getcolname = ' SELECT @selcolumn=dbo.ufn_GetAllColumns(@tablename,''a'','''') ';
+                EXEC sp_executesql @getcolname,
+                    N'@tablename NVARCHAR(4000),@selcolumn varchar(max) out',
+                    @tablename = @tablename, @selcolumn = @selcolumn OUT;
+				--同方案三，返回数据带总条数，先查唯一列再联表，返回所有列，必须启用别名。
+                IF ISNULL(@keyvalue, '') = ''
+                    BEGIN
+                        CREATE TABLE #TMP
+                            (
+                              keyId VARCHAR(50) ,
+                              ROWNUM INT
+                            );
+                        
+                        SET @sqlstr = ' INSERT INTO	#TMP ( keyId, ROWNUM ) select '
+                            + @keyname + ',ROW_NUMBER() OVER(ORDER BY '
+                            + @sortcolumn + ' ) AS ROWNUM' + ' FROM '
+                            + @tablename + ' WHERE 1=1 ';
+
+                        SET @sqlstr = @sqlstr + @wheresql + ' ';
+
+                        DECLARE @sqlcount NVARCHAR(MAX)= '';
+
+                        SET @sqlcount = @sqlstr
+                            + ' SELECT COUNT(*) FROM #TMP;';
+
+                        SET @sqlstr = ' SELECT ' + @selcolumn + ' FROM #TMP 
+			LEFT JOIN ' + @tablename + ' a ON #TMP.keyId = a.' + @keyname;
+
+                        SET @sqlstr = @sqlstr
+                            + ' WHERE #TMP.ROWNUM BETWEEN @beginrow AND @endrow ';
+                       
+                        PRINT @sqlcount;
+                        PRINT @sqlstr;
+                        EXEC sp_executesql @sqlcount,
+                            N'@indexvalue1 VARCHAR(1000),@indexvalue2 VARCHAR(1000),@indexvalue3 VARCHAR(1000),@indexvalue4 VARCHAR(1000),@indexvalue5 VARCHAR(1000),@indexvalue6 VARCHAR(1000),@indexvalue7 VARCHAR(1000),@indexvalue8 VARCHAR(1000),@indexvalue9 VARCHAR(1000),@fdate1 VARCHAR(10),@ddate1 VARCHAR(10),@fdate2 VARCHAR(10),@ddate2 VARCHAR(10),@keyvalue VARCHAR(50),@noindexvalue1 VARCHAR(1000),@noindexvalue2 VARCHAR(1000),@noindexvalue3 VARCHAR(1000)',
+                            @indexvalue1, @indexvalue2, @indexvalue3,
+                            @indexvalue4, @indexvalue5, @indexvalue6,
+                            @indexvalue7, @indexvalue8, @indexvalue9, @fdate1,
+                            @ddate1, @fdate2, @ddate2, @keyvalue,
+                            @noindexvalue1, @noindexvalue2, @noindexvalue3;
+         --zt_usp_TablePageEx 5,'tb_TMS_YD','YDNO','','','',2000,1
+                   
+                        EXEC sp_executesql @sqlstr,
+                            N'@beginrow INT,@endrow INT',
+                            @beginrow = @beginrow, @endrow = @endrow;
+                        DROP TABLE #TMP;
+                        RETURN;
+                    END;
+                ELSE
+				--同方案三一样
+                    IF ISNULL(@keyvalue, '') <> ''
+                        BEGIN
+                            SET @sqlstr = 'with T as(select ' + @keyname
+                                + ',ROW_NUMBER() OVER(ORDER BY ' + @sortcolumn
+                                + ' ) AS ROWNUM' + ' FROM ' + @tablename
+                                + ' WHERE 1=1 ';
+                
+                            SET @sqlstr = @sqlstr + @wheresql + ') ';
+                            SET @sqlstr = @sqlstr + ' SELECT ' + @selcolumn
+                                + ' FROM T 
+			LEFT JOIN ' + @tablename + ' a ON T.' + @keyname + ' = a.'
+                                + @keyname;
+                        END;
+            END;
+		----------------------------------------------------
+		
         IF ISNULL(@keyvalue, '') = ''
             SET @sqlstr = @sqlstr
                 + ' WHERE T.ROWNUM BETWEEN @beginrow AND @endrow ';
@@ -403,8 +477,6 @@ AS
            
         SET NOCOUNT OFF;
     END;
-
-GO
 
 ```
 # 获取所有列名
