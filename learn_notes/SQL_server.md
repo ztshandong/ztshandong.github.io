@@ -574,7 +574,20 @@ GO
 ```
 # 常用方法
 ```sql
-select REPLACE(replace(replace(CONVERT(VARCHAR(10), getdate(), 120 ),'-',''),' ',''),':','')
+SELECT REPLACE(REPLACE(REPLACE(CONVERT(VARCHAR(10), GETDATE(), 120 ),'-',''),' ',''),':','')
+
+SELECT  CONVERT(VARCHAR(10), DATEADD(DD,-DAY(DATEADD(MONTH,-1,GETDATE()))+1,DATEADD(MONTH,-1,GETDATE())),120)    /*上个月一号*/
+
+SELECT   DATEADD(DAY,-DAY(GETDATE()),GETDATE())                                                                      /* 上月月底 */
+
+SELECT   DATEADD(DD,-DAY(GETDATE())+1,GETDATE())                                                                  /* 本月一号 */
+
+SELECT   DATEADD(DD,-DAY(DATEADD(MONTH,1,GETDATE())),DATEADD(MONTH,1,GETDATE()))            /* 本月底 */
+
+SELECT   DATEADD(DD,-DAY(DATEADD(MONTH,1,GETDATE()))+1,DATEADD(MONTH,1,GETDATE()))        /* 下月一号 */
+
+SELECT   DATEADD(DD,-DAY(DATEADD(MONTH,2,GETDATE())),DATEADD(MONTH,2,GETDATE()))            /* 下月月底 */
+
 ```
 # 序号
 ```sql
