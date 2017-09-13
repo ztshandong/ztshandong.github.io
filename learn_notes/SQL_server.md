@@ -528,6 +528,13 @@ GO
 
 
 ```
+# 查看包含字符串的存储过程
+```sql
+select   b.name   ,a.text   from   syscomments   a,sysobjects   b 
+where 
+charindex('字符串内容',a.text)>0    and 
+object_id(b.name)=a.id   and   b.xtype   in('P','TR')
+```
 # 动态拼接防注入分页查询
 ```sql
     DECLARE @SQL NVARCHAR(MAX)--sp_executesql需要用NVARCHAR类型
