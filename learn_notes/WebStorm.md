@@ -19,4 +19,7 @@
 ```sh
 idea.exe.vmoptions与idea64.exe.vmoptions添加
 -javaagent:JetbrainsCrack-2.6.2.jar
+
+http://idea.iteblog.com/key.php
 ```
+
