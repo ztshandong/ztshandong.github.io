@@ -22,6 +22,22 @@ sudo ufw delete allow 80/tcp
 sudo ufw allow from 192.168.254.254
 sudo ufw delete allow from 192.168.254.254
 ```
+# 安装gcc
+```sh
+sudo apt-get install -y build-essential --fix-missing
+```
+# 设置静态ip
+```sh
+vi /etc/network/interfaces
+这里注意可能不是eth0，找dhcp那个
+iface eth0 inet static
+address 192.168.1.100    
+netmask 255.255.255.0
+gateway 192.168.1.1
+dns-nameserver 192.168.1.1
+
+sudo /etc/init.d/networking restart
+```
 # ubuntu1604 vpn server  UDP 1701 500 4500
 ##### 安装
 ```sh
