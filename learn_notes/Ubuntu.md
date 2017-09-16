@@ -26,6 +26,13 @@ sudo ufw delete allow from 192.168.254.254
 ```sh
 sudo apt-get install -y build-essential --fix-missing
 ```
+# 安装icc
+```sh
+sudo vi ~/.bashrc
+export PATH=$PATH:/opt/intel/
+
+PATH就是whereis icc的路径
+```
 # 设置静态ip
 ```sh
 vi /etc/network/interfaces
