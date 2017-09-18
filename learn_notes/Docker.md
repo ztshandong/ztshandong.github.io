@@ -447,4 +447,11 @@ docker exec -it 9e893d773494 /bin/bash
 su oracle
 $ORACLE_HOME/bin/sqlplus / as sysdba
 
+Oracle 使用的实例名，用户名，密码如下
+---------------------------------------------
+hostname: localhost
+port: 1521
+sid: xe
+username: system
+password: oracle
 ```
