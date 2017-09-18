@@ -437,4 +437,14 @@ docker start alieclipse
 docker stop alieclipse
 docker rm alieclipse
 ```
+# Oracle
+```sh
+docker search oracle
+docker pull sath89/oracle-12c 
+docker run -d -p 8090:8080 -p 1521:1521 --name=oracle-12c -v ~/DB/oracle:/u01/app/oracle sath89/oracle-12c
+docker ps
+docker exec -it 9e893d773494 /bin/bash
+su oracle
+$ORACLE_HOME/bin/sqlplus / as sysdba
 
+```
