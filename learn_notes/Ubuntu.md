@@ -29,7 +29,7 @@ sudo apt-get install -y build-essential --fix-missing
 # 安装icc
 ```sh
 sudo vi ~/.bashrc
-export PATH=$PATH:/opt/intel/
+export PATH=$PATH:/opt/intel/bin
 
 PATH就是whereis icc的路径
 ```
@@ -114,6 +114,165 @@ int main()  {
 g++ main.cpp -ldl -o main
 执行./main
 ```
+# 编译TBB
+```c++
+sudo apt-get install -y libtbb-dev
+//vi tbbvars.sh
+//export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2018.0.128/linux/tbb/lib/ia32_lin/gcc4.4/
+
+testsort.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <cassert>
+#include <chrono>
+#include <iomanip>
+#include <tbb/task_scheduler_init.h>
+#include <tbb/parallel_sort.h>
+
+using namespace std;
+
+const int SIZE = 10000000;
+
+#define TIME_STD(X) { \
+    auto t0 = chrono::high_resolution_clock::now(); \
+    {X;} \
+    auto t1 = chrono::high_resolution_clock::now(); \
+    cout << setw(10) << fixed << (double)chrono::duration_cast<chrono::nanoseconds>(t1-t0).count() / (double)1000000000 << "ms " << #X << endl; \
+}
+
+int main(int argc, char* argv[])
+{
+    vector<int> vec_int(SIZE);
+    iota(begin(vec_int), end(vec_int), 0);
+    srand(0);
+    random_shuffle(begin(vec_int), end(vec_int));
+    
+    //TIME_STD(sort(begin(vec_int), end(vec_int)));
+    TIME_STD(tbb::task_scheduler_init _; tbb::parallel_sort(begin(vec_int), end(vec_int)));
+    assert(is_sorted(begin(vec_int), end(vec_int)));
+
+    return 0;
+}
+g++ testsort.cpp -o testsort  -I /opt/intel/tbb/include -ltbb -std=c++11
+
+
+
+
+
+
+#include "tbb/parallel_for.h"
+#include "tbb/task_scheduler_init.h"
+#include <iostream>
+#include <vector>
+
+struct mytask {
+  mytask(size_t n)
+    :_n(n)
+  {}
+  void operator()() {
+    for (int i=0;i<1000000;++i) {}  // Deliberately run slow
+    std::cerr << "[" << _n << "]";
+  }
+  size_t _n;
+};
+
+int main(int,char**) {
+
+  //tbb::task_scheduler_init init;  // Automatic number of threads
+  tbb::task_scheduler_init init(tbb::task_scheduler_init::default_num_threads());  // Explicit number of threads
+
+  std::vector<mytask> tasks;
+  for (int i=0;i<1000;++i)
+    tasks.push_back(mytask(i));
+
+  tbb::parallel_for(
+    tbb::blocked_range<size_t>(0,tasks.size()),
+    [&tasks](const tbb::blocked_range<size_t>& r) {
+      for (size_t i=r.begin();i<r.end();++i) tasks[i]();
+    }
+  );
+
+  std::cerr << std::endl;
+
+  return 0;
+}
+g++ -std=c++11 tbb_example.cpp -ltbb -o tbb_example
+```
+
+
+
+
+
+
+
+#include <cstdlib>
+#include <cmath>
+#include <complex>
+#include <ctime>
+#include <iostream>
+#include <iomanip>
+#include "tbb/tbb.h"
+#include "tbb/blocked_range.h"
+#include "tbb/parallel_for.h"
+#include "tbb/parallel_for_each.h"
+#include "tbb/task_scheduler_init.h"
+
+using namespace std;
+using namespace tbb;
+typedef complex<double> dcmplx;
+
+dcmplx random_dcmplx ( void )
+{
+   double e = 2*M_PI*((double) rand())/RAND_MAX;
+   dcmplx c(cos(e),sin(e));
+   return c;
+}
+
+class ComputePowers
+{
+   vector<dcmplx>  c; // numbers on input
+   int d;           // degree
+   mutable vector<dcmplx>  result;  // output
+   public:
+      ComputePowers(vector<dcmplx> x, int deg, vector<dcmplx> y): c(x), d(deg), result(y) { }
+
+      void operator() ( blocked_range<size_t>& r ) const
+      {
+         for(int i=r.begin(); i!=r.end(); ++i)
+         {
+            dcmplx z(1.0,0.0);
+            for(int j=0; j < d; j++) {
+                z = z*c[i];
+            };
+            result[i] = z;
+         }
+      }
+};
+
+int main ()
+{
+   int deg = 100;
+   int dim = 10;
+
+   vector<dcmplx> r;
+   for(int i=0; i<dim; i++)
+     r.push_back(random_dcmplx());
+
+   vector<dcmplx> s(dim);
+
+   task_scheduler_init init(task_scheduler_init::automatic);
+
+   parallel_for(blocked_range<size_t>(0,dim),
+                ComputePowers(r,deg,s));
+   for(int i=0; i<dim; i++)
+       cout << scientific << setprecision(4)
+       << "x[" << i << "] = ( " << s[i].real()
+       << " , " << s[i].imag() << ")\n";
+   return 0;
+}
+g++ -std=c++11 test1.cpp -ltbb -o test1
 # 设置静态ip
 ```sh
 vi /etc/network/interfaces
