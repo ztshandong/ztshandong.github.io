@@ -31,6 +31,8 @@ sudo apt-get install -y build-essential --fix-missing
 sudo vi ~/.bashrc
 export PATH=$PATH:/opt/intel/bin
 
+source ~/.bashrc
+
 PATH就是whereis icc的路径
 ```
 # C++编译调用so文件
