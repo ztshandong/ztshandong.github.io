@@ -15,4 +15,24 @@ sudo vi /etc/ld.so.conf.d/libprotobuf.conf
 /usr/local/lib
 
 sudo ldconfig
+
+
+
+
+Linux
+sudo apt-get install build-essential autoconf libtool
+sudo apt-get install libgflags-dev libgtest-dev
+sudo apt-get install clang libc++-dev
+sudo apt-get install -y pkg-config
+
+macOS
+sudo xcode-select --install
+brew install autoconf automake libtool shtool
+brew install gflags
+
+git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
+cd grpc
+git submodule update --init
+make
+sudo make install
 ```
