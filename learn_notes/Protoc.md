@@ -2,9 +2,22 @@
 ```sh
 https://github.com/google/protobuf/releases/
 
-wget https://github.com/google/protobuf/releases/download/v3.4.1/protobuf-cpp-3.4.1.tar.gz
-tar -zxvf protobuf-cpp-3.4.1.tar.gz
+Linux
+sudo apt-get install build-essential autoconf libtool
+sudo apt-get install libgflags-dev libgtest-dev
+sudo apt-get install clang libc++-dev
+sudo apt-get install -y pkg-config
+
+macOS
+sudo xcode-select --install
+brew install autoconf automake libtool shtool
+brew install gflags
+
+
+https://github.com/google/protobuf/archive/v3.4.1.tar.gz
+tar -zxvf v3.4.1.tar.gz
 cd protobuf-3.4.1
+./autogen.sh
 ./configure
 make
 make check
@@ -17,18 +30,6 @@ sudo vi /etc/ld.so.conf.d/libprotobuf.conf
 sudo ldconfig
 
 
-
-
-Linux
-sudo apt-get install build-essential autoconf libtool
-sudo apt-get install libgflags-dev libgtest-dev
-sudo apt-get install clang libc++-dev
-sudo apt-get install -y pkg-config
-
-macOS
-sudo xcode-select --install
-brew install autoconf automake libtool shtool
-brew install gflags
 
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
