@@ -321,3 +321,195 @@ public class HelloWorldClientFactory extends BasePooledObjectFactory<HelloWorldC
     }
 }
 ```
+
+
+#Ubuntu c++
+```c++
+apt-cache search liblssl
+sudo apt-get install -y libssl-dev
+
+examples.proto
+syntax = "proto3";  
+  
+message SearchRequest  
+{  
+    string Request = 1;  
+}  
+  
+message SearchResponse  
+{  
+    string Response = 2;  
+}  
+  
+service SearchService {  
+        rpc Search (SearchRequest) returns (SearchResponse);  
+}  
+
+protoc --cpp_out=./ examples.proto  
+protoc --grpc_out=./ --plugin=protoc-gen-grpc=which grpc_cpp_plugin examples.proto  
+
+
+
+
+
+
+examples_server.cc
+#include <iostream>  
+#include <memory>  
+#include <string>  
+  
+#include <grpc++/grpc++.h>  
+#include <grpc/grpc.h>  
+#include <grpc++/server.h>  
+#include <grpc++/server_builder.h>  
+#include <grpc++/server_context.h>  
+  
+#include "examples.grpc.pb.h"  
+  
+using grpc::Server;  
+using grpc::ServerBuilder;  
+using grpc::ServerContext;  
+using grpc::Status;  
+  
+class SearchRequestImpl final : public SearchService::Service {  
+  Status Search(ServerContext* context, const SearchRequest* request,  
+                  SearchResponse* reply) override {  
+    std::string prefix("Hello ");  
+    reply->set_response(prefix + request->request());  
+    std::cout << "Hi" << std::endl;  
+    return Status::OK;  
+  }  
+};  
+  
+void RunServer() {  
+  std::string server_address("0.0.0.0:50051");  
+  SearchRequestImpl service;  
+  
+  ServerBuilder builder;  
+  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());  
+  builder.RegisterService(&service);  
+  std::unique_ptr<Server> server(builder.BuildAndStart());  
+  std::cout << "Server listening on " << server_address << std::endl;  
+  
+  server->Wait();  
+}  
+  
+int main(int argc, char** argv) {  
+  RunServer();  
+  
+  return 0;  
+}  
+
+
+
+
+
+examples_client.cc
+#include <iostream>  
+#include <memory>  
+#include <string>  
+  
+#include <grpc++/grpc++.h>  
+#include <grpc/support/log.h>  
+  
+#include "examples.grpc.pb.h"  
+  
+using grpc::Channel;  
+using grpc::ClientAsyncResponseReader;  
+using grpc::ClientContext;  
+using grpc::CompletionQueue;  
+using grpc::Status;  
+  
+  
+class ExampleClient {  
+ public:  
+  explicit ExampleClient(std::shared_ptr<Channel> channel)  
+      : stub_(SearchService::NewStub(channel)) {}  
+   
+  std::string Search(const std::string& user) {  
+   
+    SearchRequest request;  
+    request.set_request(user);  
+   
+    SearchResponse reply;  
+     
+    ClientContext context;  
+  
+    CompletionQueue cq;  
+  
+    Status status;  
+  
+    std::unique_ptr<ClientAsyncResponseReader<SearchResponse> > rpc(  
+        stub_->AsyncSearch(&context, request, &cq));  
+  
+    rpc->Finish(&reply, &status, (void*)1);  
+    void* got_tag;  
+    bool ok = false;  
+    
+    GPR_ASSERT(cq.Next(&got_tag, &ok));  
+  
+     
+    GPR_ASSERT(got_tag == (void*)1);  
+    
+    GPR_ASSERT(ok);  
+  
+    if (status.ok()) {  
+      return reply.response();  
+    } else {  
+      return "RPC failed";  
+    }  
+  }  
+  
+ private:  
+   
+  std::unique_ptr<SearchService::Stub> stub_;  
+};  
+  
+int main(int argc, char** argv) {  
+  ExampleClient client(grpc::CreateChannel(  
+      "localhost:50051", grpc::InsecureChannelCredentials()));  
+  std::string user("world");  
+  std::string reply = client.Search(user);  // The actual RPC call!  
+  std::cout << "client received: " << reply << std::endl;  
+  
+  return 0;  
+}
+
+
+
+
+
+
+Makefile
+subdir = ./  
+  
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig  
+  
+SOURCES = $(wildcard $(subdir)*.cc)  
+SRCOBJS = $(patsubst %.cc,%.o,$(SOURCES))  
+CC = g++  
+  
+%.o:%.cc  
+    $(CC) -std=c++11 -I/usr/local/include -pthread -c $< -o $@  
+  
+all: client server  
+  
+client: examples.grpc.pb.o examples.pb.o examples_client.o  
+    $(CC) $^ -L/usr/local/lib `pkg-config --libs grpc++ grpc` -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed -lprotobuf -lpthread -ldl -lssl -o $@  
+  
+server: examples.grpc.pb.o examples.pb.o examples_server.o  
+    $(CC) $^ -L/usr/local/lib `pkg-config --libs grpc++ grpc` -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed -lprotobuf -lpthread -ldl -lssl -o $@  
+#chmod 777 $@  
+  
+clean:  
+    sudo rm *.o  
+
+特别说明：Makefile中$(CC)前面要用TAB，如果提示分隔符错误要重新用TAB设置锁进
+
+
+
+
+
+运行make之后会生成server与client
+
+```

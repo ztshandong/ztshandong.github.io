@@ -13,14 +13,16 @@ sudo xcode-select --install
 brew install autoconf automake libtool shtool
 brew install gflags
 
-
-https://github.com/google/protobuf/archive/v3.4.1.tar.gz
+Ubuntu下只用过c++的，后面grpc要用which grpc_cpp_plugin
+https://github.com/google/protobuf/releases/download/v3.4.1/protobuf-cpp-3.4.1.tar.gz
 tar -zxvf v3.4.1.tar.gz
 cd protobuf-3.4.1
-./autogen.sh
+
+如果下的是https://github.com/google/protobuf/archive/v3.4.1.tar.gz就要先./autogen.sh
+
 ./configure
 
-MacOS要用LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make
+MacOS好像要用LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make
 make
 make check
 sudo make install
