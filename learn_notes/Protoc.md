@@ -1,4 +1,10 @@
-# Ubuntu安装
+#idea
+```sh
+Plugins里搜索安装
+FileTypes添加*.proto
+```
+
+# Ubuntu安装protobuf
 ```sh
 https://github.com/google/protobuf/releases/
 
@@ -37,6 +43,9 @@ sudo ldconfig
 
 MacOS貌似brew install protobuf即可
 
+```
+#Ubuntu安装grpc
+```sh
 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 cd grpc
 git submodule update --init

@@ -1,3 +1,33 @@
+# 官方c++
+```sh
+git clone https://github.com/grpc/grpc.git
+cd examples/cpp/route_guide
+这个文件夹下的文件就是要用的文件，还有个route_guide.proto，注意修改Makefile
+执行make之后就会生成route_guide_server与route_guide_client
+```
+# 官方c#
+```sh
+git clone https://github.com/grpc/grpc.git
+cd examples/csharp/route_guide
+这个文件夹下的文件就是要用的文件，还有个route_guide.proto，打开RouteGuide.sln之后还原Nuget，会下载相应的工具，修改generate_protos.bat之后就可以生成RouteGuide.cs与RouteGuideGrpc.cs两个文件，然后自己添加server与client两个项目
+```
+# 官方java
+```sh
+git clone https://github.com/grpc/grpc-java.git
+cd grpc-java/examples
+这个文件夹下的文件就是要用的文件，还有个route_guide.proto，要注意pom设置
+进入pom所在目录执行 mvn compile
+target-generated-sources-protobuf下可看到生成的文件
+然后自己实现server与client
+```
+# 说明
+```sh
+官方教程可实现c++，c#，java三者互通，前提是proto要用同一个文件。
+```
+
+
+
+
 #java
 ```java
 [原文](http://www.cnblogs.com/boshen-hzb/p/6555221.html)
@@ -66,7 +96,7 @@ pom
         </plugins>
     </build>
 
-test.proto
+resources下建立个proto文件夹创建test.proto
 syntax = "proto3";
 package grpc;
 option java_package = "com.mingluck.grpc";
@@ -346,7 +376,7 @@ service SearchService {
 }  
 
 protoc --cpp_out=./ examples.proto  
-protoc --grpc_out=./ --plugin=protoc-gen-grpc=which grpc_cpp_plugin examples.proto  
+protoc --grpc_out=./ --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` examples.proto  
 
 
 
