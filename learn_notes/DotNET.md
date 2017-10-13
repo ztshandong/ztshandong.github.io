@@ -13,7 +13,7 @@ using namespace System::Reflection;
 项目属性-生成事件-预先生成事件-命令行：sn -k $(OutDir)\cppkey.snk
 
 生成cpp.dll
-发布时使用Dotfuscator混淆后进行签名
+发布时使用Dotfuscator混淆时可同时签名，否则就执行
 sn -Ra cpp.dll cppkey.snk
 然后就可以给其他项目使用了
 
@@ -22,7 +22,7 @@ c#项目属性中选择为程序集签名与延迟签名，选择csharp.public.s
 延迟签名后程序不能直接运行，需要使用-Vr免验证Hash（但是直接混淆后貌似可以运行）
 sn -Vr test.dll
 sn -Vr test.exe
-发布时使用Dotfuscator混淆后进行签名
+发布时使用Dotfuscator混淆时可同时签名，否则就执行
 sn -Ra test.dll csharp.snk
 sn -Ra test.exe csharp.snk
 
