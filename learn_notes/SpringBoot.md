@@ -119,6 +119,56 @@ public class HelloController {
     }
 }
 ```
+# 独立部署
+```java
+http://blog.csdn.net/asdfsfsdgdfgh/article/details/52127562
+SpringBoot的应用可以直接打成一个可运行的jar包， 
+你无需发愁为了不同应用要部署多个Tomcat。但是实际部署时你会发现打成Jar包的方式有一个致命的缺点， 
+当你改动了一个资源文件、或者一个类时， 打要往服务器重新上传全量jar包。
+这样你本地开发环境直接用控制台方式运行，部署到服务器时打成普通war包部署。这样既享受到了SpringBoot开发带来的快感， 
+又避免了增量部署不方便的问题。可谓两全其美。
+
+修改pom.xml将打包方式改成war
+<packaging>war</packaging>
+
+SpringBoot默认Servlet容器是基于Tomcat8的
+要支持低版本Tomcat需要在maven中指定Tomat版本，配置如下：
+<properties>
+    <tomcat.version>7.0.69</tomcat.version>
+</properties>
+然后依赖中加上（这个其实不加也行， 官方文档是加上的）
+<dependency>
+    <groupId>org.apache.tomcat</groupId>
+    <artifactId>tomcat-juli</artifactId>
+    <version>${tomcat.version}</version>
+</dependency>
+
+这样配置打成包岂不是换个Tomcat版本就要重新打次包？ 既然是由于SpringBoot内部的Servlet容器造成了这个限制， 那我不用
+<!-- 打war包时加入此项， 告诉spring-boot tomcat相关jar包用外部的，不要打进去 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-tomcat</artifactId>
+    <scope>provided</scope>
+</dependency>
+
+maven-war-plugin (可选) 
+与maven-resources-plugin类似，当你有一些自定义的打包操作， 比如有非标准目录文件要打到war包中或者有配置文件引用了pom中的变量。 具体用法参见官方文档：http://maven.apache.org/components/plugins/maven-war-plugin/
+
+需要继承SpringBootServletInitializer，并重写configure()方法，将Spring Boot的入口类设置进去。
+// 若要部署到外部servlet容器,需要继承SpringBootServletInitializer并重写configure()
+@SpringBootApplication
+public class AhutApplication extends SpringBootServletInitializer{
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // 设置启动类,用于独立tomcat运行的入口
+        return builder.sources(MyWebApplication.class);
+    }
+
+}
+
+
+```
 
 - [spring data](http://projects.spring.io/spring-data/)
 - [spring boot](http://blog.didispace.com/Spring-Boot%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/)
