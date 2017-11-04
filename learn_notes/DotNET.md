@@ -29,3 +29,11 @@ sn -Ra test.exe csharp.snk
 csharp.public.snk是提取出来的公钥，给开发人员使用。
 csharp.snk是公私钥对，要由专人保管。
 ```
+
+# Mac DotNet
+```sh
+dotnet: command not found
+打开新终端，如果还不行就执行下面两句
+ln -s /usr/local/share/dotnet/bin/dotnet /usr/local/bin/
+ln -s /usr/local/share/dotnet/bin/csc /usr/local/bin/
+```
