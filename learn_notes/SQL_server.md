@@ -3,6 +3,11 @@
 - [mysql与sqlserver互转](http://blog.csdn.net/zzq900503/article/details/17505295)
 - [mysql与sqlserver互转](https://www.bbsmax.com/A/GBJrnDxBJ0/)
 
+# Win10安装
+```sh
+Dism /online /enable-feature /featurename:NetFX3 /All /Source:D:\sources\sxs /LimitAccess
+```
+
 # CentOS7-SQLServer，你不会真的在Unix上还要装SQLServer吧，看看就行
 ```java
 yum -y install wget
