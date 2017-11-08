@@ -92,3 +92,45 @@ int main()  {
 g++ main.cpp -ldl -o main -I /opt/intel/tbb/include -ltbb -std=c++11 
 执行./main
 ```
+
+# DotNet Core Import Cplus in linux
+```c#
+testtbb.cpp
+#include<iostream>
+#include<tbb/tbb.h>
+#include<tbb/parallel_for.h>
+using namespace std;
+using namespace tbb;  
+extern "C"
+{
+int tbbtest(int i){
+       if(i>3)
+                 cout<<"hello Class Test>3"<<endl;
+       else
+                 parallel_for(0,10,[](int v){cout<< v <<" ";});
+        return 0;
+}
+int main(){
+    tbbtest(9);
+}
+}
+g++ -shared -fpic -lm -ldl -o libtesttbb.so testtbb.cpp -ltbb -std=c++11 
+
+
+
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace PInvokeSamples {
+    public static class Program {
+       [DllImport("libtesttbb.so")]
+        private static extern int tbbtest(int i);
+
+        public static void Main(string[] args){
+            tbbtest(4);
+            Console.WriteLine("ok");
+        }
+    }
+}
+```
