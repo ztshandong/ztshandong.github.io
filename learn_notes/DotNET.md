@@ -48,3 +48,17 @@ sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsof
 sudo apt-get update
 sudo apt-get install dotnet-sdk-2.0.2 -y
 ```
+
+# DotNet Core WPF
+```sh
+windows下可安装Avalonia.vsix
+git clone https://github.com/AvaloniaUI/Avalonia.git
+git submodule update --init
+
+linux/osx
+git clone https://github.com/AvaloniaUI/Avalonia.git
+git submodule update --init --recursive
+samples/ControlCatalog.NetCore
+dotnet restore
+dotnet run
+```
