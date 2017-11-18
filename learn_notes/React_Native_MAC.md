@@ -85,6 +85,11 @@ vi ~/.bash_profile
 export ANDROID_HOME="/usr/local/opt/android-sdk"
 export GRADLE_HOME=/usr/local/opt/gradle
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+通过如果通过Android Studio安装的sdk里面有sdk
+export PATH=${PATH}:~/Library/Android/sdk/ndk-bundle
+A_NDK_ROOT=~/Library/Android/sdk/ndk-bundle
+export A_NDK_ROOT
 :wq
 然后使用下列命令使其立即生效（否则重启后才生效）：
 source ~/.bash_profile
