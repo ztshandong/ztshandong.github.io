@@ -617,7 +617,7 @@ STUFF(
 (SELECT ','+B.DocNo FROM dbo.tb_tableB AS B
 WHERE B.YDNO=A.YDNO FOR XML PATH (''))
 ,1,1,'')
-FROM dbo.tb_tableA A WHERE 1=1
+FROM dbo.tb_table A WHERE 1=1
 ORDER BY A.CreationDate DESC
 ```
 # 游标
@@ -946,7 +946,7 @@ UPDATE BackDB.dbo.sys_SystemSettings SET ParamValue='' WHERE ParamCode='Ali_KeyS
 
 
 INSERT INTO BackDB.dbo.dt_Customer
-        ( OrgCode,DataType,CustomerSN,CustomerCode,CustomerName ,
+        ( col2,DataType,CustomerSN,CustomerCode,CustomerName ,
           ShortName,ZJM,Station,Contacts,Tel ,
           Mobile,Address,Fax,Email,TrustLevel ,
           Tax,Bank,BankAccount,SalesPerson,SalesDeputy ,
@@ -979,7 +979,7 @@ GETDATE(),'admin',GETDATE(),'admin',6,
           LastUpdateDate ,
           LastUpdatedBy ,
           AccountEMail ,
-          OrgCode ,
+          col2 ,
           IsCustomerAdmin ,
           ShowOtherDoc
         )
@@ -992,7 +992,7 @@ VALUES  ( 'A33D83C6815749EB8524737CEE4AB94B' , -- CustomerCode - varchar(32)
           GETDATE() , -- LastUpdateDate - datetime
           'admin' , -- LastUpdatedBy - varchar(20)
           '' , -- AccountEMail - varchar(30)
-          'SH' , -- OrgCode - varchar(10)
+          'SH' , -- col2 - varchar(10)
           'Y' , -- IsCustomerAdmin - char(1)
           'Y'  -- ShowOtherDoc - char(1)
         )
@@ -1370,4 +1370,22 @@ set @s='SELECT @count=COUNT(*) FROM Login WHERE UserName='''+CAST(@userName AS N
 EXEC('DECLARE @count int;' +@s+'select @count');
 END
 
+```
+
+# 递归查询子级
+```sql
+			  ;
+        WITH    T AS ( SELECT   *
+                       FROM     tb_table
+                       WHERE    col = '1001'
+                                AND col2 = 'SH'
+                       UNION ALL
+                       SELECT   A.*
+                       FROM     tb_table A
+                                JOIN T ON A.ParentID = T.col
+                                WHERE A.col2 = 'SH'
+                     )
+            SELECT  *
+            --INTO    #ALL
+            FROM    T; 
 ```
