@@ -1,3 +1,25 @@
+# docker
+```sh
+SHOW VARIABLES LIKE 'character_set_%';
+SET NAMES 'utf8';
+alter database name character set utf8;#修改数据库成utf8的.
+alter table type character set utf8;#修改表用utf8.
+alter table type modify type_name varchar(50) CHARACTER SET utf8;#修改字段用utf8
+
+etc/mysql/mysql.conf.d/mysql.cnf
+[mysqld]
+default-character-set = utf8
+character_set_server = utf8
+[mysql]
+default-character-set = utf8
+[mysql.server]
+default-character-set = utf8
+[mysqld_safe]
+default-character-set = utf8
+[client]
+default-character-set = utf8
+```
+
 # CentOS7-MySQL安装
 ```sh
 https://dev.mysql.com/downloads/repo/yum/
