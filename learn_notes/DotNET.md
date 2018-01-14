@@ -313,7 +313,24 @@ namespace NetCore
         }
     }
 }
+```
+
+# linux下netcore调用c++
+```sh
+cpp的语法不同  Test2为例
+windows:extern"C" _declspec(dllexport) int Test2(char* flowno, char* salesman, int offlinenum, char* offlinegoods, int onlinenum, char* onlinegoods, char** password, char** memo);
+
+linux:  extern"C" int Test2(char* flowno, char* salesman, int offlinenum, char* offlinegoods, int onlinenum, char* onlinegoods, char** password, char** memo);
+
+windows:printf("&salesman = 0x%x\n", &salesman);
+linux:  printf("&salesman = %p\n", (void *)salesman);
+
+windows:printf("password = %s\n", password);
+linux:  printf("password = %s\n", *password);
+
+g++ -shared -fpic -lm -ldl -o libCpp.so Cpp.cpp -ltbb -std=c++11 
 
 
+linux使用 uintptr_t 需要 #include <stdint.h>
 
 ```
