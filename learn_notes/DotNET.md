@@ -89,4 +89,231 @@ dotnet restore
 dotnet run
 ```
 
+# windows调用c++
+```sh
+Cpp项目
 
+DLL.h
+extern"C" _declspec(dllexport) char* strcpyTest(char* dest, char* sour);
+
+extern"C" _declspec(dllexport) int Test2(char* flowno, char* salesman, int offlinenum, char* offlinegoods, int onlinenum, char* onlinegoods, char** password, char** memo);
+
+extern"C" _declspec(dllexport) int Test3(char* c);
+
+extern"C" _declspec(dllexport) void Test4();
+
+extern"C" _declspec(dllexport) void Test5();
+
+extern"C" _declspec(dllexport) int Test6();
+
+DLL.cpp
+#include "stdafx.h"  
+#include "DLL.h"  
+#include<stdio.h>
+char* strcpyTest(char* dest, char* sour)
+{
+	char* temp = dest;
+	while ('\0' != *sour)
+	{
+		*dest = *sour;
+		dest++;
+		sour++;
+	}
+	*dest = '\0';
+	return temp;
+}
+
+int Test2(char* flowno, char* salesman, int offlinenum, char* offlinegoods, int onlinenum, char* onlinegoods, char** password, char** memo)
+{
+	printf("salesman = %s\n", salesman);
+	printf("&salesman = 0x%x\n", &salesman);
+
+	printf("password = %s\n", password);
+	printf("&password = 0x%x\n", &password);
+	return 9527;
+}
+
+
+
+
+class CPointer
+{
+public:
+	CPointer() {};
+	~CPointer() {};
+	int	Cptest() { return 123; };
+public:
+	static char * m_p;
+};
+
+static CPointer *cp;
+
+int Test6()
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		if (NULL != cp)
+		{
+			printf("del %d\n", i);
+			cp= NULL;
+			delete[]cp;
+		}
+		printf("%d\n", i);
+		cp = new CPointer;
+		printf("%d\n", cp->Cptest()); 
+	}
+	return 8341;
+}
+
+char * CPointer::m_p = nullptr;
+
+int Test3(char* c)
+{
+	for (int i = 0; i < 10; ++i)
+	{
+		if (nullptr != CPointer::m_p)
+		{
+			//char * p = CPointer::m_p;
+			//delete[]p;
+			delete[]CPointer::m_p;
+			//p = nullptr;
+			//CPointer::m_p = nullptr;
+		}
+		printf("%d\n", i);
+		printf("%s\n", c);
+		CPointer::m_p = new char[1024 * 1024];
+	}
+	return 8341;
+}
+
+
+
+void Test4() {
+
+	int i = 5;
+	int *p = &i;
+	int j = (int)p;
+
+	printf("\n");
+	printf("int i = 5;\n");
+	printf("int *p = &i;\n");
+	printf("int j = (int)p;\n");
+	printf("\n");
+
+	printf("i= %d, &i= 0x%x\n", i, &i);
+	printf("&p=: 0x%x, Value of P is: 0x%x=%d, *p=: %d\n", &p, p, p, *p);
+	if (p == &i)
+		printf("p == &i\n");
+	printf("j = %d\n", j);
+	printf("j = 0x%x\n", j);
+	//printf("*(int*)j=: %d\n", *(int*)j);
+
+	volatile uintptr_t iptr = j;
+	unsigned int *ptr = (unsigned int *)iptr;
+
+	printf("ptr= 0x%x\n", ptr);
+}
+
+
+void Test5() {
+	int n = 5;
+	char c = 'A';
+	void *p = &n;
+	p = &c;
+	short *p2 = (short*)p;
+	printf("\n");
+	printf("p= 0x%x\n", p);
+	printf("p2= 0x%x\n", p2);
+
+	
+}
+
+
+unsigned int *g(void) {
+
+	int i = 5;
+	int *p = &i;
+	int j = (int)p;
+
+	volatile uintptr_t iptr = j;
+	unsigned int *ptr = (unsigned int *)iptr;
+	
+	printf("Value of ptr is 0x%x\n", ptr);
+	printf("Value of ptr is %d\n", *ptr);
+
+
+	return ptr;
+}
+
+.NetCore项目
+using System;
+using System.Runtime.InteropServices;
+
+namespace NetCore
+{
+    class Program
+    {
+        [DllImport("Cpp.dll", EntryPoint = "strcpyTest", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr strcpyTest(ref byte dest, string sour);
+
+
+        [DllImport("Cpp.dll", EntryPoint = "Test2" )]//CharSet = CharSet.Ansi
+        public static extern IntPtr Test2(string flowno, string salesman, int offlinenum, string offlinegoods, int onlinenum, string onlinegoods, ref string password, ref string memo);
+
+        [DllImport("Cpp.dll", EntryPoint = "Test3", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr Test3(string sour);
+
+        [DllImport("Cpp.dll", EntryPoint = "Test4", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr Test4( );
+
+        [DllImport("Cpp.dll", EntryPoint = "Test5", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr Test5();
+
+        [DllImport("Cpp.dll", EntryPoint = "Test6", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr Test6();
+
+        static void Main(string[] args)
+        {
+            string strSour = "CS Call C++ Dll!";
+
+            Byte[] bPara = new Byte[100];    //新建字节数组  
+
+            IntPtr pRet = strcpyTest(ref bPara[0], strSour);
+            string strGet = System.Text.Encoding.Default.GetString(bPara, 0, bPara.Length);    //将字节数组转换为字符串  
+            string strRet = Marshal.PtrToStringAnsi(pRet);
+
+            Console.WriteLine("源字符串：");
+            Console.WriteLine(strSour);
+
+            Console.WriteLine("传出值：");
+            Console.WriteLine(strGet);
+
+            Console.WriteLine("返回值：");
+            Console.WriteLine(strRet);
+
+            string strPwd = new string('a', 200);
+            string strMemo = new string('b', 100);
+
+            string a = "2011080001";
+            string b = "中文";
+            string c = "380000001:13871061222:10:000000";
+
+            IntPtr k = Test2(a, b, 0, "", 1, c, ref strPwd, ref strMemo);
+            IntPtr aa = k;
+            int i= aa.ToInt32();
+
+            Test3("abc");
+
+            Test4();
+
+            Test5();
+
+            Test6();
+
+        }
+    }
+}
+
+
+
+```
