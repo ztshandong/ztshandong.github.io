@@ -133,3 +133,267 @@ private static Dictionary<string, string> GetSqlString(string sql)
                 list.add(usr);
             }
 ```
+
+# DataBaseConnFactory
+```c#
+App.config
+  <connectionStrings>
+    <add name="Conn1" connectionString="Server=127.0.0.1,1234;Database=DBName;User ID=sa;Password=123456; Max Pool Size=512; Pooling=true;Connect Timeout=30" providerName="System.Data.SqlClient" />
+    <add name="EncryptKey" connectionString="123456" />
+  </connectionStrings>
+
+  public class DataBaseConnFactory
+    {
+        private string Conn1 = System.Configuration.ConfigurationManager.ConnectionStrings[WebApiGlobal.Conn1].ConnectionString;
+
+        private static Dictionary<ChooseDataBase, string> Conn4StringDataBase = new Dictionary<ChooseDataBase, string>();
+        private static Dictionary<ChooseDataBase, string> CheckDataBase4UserKey = new Dictionary<ChooseDataBase, string>();
+
+        private static readonly Lazy<DataBaseConnFactory> lazy = new Lazy<DataBaseConnFactory>(() => new DataBaseConnFactory());
+        public static DataBaseConnFactory Instance { get { return lazy.Value; } }
+
+        private DataBaseConnFactory()
+        {
+            Conn4StringDataBase.Add(ChooseDataBase.Test, Conn1);
+            CheckDataBase4UserKey.Add(ChooseDataBase.Test, ChooseDataBase.Test.ToString());
+        }
+        public string GetConnString(ChooseDataBase chooseDataBase)
+        {
+            return Conn4StringDataBase[chooseDataBase];
+        }
+       
+    }
+
+
+public class ProviderFactory
+    {
+        private static Dictionary<DbProviderType, string> providerInvariantNames = new Dictionary<DbProviderType, string>();
+        private static Dictionary<DbProviderType, DbProviderFactory> providerFactoies = new Dictionary<DbProviderType, DbProviderFactory>(20);
+        private static readonly Lazy<ProviderFactory> lazy = new Lazy<ProviderFactory>(() => new ProviderFactory());
+        public static ProviderFactory Instance { get { return lazy.Value; } }
+        private ProviderFactory()
+        {
+            //加载已知的数据库访问类的程序集  
+            providerInvariantNames.Add(DbProviderType.SqlServer, "System.Data.SqlClient");
+            //providerInvariantNames.Add(DbProviderType.OleDb, "System.Data.OleDb");//Excel单独处理
+            providerInvariantNames.Add(DbProviderType.ODBC, "System.Data.ODBC");
+            providerInvariantNames.Add(DbProviderType.Oracle, "Oracle.DataAccess.Client");
+            providerInvariantNames.Add(DbProviderType.MySql, "MySql.Data.MySqlClient");
+            providerInvariantNames.Add(DbProviderType.SQLite, "System.Data.SQLite");
+            providerInvariantNames.Add(DbProviderType.Firebird, "FirebirdSql.Data.Firebird");
+            providerInvariantNames.Add(DbProviderType.PostgreSql, "Npgsql");
+            providerInvariantNames.Add(DbProviderType.DB2, "IBM.Data.DB2.iSeries");
+            providerInvariantNames.Add(DbProviderType.Informix, "IBM.Data.Informix");
+            providerInvariantNames.Add(DbProviderType.SqlServerCe, "System.Data.SqlServerCe");
+        }
+        /// <summary>  
+        /// 获取指定数据库类型对应的程序集名称  
+        /// </summary>  
+        /// <param name="providerType">数据库类型枚举</param>  
+        /// <returns></returns>  
+        internal static string GetProviderInvariantName(DbProviderType providerType)
+        {
+            return providerInvariantNames[providerType];
+        }
+        /// <summary>  
+        /// 获取指定类型的数据库对应的DbProviderFactory  
+        /// </summary>  
+        /// <param name="providerType">数据库类型枚举</param>  
+        /// <returns></returns>  
+        public DbProviderFactory GetDbProviderFactory(DbProviderType providerType)
+        {
+            //如果还没有加载，则加载该DbProviderFactory  
+            if (!providerFactoies.ContainsKey(providerType))
+            {
+                providerFactoies.Add(providerType, ImportDbProviderFactory(providerType));
+            }
+            return providerFactoies[providerType];
+        }
+        /// <summary>  
+        /// 加载指定数据库类型的DbProviderFactory  
+        /// </summary>  
+        /// <param name="providerType">数据库类型枚举</param>  
+        /// <returns></returns>  
+        private DbProviderFactory ImportDbProviderFactory(DbProviderType providerType)
+        {
+            string providerName = providerInvariantNames[providerType];
+            DbProviderFactory factory = null;
+            try
+            {
+                //从全局程序集中查找  
+                factory = DbProviderFactories.GetFactory(providerName);
+            }
+            catch (ArgumentException e)
+            {
+                factory = null;
+            }
+            return factory;
+        }
+    }
+
+
+ internal class DataProvider
+    {
+        private static readonly Lazy<DataProvider> lazy = new Lazy<DataProvider>(() => new DataProvider());
+
+        public static DataProvider Instance { get { return lazy.Value; } }
+
+        Dictionary<Type, DbType> typeMap = new Dictionary<Type, DbType>();
+        private DataProvider()
+        { IniDbType(); }
+
+        private void IniDbType()
+        {
+            typeMap[typeof(object)] = DbType.Object;
+            typeMap[typeof(byte)] = DbType.Byte;
+            typeMap[typeof(sbyte)] = DbType.SByte;
+            typeMap[typeof(short)] = DbType.Int16;
+            typeMap[typeof(ushort)] = DbType.UInt16;
+            typeMap[typeof(int)] = DbType.Int32;
+            typeMap[typeof(uint)] = DbType.UInt32;
+            typeMap[typeof(long)] = DbType.Int64;
+            typeMap[typeof(ulong)] = DbType.UInt64;
+            typeMap[typeof(float)] = DbType.Single;
+            typeMap[typeof(double)] = DbType.Double;
+            typeMap[typeof(decimal)] = DbType.Decimal;
+            typeMap[typeof(bool)] = DbType.Boolean;
+            typeMap[typeof(string)] = DbType.String;
+            typeMap[typeof(char)] = DbType.StringFixedLength;
+            typeMap[typeof(Guid)] = DbType.Guid;
+            typeMap[typeof(DateTime)] = DbType.DateTime;
+            typeMap[typeof(DateTimeOffset)] = DbType.DateTimeOffset;
+            typeMap[typeof(byte[])] = DbType.Binary;
+            typeMap[typeof(byte?)] = DbType.Byte;
+            typeMap[typeof(sbyte?)] = DbType.SByte;
+            typeMap[typeof(short?)] = DbType.Int16;
+            typeMap[typeof(ushort?)] = DbType.UInt16;
+            typeMap[typeof(int?)] = DbType.Int32;
+            typeMap[typeof(uint?)] = DbType.UInt32;
+            typeMap[typeof(long?)] = DbType.Int64;
+            typeMap[typeof(ulong?)] = DbType.UInt64;
+            typeMap[typeof(float?)] = DbType.Single;
+            typeMap[typeof(double?)] = DbType.Double;
+            typeMap[typeof(decimal?)] = DbType.Decimal;
+            typeMap[typeof(bool?)] = DbType.Boolean;
+            typeMap[typeof(char?)] = DbType.StringFixedLength;
+            typeMap[typeof(Guid?)] = DbType.Guid;
+            typeMap[typeof(DateTime?)] = DbType.DateTime;
+            typeMap[typeof(DateTimeOffset?)] = DbType.DateTimeOffset;
+        }
+
+        private DbConnection CreateConnection(DbProvider4DAL dbp)
+        {
+            string conn = DataBaseConnFactory.Instance.GetConnString(dbp.CurrentChooseDataBase);
+            DbConnection DBConn = ProviderFactory.Instance.GetDbProviderFactory(dbp.CurrentDbProviderType).CreateConnection();
+            DBConn.ConnectionString = conn;
+            return DBConn;
+        }
+
+        internal DataSet GetDataSet(DbProvider4DAL dbp)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                if (dbp.CurrentCommand.Connection == null)
+                {
+                    dbp.CurrentCommand.Connection = CreateConnection(dbp);
+                }
+                using (dbp.CurrentCommand.Connection)
+                {
+                    dbp.CurrentDbDataAdapter.Fill(ds);
+                }
+                
+                return ds;
+            }
+            catch (Exception ex) { throw ex; }
+            finally
+            {
+                dbp.CurrentDbDataAdapter.Dispose();
+                dbp.CurrentCommand.Connection.Close();
+                dbp.CurrentCommand.Connection.Dispose();
+            }
+        }
+        internal void AddDbParamsByCustom(DbCommand dbcomm, string ParameterName, object ParameterValue, DbType dbType)
+        {
+            DbParameter dbp = dbcomm.CreateParameter();
+            dbp.ParameterName = ParameterName;
+            dbp.Value = ParameterValue;
+            dbp.DbType = dbType;
+            dbcomm.Parameters.Add(dbp);
+        }
+        internal void AddDbParamsByPropertyInfo(DbCommand dbcomm, object parameters = null)
+        {
+            if (parameters != null)
+            {
+                Type T = parameters.GetType();
+                PropertyInfo[] properties = T.GetProperties();
+                foreach (PropertyInfo property in properties)
+                {
+                    object value = property.GetValue(parameters);
+
+                    if ((!value.IsNullOrEmpty()) && (!dbcomm.Parameters.Contains("@" + property.Name)))
+                    {
+                        DbParameter dbp = dbcomm.CreateParameter();
+                        dbp.ParameterName = "@" + property.Name;
+                        dbp.Value = property.GetValue(parameters);
+                        dbp.DbType = typeMap[property.PropertyType];
+                        if (dbp.DbType == DbType.DateTime)
+                            if (dbp.Value.ToSqlDateTime() <= WebApiGlobal.MinSqlDate) continue;
+                        if (dbp.DbType == DbType.Int16 || dbp.DbType == DbType.Int32 || dbp.DbType == DbType.Int64
+                            || dbp.DbType == DbType.Single || dbp.DbType == DbType.Double || dbp.DbType == DbType.Decimal
+                            )
+                            if (dbp.Value.ToDecimalEx() == 0) continue;
+
+                        dbcomm.Parameters.Add(dbp);
+                    }
+                }
+            }
+        }
+
+        internal void AddDbParamsByFieldInfo(DbCommand dbcomm, object parameters = null)
+        {
+            if (parameters != null)
+            {
+                Type T = parameters.GetType();
+                
+                FieldInfo[] fields = GetAllInfos(T);
+                foreach (FieldInfo field in fields)
+                {
+                    object value = field.GetValue(parameters);
+                    if ((!value.IsNullOrEmpty()) && (!dbcomm.Parameters.Contains("@" + field.Name)))
+                    {
+                        DbParameter dbp = dbcomm.CreateParameter();
+                        dbp.ParameterName = "@" + field.Name;
+                        dbp.Value = field.GetValue(parameters);
+                        dbp.DbType = typeMap[field.FieldType];
+                        dbcomm.Parameters.Add(dbp);
+                    }
+                }
+            }
+        }
+        private FieldInfo[] GetAllInfos(Type T)
+        {
+            FieldInfo[] infos = null;
+            FieldInfo[] infosSelf = T.GetFields();
+            FieldInfo[] infosBase = null;
+
+            if (T.BaseType != null)
+                infosBase = GetAllInfos(T.BaseType);
+
+            if (infosBase == null || infosBase.Length == 0)
+                infos = infosSelf;
+            else
+            {
+                int iLength = infosBase.Length;
+                Array.Resize<FieldInfo>(ref infosBase, infosBase.Length + infosSelf.Length);
+                infosSelf.CopyTo(infosBase, iLength);
+                infos = infosBase;
+            }
+            return infos;
+        }
+    }
+
+
+
+
+```
