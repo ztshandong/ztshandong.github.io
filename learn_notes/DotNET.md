@@ -1,3 +1,18 @@
+# NetCore Ubuntu 16.04
+```sh
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main" > /etc/apt/sources.list.d/dotnetdev.list'
+sudo apt-get apt-transport-https
+sudo apt-get update
+sudo apt-get install dotnet-sdk-2.1.4
+
+dotnet new console -o myApp
+cd myApp
+dotnet build
+dotnet run
+```
+
 # 程序集混淆签名
 ```sh
 所有命令都在vs2015开发人员工具（管理员权限）下运行，区分大小写。
