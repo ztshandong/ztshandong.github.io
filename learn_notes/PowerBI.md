@@ -1,13 +1,41 @@
+
+
+# PowerBI CLI
+```sh
+用node命令控制台新建工作区
+npm install powerbi-cli -g
+
+powerbi config -c ColloctionName -k key1 -b https://api.powerbi.cn
+powerbi get-workspaces
+powerbi create-workspace
+
+//这两句好像不用？
+azure login 是登陆Global Azure
+azure login -e AzureChinaCloud 是登陆 Mooncake Azure 
+```
+
+# [Mac PowerBI CLI BugFix First](https://docs.azure.cn/zh-cn/articles/azure-operations-guide/power-bi-embedded/aog-power-bi-embedded-cli-cannot-be-used-in-mac-os)
+```sh
+cd /usr/local/lib/node_modules/powerbi-cli/bin
+
+for i in `ls`; 
+do mv -f $i `echo $i | sed 's/^.../powerbi/'`; 
+done;
+
+mv powerbi cli
+chmod +x powerbi-*
+```
+
 # [Git](https://docs.azure.cn/zh-cn/articles/azure-operations-guide/power-bi-embedded/aog-power-bi-embedded-sample-configuration-steps)
 ```sh
 https://github.com/kustbilla/Mooncake_PowerBI_Embedded.git
 将https://management.core.windows.net/ 替换为 https://management.core.windows.net/  
-App.config把对应信息填好，上传用这个
+App.config把对应信息填好，上传用6，如果是连的WAN数据库，上传成功后用8看一下DatasetId，之后用7设置字符串Data Source=www.azure.cn;Initial Catalog=dbname;
 传完了之后把Web.config对应信息填好看结果
+最后发布到Azure上，要先创建移动服务
 
 https://github.com/Azure-Samples/power-bi-embedded-integrate-report-into-web-app.git
 有两个china的config拷到对应的文件夹下
-
 ```
 
 # Cloud.config
@@ -37,27 +65,6 @@ https://github.com/Azure-Samples/power-bi-embedded-integrate-report-into-web-app
 	<add key="defaultEmbedUrl" value="https://embedded.powerbi.com/appTokenReportEmbed" />
 </appSettings>
 ```
-# [Mac PowerBI CLI BugFix First](https://docs.azure.cn/zh-cn/articles/azure-operations-guide/power-bi-embedded/aog-power-bi-embedded-cli-cannot-be-used-in-mac-os)
-```sh
-cd /usr/local/lib/node_modules/powerbi-cli/bin
 
-for i in `ls`; 
-do mv -f $i `echo $i | sed 's/^.../powerbi/'`; 
-done;
 
-mv powerbi cli
-chmod +x powerbi-*
-```
-# PowerBI CLI
-```sh
-用node命令控制台新建工作区
-npm install powerbi-cli -g
 
-powerbi config -c ColloctionName -k key1 -b https://api.powerbi.cn
-powerbi get-workspaces
-powerbi create-workspace
-
-//这两句好像不用？
-azure login 是登陆Global Azure
-azure login -e AzureChinaCloud 是登陆 Mooncake Azure 
-```
