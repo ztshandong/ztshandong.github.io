@@ -1,3 +1,10 @@
+# vs登录Azure
+```sh
+https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2015-login
+
+https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2017-login
+```
+
 # 删除所有空行 
 - ^\s*$\n
 
