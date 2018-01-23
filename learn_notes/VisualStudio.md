@@ -3,6 +3,8 @@
 https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2015-login
 
 https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2017-login
+安装扩展Azure Environment Selector
+Tools-Azure Environment Selector
 ```
 
 # 删除所有空行 
