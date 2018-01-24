@@ -1,4 +1,13 @@
+# [实时获取局域网](http://blog.chinaunix.net/uid-31401119-id-5781310.html)
+```sh
+全都使用同一账号登录
+Office365中下载Data GateWay，PowerBI Desktop，PowerBI for Mobile
+在局域网服务器上安装Data GateWay，然后在Office365的web中设置-管理网关连接局域网服务器
+使用PowerBI Desktop连接好本地数据源Publish
+在Office365中可以看到数据集，刷新频率修改为15分钟，使用数据集创建报表，调整好页面大小380*380左右
+每个报表包含一个图形即可，然后将报表固定到活动页面，这样手机端才可正常显示。
 
+```
 
 # PowerBI CLI
 ```sh
