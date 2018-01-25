@@ -1,3 +1,29 @@
+# AzureUbuntu16.04挂载新磁盘
+```sh
+ls -l /dev/sd*    输出结果/dev/sdc一般就是新磁盘
+
+sudo fdisk /dev/sdc    分区
+Command (m for help): n   是创建新分区，输入p然后大小默认
+Command (m for help): p   是显示分区状态
+Command (m for help): w   是写入分区表
+
+分区之后会有/dev/sdc1
+sudo mkfs -t ext4 /dev/sdc1   转换为文件系统
+
+sudo mkdir newdisk1  创建挂载的文件夹
+sudo mount /dev/sdc1 ~/newdisk1   挂载上来
+
+sudo -i blkid   记录UUID
+sudo vi /etc/fstab
+UUID=12991430-c8f7-4d30-9da7-8da225c000bb  ~/newdisk1   ext4   defaults,nofail   1   2
+
+验证
+sudo umount newdisk1
+sudo mount newdisk1
+
+sudo chmod go+w ~/newdisk1/
+```
+
 # 安装ssh
 ```sh
 ubuntu默认不能远程登录
