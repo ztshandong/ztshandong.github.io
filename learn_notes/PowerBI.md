@@ -75,5 +75,9 @@ https://github.com/Azure-Samples/power-bi-embedded-integrate-report-into-web-app
 </appSettings>
 ```
 
+# Azure Cosmos DB
+```sh
+要选择Edit Queries选择字段，注意修改DataType，否则统计的是Count
+```
 
 
