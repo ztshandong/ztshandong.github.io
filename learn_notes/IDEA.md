@@ -11,3 +11,13 @@ idea.no.launcher=true
 【Preferences】- 【Editor】-【General】-【Console】- 【Fold console lines that contain】
 add:  Class JavaLaunchHelper is implemented in both
 ```
+
+# 技巧
+```java
+"str".sout   相当于System.out.println("str");
+100.fori   for循环
+
+⌘+1,7  在模块之间跳转
+⌘+E 打开最近文件
+Help-Find Action 
+```
