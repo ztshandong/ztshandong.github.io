@@ -48,6 +48,8 @@ elasticsearch.url: "http://10.0.0.2:9200"
 
 http://ip:5601
 
+./kibana -e http://ip:9201 -p 8601
+
 Dev Tools
 
 POST /accounts/person/1
