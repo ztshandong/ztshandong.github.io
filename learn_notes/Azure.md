@@ -53,3 +53,14 @@ static void createQueue(String queueName){
 
 	}
 ```
+
+# Spark
+```sh
+ssh登录后
+spark-shell
+
+val lines=sc.textFile("/home/zhangsan/helloSpark.txt")  
+lines.count()
+```
+
+
