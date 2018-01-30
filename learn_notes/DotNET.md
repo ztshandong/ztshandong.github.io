@@ -1,3 +1,14 @@
+# 部署
+```sh
+打开LocalNupkgApp.csproj文件，在PropertyGroup中添加元素<RestoreSources>..\mypacks</RestoreSources>
+
+如果需要设置多个包的位置，可以在RestoreSources元素中添加多个位置，多个位置之间用分号“;”分隔。例如<RestoreSources>C:\Users\sun\.nuget\packages; ..\mypacks; https://api.nuget.org/v3</RestoreSources>
+
+dotnet restore
+
+dotnet build
+```
+
 # NetCore Ubuntu 16.04
 ###### [官方教程](https://www.microsoft.com/net/learn/get-started/linuxubuntu)
 ```sh
