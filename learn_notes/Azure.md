@@ -1,3 +1,21 @@
+# vs登录Azure
+```sh
+https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2015-login
+
+https://docs.azure.cn/zh-cn/articles/azure-operations-guide/others/aog-portal-management-qa-vs2017-login
+安装扩展Azure Environment Selector
+Tools-Azure Environment Selector
+```
+
+# IDEA登录Azure
+```sh
+安装Azure Toolkit for IntelliJ
+在~/AzureToolsForIntelliJ目录下创建文件AadProvider.json
+{
+"EnvironmentName": "CHINA"
+}
+```
+
 # 服务总线
 ```java
 服务总线，添加队列
