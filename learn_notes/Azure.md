@@ -16,7 +16,7 @@ Tools-Azure Environment Selector
 }
 ```
 
-# 服务总线
+# 服务总线队列
 ```java
 服务总线，添加队列
 		<dependency>
@@ -217,6 +217,161 @@ namespace AzureServiceBusReceiver
         }
     }
 }
+```
+
+# 服务总线-主题订阅
+```c#
+Azure门户新增主题时如果选择启用重复检测，貌似订阅接收时有序，否则接收无序。
+新增订阅时不要勾选启用会话，否则订阅接收报错。
+
+.NetCore项目安装Microsoft.Azure.ServiceBus
+
+主题
+namespace AzureServiceBusZhuTi
+{
+    using System;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Azure.ServiceBus;
+
+    class Program
+    {
+        const string ServiceBusConnectionString = "主连接字符串";
+        const string TopicName = "主题名";
+        static ITopicClient topicClient;
+
+        static void Main(string[] args)
+        {
+            MainAsync().GetAwaiter().GetResult();
+        }
+
+        static async Task MainAsync()
+        {
+            const int numberOfMessages = 25;
+            topicClient = new TopicClient(ServiceBusConnectionString, TopicName);
+
+            Console.WriteLine("======================================================");
+            Console.WriteLine("Press ENTER key to exit after sending all the messages.");
+            Console.WriteLine("======================================================");
+
+            // Send messages.
+            await SendMessagesAsync(numberOfMessages);
+
+            Console.ReadKey();
+
+            await topicClient.CloseAsync();
+        }
+
+        static async Task SendMessagesAsync(int numberOfMessagesToSend)
+        {
+            try
+            {
+                for (var i = 0; i < numberOfMessagesToSend; i++)
+                {
+                    // Create a new message to send to the topic
+                    string messageBody = $"Message {i}";
+                    var message = new Message(Encoding.UTF8.GetBytes(messageBody));
+                    //创建主题的时候选择了启用重复检查需要设置PartitionKey
+                    //message.PartitionKey = "1";
+                    // Write the body of the message to the console
+                    Console.WriteLine($"Sending message: {messageBody}");
+
+                    // Send the message to the topic
+                    await topicClient.SendAsync(message);
+                }
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
+            }
+        }
+    }
+}
+
+
+namespace CoreReceiverApp
+{
+    using System;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Azure.ServiceBus;
+
+    class Program
+    {
+        const string ServiceBusConnectionString = "主连接字符串";
+        const string TopicName = "主题名称";
+        const string SubscriptionName = "订阅名称";
+        static ISubscriptionClient subscriptionClient;
+
+        static void Main(string[] args)
+        {
+            MainAsync().GetAwaiter().GetResult();
+        }
+
+        static async Task MainAsync()
+        {
+            subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, TopicName, SubscriptionName);
+
+            Console.WriteLine("======================================================");
+            Console.WriteLine("Press ENTER key to exit after receiving all the messages.");
+            Console.WriteLine("======================================================");
+
+            // Register subscription message handler and receive messages in a loop.
+            RegisterOnMessageHandlerAndReceiveMessages();
+
+            Console.ReadKey();
+
+            await subscriptionClient.CloseAsync();
+        }
+
+        static void RegisterOnMessageHandlerAndReceiveMessages()
+        {
+            // Configure the message hnadler options in terms of exception handling, number of concurrent messages to deliver, etc.
+            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                // Maximum number of concurrent calls to the callback ProcessMessagesAsync(), set to 1 for simplicity.
+                // Set it according to how many messages the application wants to process in parallel.
+                MaxConcurrentCalls = 1,
+
+                // Indicates whether MessagePump should automatically complete the messages after returning from User Callback.
+                // False below indicates the Complete will be handled by the User Callback as in `ProcessMessagesAsync` below.
+                AutoComplete = false
+            };
+
+            // Register the function that processes messages.
+            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+        }
+
+        static async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        {
+            // Process the message.
+            Console.WriteLine($"Received message: SequenceNumber:{message.SystemProperties.SequenceNumber} Body:{Encoding.UTF8.GetString(message.Body)}");
+
+            // Complete the message so that it is not received again.
+            // This can be done only if the subscriptionClient is created in ReceiveMode.PeekLock mode (which is the default).
+            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+
+            // Note: Use the cancellationToken passed as necessary to determine if the subscriptionClient has already been closed.
+            // If subscriptionClient has already been closed, you can choose to not call CompleteAsync() or AbandonAsync() etc.
+            // to avoid unnecessary exceptions.
+        }
+
+        static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        {
+            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
+            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+            Console.WriteLine("Exception context for troubleshooting:");
+            Console.WriteLine($"- Endpoint: {context.Endpoint}");
+            Console.WriteLine($"- Entity Path: {context.EntityPath}");
+            Console.WriteLine($"- Executing Action: {context.Action}");
+            return Task.CompletedTask;
+        }
+        
+    }
+}
+
 ```
 
 # Spark
