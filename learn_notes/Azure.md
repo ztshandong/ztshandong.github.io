@@ -379,6 +379,9 @@ namespace CoreReceiverApp
 Azure门户
 spark群集-存储账户-容器-上传
 上传helloSpark.txt
+hello spark
+hello world
+中文
 
 ssh登录后
 spark-shell
@@ -386,11 +389,175 @@ spark-shell
 val lines=sc.textFile("/helloSpark.txt")
 lines.count()
 lines.first()
-
+lines.filter(line => line.contains("hello")).count()
 
 如果执行
 val lines=sc.textFile("helloSpark.txt").count()
 会到路径/user/sshuser/下
+```
+
+# Spark-Maven
+```java
+新建Maven项目，删掉java，resource，test
+main下新建scala文件夹，右键scala，Make Directory as Sources Root
+项目右键Add Framework Support-Scala-2.11.12
+
+pom.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.example</groupId>
+	<artifactId>scala</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>scala</name>
+	<description>Demo project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.10.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spark.version>2.0.2</spark.version>
+		<scala.version>2.11</scala.version>
+	</properties>
+
+	<dependencies>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-web</artifactId>-->
+		<!--</dependency>-->
+
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-test</artifactId>-->
+			<!--<scope>test</scope>-->
+		<!--</dependency>-->
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_${scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_${scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_${scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-hive_${scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-mllib_${scala.version}</artifactId>
+			<version>${spark.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!--<plugin>-->
+				<!--<groupId>org.springframework.boot</groupId>-->
+				<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+			<!--</plugin>-->
+
+			<plugin>
+				<groupId>org.scala-tools</groupId>
+				<artifactId>maven-scala-plugin</artifactId>
+				<version>2.15.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>
+
+
+
+scala文件夹右键，new Scala Class，kind-Object
+import org.apache.spark.{SparkConf, SparkContext}
+/**
+  * Created by zhangtao on 2018/1/31.
+  */
+object myFirstScala {
+//  def main(args: Array[String]):Unit = {
+//    println("Hello World!")
+//  }
+
+  def main(args: Array[String]) {
+    val conf = new SparkConf().setAppName("myFirstScala")
+    //setMaster("local") 本机的spark就用local，远端的就写ip
+    //如果是打成jar包运行则需要去掉 setMaster("local")因为在参数中会指定。
+    conf.setMaster("local")
+/*
+local 本地单线程
+local[K] 本地多线程（指定K个内核）
+local[*] 本地多线程（指定所有可用内核）
+spark://HOST:PORT 连接到指定的 Spark standalone cluster master，需要指定端口。
+mesos://HOST:PORT 连接到指定的 Mesos 集群，需要指定端口。
+yarn-client客户端模式 连接到 YARN 集群。需要配置 HADOOP_CONF_DIR。
+yarn-cluster集群模式 连接到 YARN 集群。需要配置 HADOOP_CONF_DIR。
+ */
+    val sc =new SparkContext(conf)
+    val rdd =sc.parallelize(List(1,2,3,4,5,6)).map(_*3)
+    val mappedRDD=rdd.filter(_>10).collect()
+    //对集合求和
+    println(rdd.reduce(_+_))
+    //输出大于10的元素
+    for(arg <- mappedRDD)
+      print(arg+" ")
+    println()
+    println("math is work")
+  }
+}
+
+
+
+“File“然后选择“project Structure“
+Artifacts-JAR-From modules with dependencies
+删除其他无用包，只留mySpark.jar和'mySpark'compile output
+Build Artifacts
 ```
 
 
