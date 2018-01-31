@@ -221,11 +221,18 @@ namespace AzureServiceBusReceiver
 
 # Spark
 ```sh
+Azure门户
+spark群集-存储账户-容器-上传
+上传helloSpark.txt
+
 ssh登录后
 spark-shell
 
-val lines=sc.textFile("/home/zhangsan/helloSpark.txt")  
-lines.count()
+val lines=sc.textFile("/helloSpark.txt").count()
+
+如果执行
+val lines=sc.textFile("helloSpark.txt").count()
+会到路径/user/sshuser/下
 ```
 
 
