@@ -383,7 +383,10 @@ spark群集-存储账户-容器-上传
 ssh登录后
 spark-shell
 
-val lines=sc.textFile("/helloSpark.txt").count()
+val lines=sc.textFile("/helloSpark.txt")
+lines.count()
+lines.first()
+
 
 如果执行
 val lines=sc.textFile("helloSpark.txt").count()
