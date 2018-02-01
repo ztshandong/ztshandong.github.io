@@ -38,7 +38,7 @@ chmod +x powerbi-*
 # [Git](https://docs.azure.cn/zh-cn/articles/azure-operations-guide/power-bi-embedded/aog-power-bi-embedded-sample-configuration-steps)
 ```sh
 https://github.com/kustbilla/Mooncake_PowerBI_Embedded.git
-将https://management.core.windows.net/ 替换为 https://management.core.windows.net/  
+将https://management.core.windows.net/ 替换为 https://management.core.chinacloudapi.cn 
 App.config把对应信息填好，上传用6，如果是连的WAN数据库，上传成功后用8看一下DatasetId，之后用7设置字符串Data Source=www.azure.cn;Initial Catalog=dbname;
 传完了之后把Web.config对应信息填好看结果
 最后发布到Azure上，要先创建移动服务
