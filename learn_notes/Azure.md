@@ -560,4 +560,27 @@ Artifacts-JAR-From modules with dependencies
 Build Artifacts
 ```
 
-
+# Media
+```sh
+实时传送视频流很不稳定
+资产-上传-发布-编码
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <style>
+        video {
+            width: 640px;
+            height: 360px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <video data-dashjs-player autoplay src="MPEG-DASH URL" controls></video>
+</div>
+</body>
+</html>
+```
