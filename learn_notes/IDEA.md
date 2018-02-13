@@ -35,6 +35,10 @@ Navigate-Class ⌘+O 根据类名精确查找(有选项)
 Navigate-File ⇧+⌘+O 根据文件名精确查找
 Navigate-Symbol ⌥+⌘+O 根据方法名精确查找
 
++⌘+V 调出剪贴板
+
+Call Hierarchy ^+⌥+H 查看所有引用
+
 ⌘+1,7  在模块之间跳转
 ⌘+E 打开最近文件
 ⇧+⌘+E 最近修改的文件
@@ -44,6 +48,8 @@ Navigate-Back 上一次光标位置 ⌘+[
 Navigate-Next 下一次光标位置 ⌘+]
 Navigate-Last Edit Location 上一次编辑位置 ⇧+⌘+L （自定义）
 Navigate-Next Edit Location 下一次编辑位置 ^+⌘+L （自定义）
+
+Navigate-File Structure ⌘+F12 类大纲
 
 ⌘+2打开Favorites项目卡
 
