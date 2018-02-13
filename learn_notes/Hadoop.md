@@ -88,3 +88,21 @@ MapReduce包含3和4
 4.TaskTracker：不同的机器上部署TaskTracker，负责执行由JobTracker指派的任务
 5.SecondaryNameNode：帮助NameNode收集文件系统运行的状态信息，是HDFS的一个组件，不是热备，是冷备份，为了加速启动
 ```
+
+# 命令
+```sh
+hdfs dfs -help
+
+查看hdfs文件系统
+hdfs dfs -ls /
+
+新建文件夹
+hdfs dfs -mkdir /test
+
+将本地文件上传到hdfs系统
+hdfs dfs -copyFromLocal /home/user/hellohadoop.txt /test
+
+copyToLocal
+chmod
+
+```
