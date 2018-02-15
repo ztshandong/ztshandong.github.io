@@ -36,6 +36,22 @@ path.log 日志存储地址
 http://ip:9200/_cat/nodes?v
 ```
 
+# elasticsearch-head
+```sh
+sudo vi elasticsearch.yml 添加下面两句，冒号后面有空格
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+https://github.com/mobz/elasticsearch-head
+git clone git://github.com/mobz/elasticsearch-head.git
+cd elasticsearch-head/
+sudo apt-get install npm -y
+sudo apt install nodejs-legacy -y
+npm install
+npm run start
+http://ip:9100
+```
+
 # kibana
 ```sh
 https://www.elastic.co/cn/downloads/kibana
