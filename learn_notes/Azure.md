@@ -387,13 +387,35 @@ ssh登录后
 spark-shell
 
 val lines=sc.textFile("/helloSpark.txt")
+val linesflatMap=lines.flatMap(line=>line.split(" "))
 lines.count()
 lines.first()
-lines.filter(line => line.contains("hello")).count()
+lines.filter(line => line.contains("hello")).collect().foreach(println)
 
 如果执行
 val lines=sc.textFile("helloSpark.txt").count()
 会到路径/user/sshuser/下
+
+val rdd=sc.parallelize(Array(1,2,2,4),4)
+rdd.collect().foreach(println)
+rdd.take(4).foreach(println)
+rdd.toDF().show()
+
+val rdd = sc.parallelize(1 to 10)
+rdd.reduce((x,y)=>x+y)
+val map = rdd.map(_*2)
+rdd.top(2)
+
+val lines=sc.parallelize(Array("hello","spark","hello","world","!"))
+val linemap=lines.map(word=>(word,1))
+lines.distinct().collect().foreach(println)
+
+val lines2=sc.parallelize(Array("hello","hadoop","hello","world"))
+
+lines.union(lines2).collect().foreach(println)
+lines.intersection(lines2).collect().foreach(println)
+lines.subtract(lines2).collect().foreach(println)  lines有，lines2没有的
+
 ```
 
 # Spark-Maven
