@@ -615,3 +615,34 @@ Build Artifacts
 </body>
 </html>
 ```
+
+# spark-jupyter
+```sh
+import numpy as np
+a=np.array([1,2,3])
+a
+type(a)
+a.shape
+a=a.reshape((1,-1))
+a.shape
+
+a=np.array([1,2,3,4,5,6])
+a=a.reshape((2,-1))
+a
+
+a=np.array([1,2,3,4,5,6])
+a=a.reshape((-1,2))
+a
+
+a[2,0]=55
+
+a=np.zeros((3,3))
+相当于
+a=np.full((3,3),0)
+
+a=np.ones((2,3))
+
+a=np.eye(3)
+
+a=np.random.random((3,4))
+```
