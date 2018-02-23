@@ -1,7 +1,11 @@
 # MAC
 ```sh
+node v9.5.0
+npm 5.6.0
 python 必须 2.7
+python 2.7.10
 npm install -g node-gyp
+node-gyp v3.6.2
 node-gyp clean configure build
 ```
 
