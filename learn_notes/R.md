@@ -31,3 +31,277 @@ yum -y install --nogpgcheck rstudio-server-rhel-1.0.136-x86_64.rpm
 rstudio-server verify-installation
 默认端口是8787
 ```
+
+# [Ubuntu R Studio Server](https://www.rstudio.com/products/rstudio/download-server/)
+```sh
+sudo vi /etc/apt/sources.list
+deb https://mirrors.tuna.tsinghua.edu.cn/CRAN//bin/linux/ubuntu artful/
+
+sudo apt-get update
+sudo apt-get install -y r-base
+sudo apt-get install -y gdebi-core
+wget https://download2.rstudio.org/rstudio-server-1.1.423-amd64.deb
+sudo gdebi -y rstudio-server-1.1.423-amd64.deb
+```
+
+# 多人登录
+```sh
+方法1:
+sudo groupadd hadoop 
+sudo useradd hadoop -g hadoop;
+sudo passwd hadoop 
+sudo adduser hadoop sudo
+sudo mkdir /home/hadoop 
+sudo chown -R hadoop:hadoop /home/hadoop
+
+方法2:
+useradd username -u uid -p password
+千万记得将uid设定为大于100的数字，大于500更好。
+touch /etc/rstudio/rserver.conf
+touch /etc/rstudio/rsession.conf
+
+rserver.conf文件并添加以下代码：
+auth-required-user-group=rstudio_users
+将“rstudio_users”命名为任何你想要的群组名字。
+将刚才新建立的用户名添加到该用户组：
+groupadd rstudio_users
+usermod -g rstudio_users -G rstudio_users username
+rstudio-server restart
+
+```
+
+# 例子
+```sh
+点图
+dotchart(x, labels = NULL, groups = NULL, gdata = NULL,
+         cex = par("cex"), pt.cex = cex,
+         pch = 21, gpch = 21, bg = par("bg"),
+         color = par("fg"), gcolor = par("fg"), lcolor = "gray",
+         xlim = range(x[is.finite(x)]),
+         main = NULL, xlab = NULL, ylab = NULL, ...)
+x是数据来源，也就是要作图的数据；labels 是数据标签，groups分组或分类方式，gdata分组的值，cex字体大小，pch是作图线条类型，bg背景，color颜色，xlim横坐标范围，main是图形标题，xlab横坐标标签，相应的ylab是纵坐标。
+
+eg1:dotchart(mtcars$mpg,labels = row.names(mtcars),cex = .7,
+         main = "Gas Mileage for Car Models",
+         xlab = "Miles Per gallon")
+
+eg2:x <- mtcars[order(mtcars$mpg),]        #按照mpg排序
+x$cyl <-factor(x$cyl)      #将cyl变成因子数据结构类型
+x$color[x$cyl==4] <-"red"   #新建一个color变量，油缸数cyl不同，颜色不同
+x$color[x$cyl==6] <-"blue"
+x$color[x$cyl==8] <-"darkgreen"
+dotchart(x$mpg,        #数据对象
+         labels = row.names(x),     #标签
+         cex = .7,#字体大小
+         groups = x$cyl,      #按照cyl分组
+         gcolor = "black",    #分组颜色
+         color = x$color,     #数据点颜色
+         pch = 19,#点类型
+         main = "Gas Mileage for car modes \n grouped by cylinder",    #标题
+         xlab = "miles per gallon")     #x轴标签
+
+
+
+条形图
+install.packages("vcd")
+install.packages("vioplot")
+install.packages("plotrix")
+
+barplot(height, ...)
+
+eg1:library(vcd)
+counts <- table(Arthritis$Improved)    #引入vcd包只是想要Arthritis中的数据
+barplot(counts,main = "bar plot",xlab = "improved",ylab = "counts")
+
+eg2:barplot(counts,main = " horizontal bar plot",
+xlab = "frequency",
+ylab = "improved",
+horiz = TRUE)#horizon 值默认是FALSE，为TRUE的时候表示图形变为水平的
+
+eg3:library(vcd)
+counts <- table(Arthritis$Improved,Arthritis$Treatment)
+counts
+
+eg4:barplot(counts,main = " stacked bar plot",xlab = "treated",ylab = "frequency",
+        col = c("red","yellow","green"),       #设置颜色
+        legend = rownames(counts))       #设置图例
+
+eg5:barplot(counts,main = " grouped bar plot",xlab = "treated",ylab = "frequency",
+        col = c("red","yellow","green"),
+        legend = rownames(counts),beside = TRUE)
+
+
+
+荆棘图
+荆棘图是对堆砌条形图的扩展，每个条形图高度都是1，因此高度就表示其比例
+eg1:
+library(vcd)
+attach(Arthritis)
+counts <- table (Treatment,Improved)
+spine(counts,main = "Spinogram Example")
+detach(Arthritis)
+
+
+
+直方图
+hist(x, ...)
+eg1:
+par (mfrow = c(2,2))        #设置四幅图片一起显示
+hist(mtcars$mpg)       #基本直方图
+
+hist(mtcars$mpg,
+     breaks = 12,       #指定组数
+     col= "red",        #指定颜色
+     xlab = "Miles per Gallon",
+     main = "colored histogram with 12 bins")
+
+hist(mtcars$mpg,
+     freq = FALSE,      #表示不按照频数绘图
+     breaks = 12,
+     col = "red",
+     xlab = "Miles per Gallon",
+     main = "Histogram,rug plot,density curve")
+rug(jitter(mtcars$mpg))        #添加轴须图
+lines(density(mtcars$mpg),col= "blue",lwd=2)       #添加密度曲线
+
+x <-mtcars$mpg
+h <-hist(x,breaks = 12,
+         col = "red",
+         xlab = "Miles per Gallon",
+         main = "Histogram with normal and box")
+xfit <- seq(min(x),max(x),length=40)
+yfit <-dnorm(xfit,mean = mean(x),sd=sd(x))
+yfit <- yfit *diff(h$mids[1:2])*length(x)
+lines(xfit,yfit,col="blue",lwd=2)       #添加正太分布密度曲线
+box()
+
+
+
+饼图
+pie(x, labels = names(x), edges = 200, radius = 0.8,
+    clockwise = FALSE, init.angle = if(clockwise) 90 else 0,
+    density = NULL, angle = 45, col = NULL, border = NULL,
+    lty = NULL, main = NULL, ...)
+
+eg1:
+par(mfrow = c(2,2))
+slices <- c(10,12,4,16,8)       #数据
+lbls <- c("US","UK","Australis","Germany","France")         #标签数据
+pie(slices,lbls)        #基本饼图
+
+pct <- round(slices/sum(slices)*100)        #数据比例
+lbls2 <- paste(lbls," ",pct ,"%",sep = "")
+pie(slices,labels = lbls2,col = rainbow(length(lbls2)),         #rainbow是一个彩虹色调色板
+    main = "Pie Chart with Percentages")
+
+library(plotrix)
+pie3D(slices,labels=lbls,explode=0.1,main="3D pie chart")       #三维饼图
+
+mytable <- table (state.region)
+lbls3 <- paste(names(mytable),"\n",mytable,sep = "")
+pie(mytable,labels = lbls3,
+    main = "pie  chart from a table \n (with sample sizes")
+
+
+扇形图
+library(plotrix)
+slices<-c(10,12,4,16,8)
+lbls<-c("US","UK","Australia","Germany","France")#国家名称，扇区的字符型向量
+fan.plot(slices,labels = lbls,main = "Fan Plot")
+
+
+
+箱线图
+boxplot(x, ...)
+
+eg1:
+boxplot(mtcars$mpg,main="Box plot",ylab ="Miles per Gallon")       #标准箱线图
+
+boxplot(mpg cyl,data= mtcars,
+       main="car milesge data",
+       xlab= "Number of cylinders",
+       ylab= "Miles per Gallon")
+
+boxplot(mpg cyl,data= mtcars,
+        notch=TRUE,         #含有凹槽的箱线图
+        varwidth = TRUE,        #宽度和样本大小成正比
+        col= "red",
+        main="car milesge data",
+        xlab= "Number of cylinders",
+        ylab= "Miles per Gallon")
+
+mtcars$cyl.f<- factor(mtcars$cyl,         #转换成因子结构
+                      levels= c(4,6,8),
+                      labels = c("4","6","8"))
+mtcars$am.f <- factor(mtcars$am,levels = c(0,1),
+                      labels = c("auto","standard"))
+boxplot(mpgam.f*cyl.f,       #分组的箱线图
+        data = mtcars,
+        varwidth=TRUE,
+        col= c("gold","darkgreen"),
+        main= "MPG Distribution by Auto Type",
+        xlab="Auto Type",
+        ylxb="Miles per Gallon")
+
+
+
+小提琴图
+小提琴图是箱线图和密度图的结合。使用vioplot包中的vioplot函数进行绘图。
+vioplot( x, ..., range=1.5, h, ylim, names, horizontal=FALSE, 
+  col="magenta", border="black", lty=1, lwd=1, rectCol="black", 
+  colMed="white", pchMed=19, at, add=FALSE, wex=1, 
+  drawRect=TRUE)
+
+eg1:library(vioplot)
+x1 <- mtcars$mpg[mtcars$cyl==4]
+x2 <- mtcars$mpg[mtcars$cyl==6]
+x3 <- mtcars$mpg[mtcars$cyl==8]
+vioplot(x1,x2,x3,names= c("4 cyl","6 cyl","8 cyl"),col = "gold")
+title(main="Violin plots of Miles Per Gallon",xlab = "number of cylinders",ylab = "Miles per gallon")
+白点是中位数，中间细线表示须，粗线对应上下四分位点，外部形状是其分布核密度。
+
+
+
+
+1.画出函数f(x)=x^3+2x^2+x+1在区间[1,10]上的图形，曲线颜色设置为红色。 
+x<-seq(1,10,by=0.1) 
+y=x^3+2*x^2+x+1 
+plot(x,y,"l",col="red")
+
+2.将窗口分割成2×1的窗格，在第一个、第二个窗口中分别绘制出正弦、余弦函数的图像，并画出x轴。 x<-seq(0,2*pi,by=pi/20) 
+y1<-sin(x) 
+y2<-cos(x)  
+par(mfrow=c(2,1))  
+plot(x,y1,"l",xlim=c(0,7),ylim=c(-2,2)) 
+lines(c(0,3*pi),c(0,0))  
+plot(x,y2,"l",xlim=c(0,7),ylim=c(-2,2)) 
+lines(c(0,3*pi),c(0,0)) 
+
+3.在同一张图上画出函数y1=2x,y2=x^2的曲线并利用legend函数对曲线加标注“y1=2x,y2=x^2”，并加上标题  “2x和x^2的曲线”。  
+x<-seq(0,10,by=0.5) 
+y1=2*x 
+y2=x^2  
+plot(x,y1,"o",main="2*x和x^2 的曲线",pch=8) 
+lines(x,y2,"o",pch=24,col="red")  
+legend("topright",legend=c("2*x","x^2"),col=c("black","red"),pch=c(8,24),lty=1)
+
+4. 将屏幕分割为四块，并分别画出y=sin(x)；z=cos(x)；a=sin(x)*cos(x)；b=sin(x)/cos(x)。 
+par(mfrow=c(2,2))  
+x<-seq(0,2*pi,by=pi/20) 
+y<-sin(x) 
+z<-cos(x)  
+a<-sin(x)*cos(x) 
+b<-sin(x)/cos(x) 
+plot(x,y,"l") 
+plot(x,z,"l") 
+plot(x,a,"l") 
+plot(x,b,"l")
+
+5.画出下列函数的三维透视图z=(x-2)^2+(y-1.2)^2  
+x<-y<-seq(-2,6,by=0.1) 
+f<-function(x,y){ 
+    z<-(x-2)^2+(y-1.2)^2 
+    }  
+    z<-outer(x,y,f)  
+    persp(x,y,z,col="lightblue")
+```
