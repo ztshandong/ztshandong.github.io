@@ -72,6 +72,12 @@ rstudio-server restart
 
 # 例子
 ```sh
+install.packages("vcd")
+install.packages("vioplot")
+install.packages("plotrix")
+
+
+
 点图
 dotchart(x, labels = NULL, groups = NULL, gdata = NULL,
          cex = par("cex"), pt.cex = cex,
@@ -103,10 +109,6 @@ dotchart(x$mpg,        #数据对象
 
 
 条形图
-install.packages("vcd")
-install.packages("vioplot")
-install.packages("plotrix")
-
 barplot(height, ...)
 
 eg1:library(vcd)
@@ -304,4 +306,46 @@ f<-function(x,y){
     }  
     z<-outer(x,y,f)  
     persp(x,y,z,col="lightblue")
+```
+
+# Ubuntu R Server连接SQL Server
+```sh
+dpkg -s unixODBC  
+dpkg -s unixODBC-dev
+
+sudo apt-get install -y unixodbc
+sudo apt-get install -y unixodbc-dev
+
+sudo apt-get install -y msodbcsql
+
+/etc/odbcinst.ini
+[ODBC Driver 13 for SQL Server]
+Description=Microsoft ODBC Driver 13 for SQL Server
+Driver=/opt/microsoft/msodbcsql/lib64/libmsodbcsql-13.1.so.9.2
+UsageCount=1
+
+/etc/odbc.ini
+[testsql]
+Driver=ODBC Driver 13 for SQL Server
+Server=192.168.1.2
+Database=MS_User
+Port=1433
+
+odbcinst -j
+odbcinst -q -s
+odbcinst -q -d
+
+isql testsql sa XXXX
+
+install.packages("RODBC")
+不安装unixodbc报错configure: error: "ODBC headers sql.h and sqlext.h not found"
+
+library(RODBC);
+odbcDataSources()
+
+library(RODBC);
+dbhandle <- odbcDriverConnect('driver={SQL Server};server=192.168.1.2;database=dbname;uid=sa;pwd=123456')
+r <- sqlQuery(dbhandle, 'select * from tbname')
+print(r)
+odbcClose(dbhandle)
 ```
