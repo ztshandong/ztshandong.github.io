@@ -308,6 +308,17 @@ f<-function(x,y){
     persp(x,y,z,col="lightblue")
 ```
 
+# Windows R Studio 连接 SQL Server
+```sh
+首先添加ODBC，名为test
+library(RODBC)
+odbcDataSources()
+conn=odbcConnect('test',uid='sa',pwd='123456')
+result=sqlQuery(conn,'select * from tbname')
+result
+odbcClose(conn)
+```
+
 # Ubuntu R Server连接SQL Server
 ```sh
 dpkg -s unixODBC  
