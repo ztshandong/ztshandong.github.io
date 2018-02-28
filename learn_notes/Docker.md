@@ -6,6 +6,16 @@
 # [搭建docker](http://morning.work/page/2016-01/deploying-your-own-private-docker-registry.html)
 - 阿里云-容器服务-镜像-镜像仓库控制台  
 
+# Windows
+```sh
+Docker hv-sock proxy (vsudd) is not reachable
+1.删除 C:\Users\Public\Documents\Hyper-V\Virtual hard disks\MobyLinuxVM.vhdx文件
+
+2. 重启 docker for windows 服务
+
+3. 启动 docker for windows 程序（以管理员 权限）
+```
+
 # 目前用ubuntu运行docker最好，所以服务器最好用ubuntu系统
 # docker运行在linux内核下使用真机ip即可访问，mac和windows都不行，都需要用虚拟机的ip才能访问
 # MAC
