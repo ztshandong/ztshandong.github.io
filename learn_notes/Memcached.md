@@ -27,15 +27,18 @@ schtasks /delete /tn memcached
 
 # magent
 ```sh
+推荐安装magent-0.5稳定版本，因为测试发现magent-0.6虽是最新版本，但是还存在问题，不稳定，第二次访问magent始终会堵塞在那里，只能set一个值。测试了magent-0.5是稳定版本，没有出现只能set一个值的现象，遂推荐安装magent-0.5版本，不过此问题也可以通过修改源码的方式来解决，解决方案参考（重点参考第8楼）：https://code.google.com/p/memagent/issues/detail?id=4#makechanges ）
+
+关于 0.6 版本，set key 值第二次失败问题； 这个问题的关键点在于作者写 pool_server_handler 用意； 搭建环境多次启停主数据服务器(memcached)和备份服务器(memcached)；该部分源码均未被调用；该事件也未被触发； 同时因为s->sfd对应的事件机制上add了pool_server_handler的read触发条件； 影响了s->sfd接收下次set key 命令；
+
+提供一种解决方法： 注释掉 函数 static void pool_server_handler(const int fd,const short which, void* argv)； 注释掉 put_server_into_pool(void s) 中: event_del(&(s->ev)); /注意保留/ / event_set(&(s->ev), s->sfd, EV_READ|EV_PERSIST, pool_server_handler, (void *) s); event_add(&(s->ev), 0); */ 如上方法已经测试过；原因不解释；
+
 https://www.oschina.net/p/memagent
 https://code.google.com/archive/p/memagent/downloads
 
 https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/memagent/magent-0.6.tar.gz
 
-tar -zxvf magent-0.6.tar.gz
-
-可能需要修改Makefile文件LIBS位置
-Ubuntu LIBS = -levent -lm -L/usr/local/lib
+https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/memagent/magent-0.5.tar.gz
 
 'SSIZE_MAX' undeclared
  vi ketama.h 
@@ -43,6 +46,37 @@ Ubuntu LIBS = -levent -lm -L/usr/local/lib
 #ifndef SSIZE_MAX
 #define SSIZE_MAX      32767
 #endif
+
+tar -zxvf magent-0.6.tar.gz
+修改Makefile文件LIBS位置
+Ubuntu LIBS = -levent -lm -L/usr/local/lib
+
+tar -zxvf magent-0.5.tar.gz
+修改Makefile文件
+LIBS = -levent 为LIBS = -levent -lm
+
+############magent-0.6版本修改内容start############
+vi Makefile （magent-0.6版本）
+
+LIBS = /usr/lib64/libevent.a /usr/lib64/libm.a
+改为
+LIBS = -lrt /usr/lib64/libevent.a /usr/lib64/libm.a
+
+CFLAGS = -Wall -g -O2 -I/usr/local/include $(M64)
+改为
+CFLAGS = -lrt -Wall -g -O2 -I/usr/local/include $(M64)
+############magent-0.6版本修改内容end##############
+
+############magent-0.5版本修改内容start############
+vi Makefile （magent-0.5版本）
+
+CFLAGS = -Wall -O2 -g
+改为
+CFLAGS = -lrt -Wall -O2 -g
+
+sed -i "s#LIBS = -levent#LIBS = -levent -lm#g" Makefile
+############magent-0.5版本修改内容end##############
+
 
 sudo find / -name libevent-2.1.so.6
 ln -s /usr/local/lib/libevent-2.1.so.6 /usr/lib/libevent-2.1.so.6
