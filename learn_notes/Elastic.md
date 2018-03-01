@@ -533,3 +533,25 @@ output {
 ```sh
 在Kibana的Dev Tools下执行GET sselkdb/_search命令
 ```
+
+# 删除
+```sh
+logstash-input-jdbc插件不支持物理删除的同步更新。详见：
+
+http://stackoverflow.com/questions/35813923/sync-postgresql-data-with-elasticsearch/35823497#35823497
+
+https://github.com/logstash-plugins/logstash-input-jdbc/issues/145
+
+解决方案：
+
+同步删除操作改为同步update更新操作实现。
+
+第一步：进行软件删除，而不是物理删除操作。
+先不物理删除记录，而是软件删除，即新增一个 flag 列，标识记录是否已经被删除（默认为false，设置为true或者deleted代表已经被删除，业界通用方法），这样，通过已有的同步机制，相同的标记记录该行数据会同步更新到Elasticsearch。
+
+第二步：ES中检索flag标记为true或者deleted的字段信息。
+在ES可以执行简单的term查询操作,检索出已经删除的数据信息。
+
+第三步：定时物理删除。
+设置定时事件，间隔一段时间物理删除掉mysql和ES中的flag字段标记为true或deleted的记录，即完成物理删除操
+```
