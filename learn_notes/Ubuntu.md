@@ -24,6 +24,45 @@ sudo mount newdisk1
 sudo chmod go+w ~/newdisk1/
 ```
 
+# 安装卸载
+```sh
+apt-get install可以安装什么类型的文件？dpkg -i呢？
+两者的区别是dpkg绕过apt包管理数据库对软件包进行操作，所以你用dpkg安装过的软件包用apt可以再安装一遍，系统不知道之前安装过了，将会覆盖之前dpkg的安装。
+1、dpkg是用来安装.deb文件,但不会解决模块的依赖关系,且不会关心ubuntu的软件仓库内的软件,可以用于安装本地的deb文件。
+2、apt会解决和安装模块的依赖问题,并会咨询软件仓库, 但不会安装本地的deb文件, apt是建立在dpkg之上的软件管理工具。
+安装软件包
+dpkg -i package_name.deb              //安装本地软件包，不解决依赖关系
+apt-get install package                    //在线安装软件包
+aptitude install pattern                    //同上
+apt-get install package --reinstall   //重新安装软件包
+apitude reinstall package                //同上
+移除软件包
+dpkg -r package                               //删除软件包
+apt-get remove package                  //同上
+aptitude remove package                //同上
+dpkg -P                                             //删除软件包及配置文件
+apt-get remove package --purge    //删除软件包及配置文件
+apitude purge pattern                      //同上
+自动移除软件包
+apt-get autoremove                        //删除不再需要的软件包
+
+安装 make && make install的软件使用auto-apt 和 checkinstall，方便卸载
+建议使用--prefix=/path/you/want/to/install/  来编译安装，卸载时只需要删除目录即可
+常见的反安装target有： make uninstall/distclean/veryclean 等等。如果没有， 
+事先记得记录'make install'的所有输出日志，'make install &> |tee make.log'。
+如果有rpm包的话尽量避免使用源码包安装，linux的rpm包管理工具很强大，方便管理。如果必须要用源码包安装，请在安装的时候指定--prefix安装目录，另外安装的时候请使用make >& LOG_make &make install >& LOG_install &
+
+一般来说，make install完了目录下会有一个install_mainfest.txt的文件记录了安装的所有内容，
+然后xargs rm < install_manifest.txt就可以了。
+
+sudo apt install -y auto-apt checkinstall
+tar -zxvf xxx.gz
+auto-apt run ./configure --prefix=/path
+make
+sudo checkinstall
+3 - Version需要改为数字
+```
+
 # 安装ssh
 ```sh
 ubuntu默认不能远程登录
