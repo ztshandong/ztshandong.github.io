@@ -76,7 +76,9 @@ install.packages("vcd")
 install.packages("vioplot")
 install.packages("plotrix")
 
-
+x <- (0:20) * pi  / 12
+y <- cos(x)
+plot(x,y);
 
 点图
 dotchart(x, labels = NULL, groups = NULL, gdata = NULL,
@@ -270,7 +272,8 @@ x<-seq(1,10,by=0.1)
 y=x^3+2*x^2+x+1 
 plot(x,y,"l",col="red")
 
-2.将窗口分割成2×1的窗格，在第一个、第二个窗口中分别绘制出正弦、余弦函数的图像，并画出x轴。 x<-seq(0,2*pi,by=pi/20) 
+2.将窗口分割成2×1的窗格，在第一个、第二个窗口中分别绘制出正弦、余弦函数的图像，并画出x轴。 
+x<-seq(0,2*pi,by=pi/20) 
 y1<-sin(x) 
 y2<-cos(x)  
 par(mfrow=c(2,1))  
