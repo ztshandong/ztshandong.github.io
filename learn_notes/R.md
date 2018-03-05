@@ -444,6 +444,38 @@ namespace ConsoleR
             Console.ReadKey();
             engine.Dispose();
         }
+
+         static void test4()
+        {
+            REngine.SetEnvironmentVariables();
+            // There are several options to initialize the engine, but by default the following suffice:
+            REngine engine = REngine.GetInstance();
+
+            IntegerVector o11 
+                = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsInteger();
+            IntegerMatrix o1 = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsIntegerMatrix();
+
+            CharacterMatrix o6 = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsCharacterMatrix();
+            ComplexMatrix o7 = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsComplexMatrix();
+            LogicalMatrix o8 = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsLogicalMatrix();
+            RawMatrix o9 = engine.Evaluate("matrix(1:12,nrow=3,ncol=4)").AsRawMatrix();
+
+            GenericVector o4 = engine.Evaluate("A=matrix(1:12,nrow=3,ncol=4)").AsList();
+            //object o5 = engine.Evaluate("A");
+            IntegerMatrix o10 = engine.Evaluate("A").AsIntegerMatrix();
+
+            object o12 = engine.Evaluate("C=matrix(rnorm(16),4,4)");
+            IntegerMatrix o13 = engine.Evaluate("C").AsIntegerMatrix();
+            IntegerVector o14 = engine.Evaluate("C").AsInteger();
+            RawVector o17 = engine.Evaluate("C").AsRaw();
+            RawMatrix o18 = engine.Evaluate("C").AsRawMatrix();
+            CharacterVector o15 = engine.Evaluate("C").AsCharacter();
+            CharacterMatrix o16 = engine.Evaluate("C").AsCharacterMatrix();
+
+            GenericVector o19 = engine.Evaluate("B=matrix(1:12,nrow=3,ncol=4)").AsList();
+            CharacterMatrix o20 = engine.Evaluate("A+B").AsCharacterMatrix();
+
+        }
     }
    
 }
