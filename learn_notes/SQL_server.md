@@ -1428,4 +1428,5 @@ select  * From Housetest
 select  * From Housetest
   Where  contains(*,'"美园" OR "中文"') 
 
+如果搜索英文需要用,隔开，否则搜不到
 ```
