@@ -1389,3 +1389,43 @@ END
             --INTO    #ALL
             FROM    T; 
 ```
+
+# 全文搜索
+```sql
+启用
+EXEC sp_fulltext_database 'enable'
+
+CREATE TABLE [dbo].[Housetest](
+    [ID] [int] IDENTITY(1,1) NOT NULL,
+    [Title] [varchar](200) NULL,
+    [Description] [nvarchar](max) NOT NULL,
+    [IsOnline] [tinyint] NOT NULL,
+ CONSTRAINT [PK_Housetest] PRIMARY KEY CLUSTERED 
+(
+    [ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+
+创建倒序索引，排序用，非必要
+CREATE INDEX IX_Housetest ON Housetest
+(Title DESC
+)
+INCLUDE
+(ID,
+Description,
+IsOnline
+)
+
+在表上右键定义全文索引，选择Title与Description列
+
+select  * From Housetest
+  Where  contains(Description,'"美园" OR "中文"') 
+
+select  * From Housetest
+  Where  contains(Title,'"美园" OR "中文"') 
+  
+select  * From Housetest
+  Where  contains(*,'"美园" OR "中文"') 
+
+```
