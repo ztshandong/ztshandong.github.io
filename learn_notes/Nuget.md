@@ -25,3 +25,21 @@ public class Class1
 并且可以在导航栏来切换不同框架版本来进行调试
 项目右键-打包或者发布会生成nupkg文件
 ```
+
+# [NuGet私服](https://hub.docker.com/r/sunside/simple-nuget-server/)
+```sh
+docker pull sunside/simple-nuget-server
+
+docker run --detach=true --publish 5000:80 --env NUGET_API_KEY=FAE32699-AD88-4D99-9A9B-2A6DBC4C4
+9D1 --volume /c/nugetserver:/var/www/db --volume /c/nugetserver:/var/www/packagefiles --name nuget-server sunside/simple
+-nuget-server
+
+下载NuGet.exe
+https://www.nuget.org/downloads
+
+nuget push -Source http://192.168.1.2:5000/ -ApiKey FAE32699-AD88-4D99-9A9B-2A6DBC4C49D1 D:\NetStandardClassLibrary1.1.0.0.nupkg
+
+nuget list -Source http://192.168.1.2:5000/ -Prerelease
+
+VS中添加NuGet源http://192.168.1.2:5000/
+```
