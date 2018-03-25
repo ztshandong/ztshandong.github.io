@@ -569,3 +569,60 @@ namespace $safeprojectname$
 4.将ProjectTemplate.csproj中Class1改为$custommessage2$
 
 ```
+
+# 多项目模版
+```c#
+比如有三个项目，vs2017导出项目模板，分别解压到三个文件夹下。然后复制一个MyTemplate.vstemplate出来修改，要用vs打开，不要用记事本
+
+<?xml version="1.0"?>
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="ProjectGroup">
+  <TemplateData>
+    <Name>myTmp</Name>
+    <Description>测试</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType></ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>MultiTest</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectCollection>
+      <SolutionFolder Name="folder">
+        <ProjectTemplateLink ProjectName="ClassLibrary2">ProjTMPClassLibrary2\MyTemplate.vstemplate</ProjectTemplateLink>
+      </SolutionFolder>
+      <ProjectTemplateLink ProjectName="ClassLibrary1">ProjTMPClassLibrary1\MyTemplate.vstemplate</ProjectTemplateLink>
+      <ProjectTemplateLink ProjectName="Core1">ProjTMPCore1\MyTemplate.vstemplate</ProjectTemplateLink>
+    </ProjectCollection>
+  </TemplateContent>
+</VSTemplate>
+
+
+ProjectName="$safeprojectname$"就是玩花了，源码要改命名空间，每个项目都要改，比较麻烦
+
+NETCore的项目中 .csproj文件不包括源文件，所以要手动添加
+  <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+发送到zip文件夹
+
+新建VSIX工程
+source.extension.vsixmanifest
+Assets添加zip包
+
+
+
+
+
+
+项模板
+$username$
+$time$ 
+$clrversion$
+namespace $rootnamespace$
+public class $safeitemname$
+```
