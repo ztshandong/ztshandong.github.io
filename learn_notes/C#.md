@@ -393,7 +393,14 @@ public class ProviderFactory
         }
     }
 
+```
 
-
-
+# 嵌入excel
+```c#
+一、下载dsoframer.ocx
+二、32位放入System32，64位放入SysWOW64文件夹下
+三、对应文件夹下运行regsvr32 dsoframer.ocx
+四、工具箱COM组件中即可显示，勾选上之后工具箱中即可使用
+五、axFramerControl1.Open(System.IO.Directory.GetCurrentDirectory() + "\\excel\\xxx.xls"
+六、要手动点击左上方文件-保存，快捷键无效，应该是与内置快捷键冲突
 ```
