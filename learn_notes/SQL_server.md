@@ -1430,3 +1430,64 @@ select  * From Housetest
 
 如果搜索英文需要用,隔开，否则搜不到
 ```
+
+# SQL Server 链接服务器连接 ORACLE
+```sh
+操作起来会很慢，要淡定
+
+一、安装oracle，据说只要客户端就可以
+二、搜索tnsnames.ora文件，并打开
+因为ORACLE的连接无法添加远程机器的ip，只能在这个文件里添加
+
+TESTLocal =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = TESTLocal)
+    )
+  )
+
+
+TESTRemote =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.1.111)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = TESTRemote)
+    )
+  )
+
+三、SSMS中添加链接服务器
+服务器对象-链接服务器，此例名为TestLinkOracle
+1、常规-访问接口：Oracle Provider for OLE DB
+2、此例中数据源填写TESTLocal或TESTRemote
+3、安全性-使用此安全上下文建立连接，填写ORACLE用户名及密码
+4、服务器选项，RPC及RPC Out设为True
+
+四、使用方法
+方式一：
+SELECT * FROM [TestLinkOracle]..USER.TEST
+方式二：
+SELECT * FROM OPENQUERY(TestLinkOracle,'SELECT * FROM  USER.TEST');
+
+方式一可以用SQL Server的语法，方式二需要用ORACLE的原生语法
+SELECT TOP 2 * FROM [TestLinkOracle]..USER.TEST
+SELECT * FROM OPENQUERY(TestLinkOracle,'SELECT * FROM  USER.TEST WHERE ROWNUM < 3');
+
+当Oracle数据库中列的类型为Nvarchar2时方式一会报错，方式二正常，改为varchar2两者都可以
+链接服务器"TestLinkOracle" 的OLE DB 访问接口"OraOLEDB.Oracle" 为列提供的元数据不一致。对象""USER"."TEST"" 的列"xxx" (编译时序号为3)在编译时有256 的"LENGTH"，但在运行时有512。
+
+其余用法类似
+UPDATE OPENQUERY(TestLinkOracle,'SELECT * FROM "USER".TEST') SET xxx=666
+INSERT INTO OPENQUERY(TestLinkOracle,'SELECT * FROM "USER".XXX') VALUES('SADJFKLASJDFLKSAJF',1233)
+DELETE FROM [TestLinkOracle]..USER.TEST WHERE [xxx]='BBB'
+
+也可以将拼接语句放入存储过程
+DECLARE @STR NVARCHAR(MAX) 
+SET @STR = 'INSERT INTO OPENQUERY(TestLinkOracle,''SELECT * FROM "USER".XXX'') VALUES(''SADJFKLASJDFLKSAJsadfF'',12323)'
+EXEC (@STR)
+
+
+
+```
