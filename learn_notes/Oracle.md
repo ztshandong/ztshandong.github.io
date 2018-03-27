@@ -17,3 +17,16 @@ END;
 
 
 ```
+
+# GUID
+```sh
+DECLARE i number;
+ guid VARCHAR2(50);
+begin
+i:=0;
+for i in 1..50000 loop
+select rawtohex(sys_guid()) into guid from dual;
+INSERT INTO "zzz" ("zzz","id") VALUES(guid,i);
+end loop;
+end;
+```
