@@ -626,3 +626,25 @@ $clrversion$
 namespace $rootnamespace$
 public class $safeitemname$
 ```
+
+# 多文件项模版
+```sh
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>OneTable</DefaultName>
+    <Name>OneTable</Name>
+    <Description>&lt;创建单表界面&gt;</Description>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem SubType="" TargetFileName="$fileinputname$BLL.cs" ReplaceParameters="true">$fileinputname$BLL.cs</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$GUI.cs" ReplaceParameters="true">$fileinputname$GUI.cs</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$GUI.Designer.cs" ReplaceParameters="true">$fileinputname$GUI.Designer.cs</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$GUICtr.cs" ReplaceParameters="true">$fileinputname$GUICtr.cs</ProjectItem>
+    <ProjectItem SubType="" TargetFileName="$fileinputname$GUICtr.Designer.cs" ReplaceParameters="true">$fileinputname$GUICtr.Designer.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>
+```
