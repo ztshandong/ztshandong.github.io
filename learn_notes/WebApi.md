@@ -10,7 +10,7 @@ public class IniControllerType
         {
             //Type OtherController = typeof(ControllerPro.ClassName);
             HttpConfiguration config = new HttpConfiguration();
-
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
             config.Formatters.JsonFormatter.SerializerSettings.Formatting =
        Newtonsoft.Json.Formatting.Indented;
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -141,5 +141,72 @@ installutil /u WindowsService1.exe
 # ControllerDLL
 ```c#
 Nuget Microsoft.AspNet.WebApi.Core  System.Web.Http
+public class MSServiceController : ApiController
+    {
+         System.ServiceProcess.ServiceController service = new System.ServiceProcess.ServiceController("ORAPS_MW");
+        public  string restart()
+        {
+            string res = "OK";
+            try
+            {
+                if (service.Status == ServiceControllerStatus.Running)
+                {
+                    service.Stop();
+                    service.WaitForStatus(ServiceControllerStatus.Stopped);
+                }
+                service.Start();
+                service.WaitForStatus(ServiceControllerStatus.Running);
+                return res;
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+                return res;
+            }
+        }
+        // GET api/<controller>
+        public string Get()
+        //public IEnumerable<string> Get()
+        {
+            //BodyClass zz = new BodyClass();
+            //zz.id = 1;
+            //zz.name = "zs";
+            //string s = JsonConvert.SerializeObject(zz);
+            return restart();//new string[] { "value1", "value2" };
+        }
 
+        // GET api/<controller>/5
+        public string Get(int id)
+        {
+            return "value";
+        }
+
+        // POST api/<controller>
+        public void Post([FromBody]dynamic value)
+        {
+            //如果不用dynamic直接改为BodyClass也可以
+
+            //Type t = value.GetType();
+            JObject o = value;
+            BodyClass aa2 = o.ToObject<BodyClass>();
+
+            //这样不行，因为value如果用string来接就什么都接不到
+            //BodyClass abc = JsonConvert.DeserializeObject<BodyClass>(value);
+        }
+
+        // PUT api/<controller>/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
+        // DELETE api/<controller>/5
+        public void Delete(int id)
+        {
+        }
+    }
+    public class BodyClass
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+    }
 ```
