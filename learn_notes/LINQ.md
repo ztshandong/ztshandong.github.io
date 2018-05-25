@@ -32,7 +32,7 @@ namespace LINQDEMO
             var tmp13 = tmp4.Concat(tmp3);
             var tmp14 = tmp13.GroupBy(x => x.ID).Select(g => new { gID = g.Key, gName = g });
             var tmp15 = tmp13.OrderBy(x => x.ID).ThenByDescending(x => x.Name);
-            var tmp16 = dt1.SelectMany(x => per1, (a, b) => new { a, b });
+            var tmp16 = dt1.SelectMany(x => per1, (a, b) => new { a, b }).Select(t => { t.a.Name = t.b.Name; return t;});
             var tmp17 = dt1.SelectMany(c => per1, (a, b) => new { a, b }).Where(@t => @t.a.Field<int>("ID") == @t.b.ID && @t.a.Field<string>("Name") == @t.b.Name).Select(@t => new { nid = @t.b.ID, nname = @t.b.Name, val = @t });
             var tmp18 = dt1.SelectMany(c => per1, (a, b) => new { a, b }).Where(@t => @t.a.Field<int>("ID") == @t.b.ID && @t.a.Field<string>("Name") == @t.b.Name).Select(@t => new Person() { ID = @t.b.ID, Name = @t.b.Name });
             int i18 = tmp18.Count();
