@@ -646,3 +646,58 @@ a=np.eye(3)
 
 a=np.random.random((3,4))
 ```
+# AzureSQL
+```
+azure sql database 与ssms相比：
+1.没有 AlwaysON,没有数据库镜像，没有日志传送，没有复制。 有异地复制可以直接添加数据库辅助副本（库大小是指数据文件大小）；
+2.没有 agent ；如需执行定时调度可以参考《通过本地Agent监控Azure sql database》
+3.没有SSIS；
+4.不支持实例一级的对象（例如不支持全局变量、没有Profiler等）；如需监控可以参考《如何在Azure sql database 下监控正在运行的脚本或某个存储过程是否已运行》
+5.有些命令不支持，因azure sql database 是Pass模式；
+6.注意默认getdate()是取UTC时间，与北京时间相差8小时；
+7.不能在本库显式调用其他库；
+8.默认情况下，azure sql database 不支持跨库操作，需要创建扩展表，建同构同名的表，只能是只读且架构唯一；
+9.azure sql database 是基于v12的引擎，要在UI界面上操作建议安装ssms 2016版操作。
+10.用户名限制，不能使用admin\administrator\sa\guest\root
+
+azure sql database 不支持跨库操作，需要创建扩展表，建同构同名的表，只能是只读且架构唯一。如要存储过程进行跨库操作，需使用sp_execute_remote调用。Azure SQL database和普通的sqlserver 最大的区别是一个数据库就是一个instance, 这样给跨库查询带来了很多不便, 但是仍可以通过external table这种方式来实现. 
+
+
+1. 为ORAPS_Message数据库添加一个 master key, 用于加密下一步中需要的 credential
+CREATE MASTER KEY ENCRYPTION BY PASSWORD = '123456'  
+  
+2. 创建一个 DATABASE SCOPED CREDENTIAL 用于访问 当前instance（ORAPS_Message）以外的数据库
+CREATE DATABASE SCOPED CREDENTIAL ORAPS_MessageDBCred WITH IDENTITY = 'bugongsqlserver',     
+    SECRET = 'Oraps+123';    
+
+3. 创建一个外部数据源, 这里以普通关系型数据库为例, 其实还可以创建Hadoop, shard等类型
+CREATE EXTERNAL DATA SOURCE ORAPS_Test_DS
+    WITH (     
+        TYPE = RDBMS,  
+        LOCATION = 'a8yp4auy1g.database.chinacloudapi.cn',    
+        DATABASE_NAME = 'ORAPS_Test',  
+    CREDENTIAL= ORAPS_MessageDBCred
+)    
+
+4. 创建外部数据库源中表的引用, schema和name必须和外部数据库源的那张表一致
+CREATE EXTERNAL TABLE [dbo].[tb_test](
+	[id] [int] NULL,
+	[name] [varchar](50) NULL
+) 
+WITH   
+( DATA_SOURCE = ORAPS_Test_DS)  
+
+查询
+SELECT * FROM tb_test
+
+插入
+EXEC sp_execute_remote  
+    N'ORAPS_Test_DS',  
+    N'INSERT INTO ORAPS_Test.dbo.tb_test( id, name )VALUES  ( 1, ''zs'' )'  
+
+存储过程与参数
+EXEC sp_execute_remote  
+    N'ORAPS_Test_DS',  
+    N'exec usp_test 2,''ww'''  
+
+```

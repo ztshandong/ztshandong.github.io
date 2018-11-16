@@ -1431,6 +1431,112 @@ select  * From Housetest
 
 如果搜索英文需要用,隔开，否则搜不到
 ```
+# SQL Server 链接服务器
+```
+--查看当前链接情况：
+
+select * from sys.servers;
+
+--使用 sp_helpserver 来显示可用的服务器
+
+Exec sp_helpserver
+
+--删除已经存在的某个链接
+
+Exec sp_droplinkedsrvlogin 服务器别名,Null
+Exec sp_dropserver 服务器别名
+
+--使用sp_addlinkedserver来增加链接
+
+EXEC sp_addlinkedserver
+@server='SQLCluster1',--被访问的服务器别名（习惯上直接使用目标服务器IP，或取个别名如：JOY）
+@srvproduct='',
+@provider='SQLOLEDB',
+@datasrc='192.168.1.18' --要访问的服务器
+
+--使用sp_addlinkedsrvlogin 来增加用户登录链接
+
+EXEC sp_addlinkedsrvlogin
+'SQLCluster1', --被访问的服务器别名（如果上面sp_addlinkedserver中使用别名JOY，则这里也是JOY）
+'false',
+NULL,
+'sa', --帐号
+'123456' --密码
+
+使用举例(访问目标服务器上的数据库Music，查看其中表test的内容)：
+
+如果建立链接时的别名是目标服务器IP，即192.168.2.66
+
+则：
+
+select * from [192.168.2.66].[Music].dbo.test
+如果建立链接时的别名是JOY,
+
+则：
+
+select * from [JOY].[Music].dbo.test
+
+ 
+
+可能会遇到的问题：
+exec sp_dropserver 'JOY'执行失败，
+
+报错信息：仍有对服务器 'JOY' 的远程登录或链接登录。
+
+解决方法：
+
+exec sp_droplinkedsrvlogin 'JOY',null
+
+exec sp_dropserver 'JOY'
+
+
+
+select * from sys.servers;
+
+Exec sp_helpserver
+
+Exec sp_dropserver 'QPAccountsDBLink'
+
+
+EXEC sp_addlinkedserver
+@server='XFGameWebLink',--被访问的服务器别名（习惯上直接使用目标服务器IP，或取个别名如：JOY）
+@srvproduct='XFGameWebLink',
+@provider='SQLOLEDB',
+@datasrc='127.0.0.1', --要访问的服务器
+@catalog='QPWXFGame'
+
+USE [master]  
+GO  
+EXEC master.dbo.sp_addlinkedserver   
+    @server = N'SRVR002\ACCTG',   
+    @srvproduct=N'SQL Server' ;  
+GO
+
+
+EXEC master.dbo.sp_addlinkedsrvlogin   
+    @rmtsrvname = N'SRVR002\ACCTG',   
+    @locallogin = NULL ,   
+    @useself = N'True' ;  
+GO
+
+EXEC sp_addlinkedserver     
+   @server=N'S1_instance1',   
+   @srvproduct=N'',  
+   @provider=N'SQLNCLI',   
+   @datasrc=N'S1\instance1';  
+
+
+EXEC master.dbo.sp_addlinkedserver @server = N'192.168.1.169\ORAPS_MS', @srvproduct=N'SQL Server'
+
+EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname=N'192.168.1.169\ORAPS_MS',@useself=N'False',@locallogin=NULL,@rmtuser=N'sa',@rmtpassword='########'
+
+
+EXEC master.dbo.sp_serveroption @server=N'192.168.1.169', @optname=N'rpc', @optvalue=N'true'
+GO
+
+EXEC master.dbo.sp_serveroption @server=N'192.168.1.169', @optname=N'rpc out', @optvalue=N'true'
+GO
+```
 
 # SQL Server 链接服务器连接 ORACLE
 ```sh
@@ -1655,5 +1761,989 @@ MODIFY REPLICA ON
 N'SQL-SLAVE' WITH
 (PRIMARY_ROLE (READ_ONLY_ROUTING_LIST=(('Clus1-Server1','SQL-MASTER'),'SQL-SLAVE')));
 
+
+```
+
+# SQLServer表分区
+```
+CREATE TABLE [dbo].[tb_Test](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](50) NULL,
+	[AreaID] [int] NULL,
+ CONSTRAINT [PK_tb_Test] PRIMARY KEY NONCLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+BEGIN TRANSACTION
+CREATE PARTITION FUNCTION [TestFunc](int) AS RANGE RIGHT FOR VALUES (0, 1, 2)
+
+CREATE PARTITION SCHEME [TestSolusion] AS PARTITION [TestFunc] TO ([PRIMARY], [ClusterDB1FG1], [ClusterDB1FG2], [PRIMARY])
+
+CREATE CLUSTERED INDEX [ClusteredIndex_on_TestSolusion_636645872842662417] ON [dbo].[tb_Test]
+(
+	[AreaID]
+)WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF) ON [TestSolusion]([AreaID])
+
+DROP INDEX [ClusteredIndex_on_TestSolusion_636645872842662417] ON [dbo].[tb_Test]
+
+COMMIT TRANSACTION
+
+
+
+
+
+declare @I    int,@max int=1000000,@min int=1,@areaid int =1
+set @I=1
+while(@I<=50)
+begin
+set @areaid=((rand()*(@max-@min))+@min)
+set @areaid=@areaid%3
+    insert into [tb_Test]([Name],[AreaID])
+    values(convert(nvarchar,@I),@areaid)
+    set @I=@I+1
+end
+
+
+
+
+select convert(varchar(50), ps.name) as partition_scheme,
+p.partition_number, 
+convert(varchar(50), ds2.name) as filegroup, 
+convert(varchar(59), isnull(v.value, ''), 120) as range_boundary, 
+str(p.rows, 9) as rows
+from sys.indexes i 
+join sys.partition_schemes ps on i.data_space_id = ps.data_space_id 
+join sys.destination_data_spaces dds
+on ps.data_space_id = dds.partition_scheme_id 
+join sys.data_spaces ds2 on dds.data_space_id = ds2.data_space_id 
+join sys.partitions p on dds.destination_id = p.partition_number
+and p.object_id = i.object_id and p.index_id = i.index_id 
+join sys.partition_functions pf on ps.function_id = pf.function_id 
+LEFT JOIN sys.Partition_Range_values v on pf.function_id = v.function_id
+and v.boundary_id = p.partition_number - pf.boundary_value_on_right 
+WHERE i.object_id = object_id('tb_Test')   
+and i.index_id in (0, 1) 
+order by p.partition_number
+
+select * from sys.filegroups
+SELECT * FROM sys.partition_functions
+SELECT * FROM sys.partition_schemes
+
+
+alter partition function [TestFunc]()
+merge range(range_boundary)
+
+
+ALTER PARTITION SCHEME TestSolusion  
+ NEXT USED ClusterDB1FG1  
+ ALTER PARTITION FUNCTION [TestFunc]()  
+    SPLIT RANGE (9)  
+添加多次会按照(range_boundary)排序
+
+
+
+select $partition.[TestFunc]([AreaID]) as number, COUNT(*) as count
+
+ from [tb_Test] group by $partition.[TestFunc]([AreaID])
+
+ select * from [tb_Test] 
+where $partition.[TestFunc]([AreaID])=3
+
+
+
+
+drop PARTITION SCHEME [TestSolusion] 
+drop partition function [TestFunc]
+
+
+
+select ps.Name PartitionScheme, pf.name PartitionFunction  ,*
+ from sys.indexes i  
+ join sys.partition_schemes ps on ps.data_space_id = i.data_space_id  
+ join sys.partition_functions pf on pf.function_id = ps.function_id  
+where i.object_id = object_id('tb_Test')  
+```
+
+# SQL CLR
+```
+http://www.cnblogs.com/Brambling/p/8000911.html
+https://blog.csdn.net/tjvictor/article/details/4726933
+https://docs.microsoft.com/zh-cn/sql/relational-databases/in-memory-oltp/natively-compiled-stored-procedures?view=sql-server-2017
+
+
+--开启所有服务器配置
+sp_configure 'show advanced options', 1; 
+RECONFIGURE WITH override 
+GO 
+--开启 CLR
+sp_configure 'clr enabled', 1; 
+RECONFIGURE WITH override 
+GO
+
+
+--关闭所有服务器配置
+sp_configure 'show advanced options', 0; 
+RECONFIGURE WITH override 
+GO 
+--关闭 CLR
+sp_configure 'clr enabled', 0; 
+RECONFIGURE WITH override 
+GO
+
+
+--权限不够时，设置目标数据库为可信赖的，例如：Test
+ALTER DATABASE [test2] SET TRUSTWORTHY ON 
+
+--修改数据库所有者为当前登录的用户，也可以为其他用户，例如：sa
+EXEC sp_changedbowner 'sa'
+
+打开 Visual Studio 新建一个 SQL Server 数据库项目，这里需要注意 .NET Framework 的版本。
+因为我的目标数据库为 SQL Server 2008，所以这里我选择的是 .NET Framework 3.5 的版本。
+然后添加新建项，选择 SQL CLR C# 用户自定义函数，先从标量函数开始。
+
+
+1、标量函数
+public partial class UserDefinedFunctions
+{
+    /// <summary>
+    /// 10进制转16进制
+    /// </summary>
+    /// <param name="strNumber"></param>
+    /// <returns></returns>
+    [Microsoft.SqlServer.Server.SqlFunction(DataAccess = DataAccessKind.Read, IsDeterministic = true, Name = "ConvertToHexadecimal")]
+    public static SqlString ConvertToHexadecimal(SqlString strNumber)
+    {
+        SqlString result = string.Empty;
+        string str = strNumber.ToString();
+        int number = 0;
+        if (int.TryParse(str, out number))
+        {
+            result = number.ToString("X");
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 16进制转10进制
+    /// </summary>
+    /// <param name="strNumber"></param>
+    /// <returns></returns>
+    [Microsoft.SqlServer.Server.SqlFunction(DataAccess = DataAccessKind.Read, IsDeterministic = true, Name = "ConvertToDecimal")]
+    public static SqlString ConvertToDecimal(SqlString strNumber)
+    {
+        SqlString result = string.Empty;
+        string str = strNumber.ToString();
+        int number = 0;
+        try
+        {
+            number = int.Parse(str, System.Globalization.NumberStyles.HexNumber);
+            result = Convert.ToString(number, 10);
+        }
+        catch
+        {
+        }
+        return result;
+    }
+}
+
+2、表值函数
+public partial class UserDefinedFunctions
+{
+    /// <summary>
+    /// SQL Server 字符串分割方法
+    /// </summary>
+    /// <param name="separator"></param>
+    /// <param name="pendingString"></param>
+    /// <returns></returns>
+    [Microsoft.SqlServer.Server.SqlFunction(
+        DataAccess = DataAccessKind.Read,
+        IsDeterministic = true,
+        Name = "SqlSplit",
+        FillRowMethodName = "SqlSplit_FillRow",
+        TableDefinition = "SerialNumber int,StringValue nvarchar(1024)")]
+    public static IEnumerable SqlSplit(SqlString separator, SqlString pendingString)
+    {
+        string _separator = string.Empty;
+        string _pendingString = string.Empty;
+        if (separator.IsNull)
+        {
+            _separator = ",";
+        }
+        else
+        {
+            _separator = separator.ToString();
+            if (string.IsNullOrEmpty(_separator))
+            {
+                _separator = ",";
+            }
+        }
+
+        if (pendingString.IsNull)
+        {
+            return null;
+        }
+        else
+        {
+            _pendingString = pendingString.ToString();
+            if (string.IsNullOrEmpty(_pendingString))
+            {
+                return null;
+            }
+        }
+
+        string[] strs = _pendingString.Split(new string[] { _separator }, StringSplitOptions.RemoveEmptyEntries);
+        if (strs.Length <= 0)
+        {
+            return null;
+        }
+
+        List<ResultData> resultDataList = new List<ResultData>();
+        for (int i = 0; i < strs.Length; i++)
+        {
+            resultDataList.Add(new ResultData(i + 1, strs[i]));
+        }
+        return resultDataList;
+    }
+
+    /// <summary>
+    /// 填充数据方法
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="serialNumber"></param>
+    /// <param name="stringValue"></param>
+    public static void SqlSplit_FillRow(Object obj, out SqlInt32 SerialNumber, out SqlString StringValue)
+    {
+        ResultData resultData = (ResultData)obj;
+        SerialNumber = resultData.SerialNumber;
+        StringValue = resultData.StringValue;
+    }
+
+    /// <summary>
+    /// 定义返回类型
+    /// </summary>
+    public class ResultData
+    {
+        /// <summary>
+        /// 序号，即行号
+        /// </summary>
+        public SqlInt32 SerialNumber { get; set; }
+
+        /// <summary>
+        /// 分割后的每个子字符串
+        /// </summary>
+        public SqlString StringValue { get; set; }
+
+        public ResultData(SqlInt32 serialNumber, SqlString stringValue)
+        {
+            SerialNumber = serialNumber;
+            StringValue = stringValue;
+        }
+    }
+}
+
+SqlFunctionAttribute 的属性及介绍：
+--属性                    --说明
+--DataAccess            --指示该函数是否涉及访问存储在SQL Server的数据
+--FillRowMethodName        --在同一个类的方法的名称作为表值函数(TVF)，这个参数在表值函数中才会用到，用于指定表值函数的数据填充方法
+--IsDeterministic        --指示用户定义的函数是否是确定性的
+--IsPrecise                --指示函数是否涉及不精确计算，如浮点运算
+--Name                    --函数在SQL Server中注册时使用的函数的名称
+--SystemDataAccess        --指示该函数是否需要访问存储在系统目录或SQL Server虚拟系统表中的数据
+--TableDefinition        --如果方法作为表值函数(TVF)，则为一个字符串，该字符串表示表结构的定义
+标量函数与表值函数可以写在同一个类文件里面，并且可以包含多个，但是聚合函数就不行了，现在需要添加一个新项，选择 SQL CLR C# 聚合。
+
+
+3、聚合函数
+[Serializable]
+[Microsoft.SqlServer.Server.SqlUserDefinedAggregate(
+    Format.UserDefined, 
+    IsInvariantToDuplicates = false, 
+    IsInvariantToNulls = true, 
+    IsInvariantToOrder = false, 
+    MaxByteSize = 8000, 
+    Name = "SumString")]
+public struct UserDefinedSqlAggregate : IBinarySerialize
+{
+    private StringBuilder stringBuilder;
+
+    /// <summary>
+    /// 查询处理器使用此方法初始化聚合的计算
+    /// </summary>
+    public void Init()
+    {
+        stringBuilder = new StringBuilder();
+    }
+
+    /// <summary>
+    /// 查询处理器使用此方法累计聚合值
+    /// </summary>
+    /// <param name="Value"></param>
+    public void Accumulate(SqlString Value)
+    {
+        stringBuilder.Append(string.Format("{0},", Value));
+    }
+
+    /// <summary>
+    /// 查询处理器使用此方法合并聚合的多个部分计算的值
+    /// </summary>
+    /// <param name="Group"></param>
+    public void Merge(UserDefinedSqlAggregate Group)
+    {
+        stringBuilder.Append(Group.stringBuilder);
+    }
+
+    /// <summary>
+    /// 此方法用于返回完成聚合计算的结果
+    /// </summary>
+    /// <returns></returns>
+    public SqlString Terminate()
+    {
+        return new SqlString(stringBuilder.ToString());
+    }
+
+    #region Implement interface IBinarySerialize
+    /// <summary>
+    /// 读
+    /// </summary>
+    /// <param name="r"></param>
+    public void Read(System.IO.BinaryReader r)
+    {
+        stringBuilder = new StringBuilder(r.ReadString());
+    }
+
+    /// <summary>
+    /// 写
+    /// </summary>
+    /// <param name="w"></param>
+    public void Write(System.IO.BinaryWriter w)
+    {
+        w.Write(stringBuilder.ToString());
+    }
+    #endregion
+}
+SqlUserDefinedAggregateAttribute 的属性及介绍：
+--属性                        --说明
+--Format                    --选择序列化的 Format 格式，默认选择 Native，表示使用本地序列化格式。如果选择 UserDefined，则聚合类需要实现 IBinarySerialize 接口
+--IsInvariantToDuplicates    --指示聚合是否与重复的值相计算保持不变
+--IsInvariantToNulls        --指示聚合是否与空值相计算保持不变
+--IsInvariantToOrder        --指示聚合最后计算的结果是否与顺序无关
+--IsNullIfEmpty                --指示在没有对任何值进行累计时，聚合返回值是否为 null 
+--MaxByteSize                 --聚合实例的最大大小(以字节为单位)
+--Name                        --聚合函数的名称
+
+然后生成项目，接下来注册程序集和注册函数就可以使用了。
+4、注册 CLR 程序集
+
+注册程序集的方式有以下两种：
+
+第一种，这种方式注册程序集比较简单，但是缺点就是程序集不能移动或删除。
+--注册CLR程序集方式一，指定程序集DLL的路径
+USE Test 
+GO 
+CREATE ASSEMBLY UserDefinedClrAssembly 
+--AUTHORIZATION sa        --指定数据库所有者，默认为当前用户
+FROM 'C:\Disk2\SQLCLR\SQLCLRtest1.dll'        --指定文件路径
+WITH PERMISSION_SET = UNSAFE;        --指定程序集的权限
+                                --SAFE：无法访问外部系统资源；
+                                --EXTERNAL_ACCESS：可以访问某些外部系统资源；
+                                --UNSAFE：可以不受限制的访问外部系统资源
+GO
+这里如果发生因为程序集拒绝访问的错误，那就把计算机用户 Everyone 的权限改为完全控制就可以了。
+
+第二种，这种方式注册程序集稍微复杂一些，但是好处就是注册成功之后，可以移动甚至删除DLL文件，只要不是变更迁移数据库，都不用重新注册。
+--注册CLR程序集方式二，指定程序集DLL的16进制文件流
+USE Test 
+GO 
+CREATE ASSEMBLY UserDefinedClrAssembly 
+--AUTHORIZATION sa        --指定数据库所有者，默认为当前用户
+FROM 0x4D5A90000300000004000000FFFF0000B8000000000000004000000000    --指定DLL的16进制文件流(当然没这么少，我删掉了)
+WITH PERMISSION_SET = UNSAFE;        --指定程序集的权限
+                                --SAFE：无法访问外部系统资源；
+                                --EXTERNAL_ACCESS：可以访问某些外部系统资源；
+                                --UNSAFE：可以不受限制的访问外部系统资源
+GO
+获取DLL的16进制文件流，可以使用 UltraEdit 这个软件，具体操作方法这里就不多说了。
+
+注册成功之后，可以使用下面的 SQL 语句查看程序集的信息，还包括查询自定义的函数、存储过程等的SQL语句，这个下面注册函数之后可以用到。
+--查看程序集信息
+SELECT * FROM sys.assemblies 
+
+--查看模块信息，即自定义函数、视图、存储过程、触发器等等
+SELECT * FROM sys.sql_modules
+GO 
+
+5、注册函数
+
+下面是三种函数的注册方式的 SQL 语句。
+USE Test 
+GO 
+
+--注册标量函数 ConvertToHexadecimal 
+CREATE FUNCTION [dbo].[ConvertToHexadecimal](@strNumber NVARCHAR(128))
+RETURNS NVARCHAR(128) 
+WITH EXECUTE AS CALLER        --用于在用户在执行函数的时候对引用的对象进行权限检查
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[UserDefinedFunctions].[ConvertToHexadecimal]    --EXTERNAL NAME 程序集名.类名.方法名
+GO 
+
+--注册标量函数 ConvertToDecimal 
+CREATE FUNCTION [dbo].[ConvertToDecimal](@strNumber NVARCHAR(128))
+RETURNS NVARCHAR(128) 
+WITH EXECUTE AS CALLER        --用于在用户在执行函数的时候对引用的对象进行权限检查
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[UserDefinedFunctions].[ConvertToDecimal]    --EXTERNAL NAME 程序集名.类名.方法名
+GO 
+
+--注册表值函数 SqlSplit 
+CREATE FUNCTION [dbo].[SqlSplit](@separator NVARCHAR(32),@string NVARCHAR(MAX))
+RETURNS TABLE 
+(
+    SerialNumber INT,
+    StringValue NVARCHAR(1024)
+)
+WITH EXECUTE AS CALLER        --用于在用户在执行函数的时候对引用的对象进行权限检查
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[UserDefinedFunctions].[SqlSplit]    --EXTERNAL NAME 程序集名.类名.方法名
+GO 
+
+--注册聚合函数 SumString 
+CREATE AGGREGATE [dbo].[SumString](@params NVARCHAR(128))
+RETURNS NVARCHAR(MAX) 
+EXTERNAL NAME [UserDefinedClrAssembly].[UserDefinedSqlAggregate]    --EXTERNAL NAME 程序集名.类名
+GO
+
+注册函数成功之后，接下来测试一下。
+DECLARE @TempTable TABLE
+(
+    Id INT NOT NULL,
+    Name NVARCHAR(32) NOT NULL 
+)
+INSERT INTO @TempTable (
+    Id,
+    [Name]
+)
+SELECT '1','小张' UNION ALL 
+SELECT '2','小明' UNION ALL 
+SELECT '2','小丽' UNION ALL 
+SELECT '2','小李' UNION ALL 
+SELECT '3','小王' UNION ALL 
+SELECT '3','小舞' 
+
+SELECT dbo.ConvertToHexadecimal('15')
+
+SELECT dbo.ConvertToDecimal('FC')
+
+SELECT * FROM SqlSplit(',',',123,456,789,')
+
+SELECT Id,dbo.SumString([Name]) Names 
+FROM @TempTable 
+GROUP BY Id
+
+下面是删除函数和删除程序集的 SQL 语句，虽然可能用不到，但是还是贴出来吧。
+
+这里需要注意的是，删除程序集时要保证不存在函数、存储过程、触发器等对程序集的引用。
+--删除标量函数 ConvertToHexadecimal 
+DROP FUNCTION dbo.ConvertToHexadecimal
+
+--删除标量函数 ConvertToDecimal 
+DROP FUNCTION dbo.ConvertToDecimal
+
+--删除表值函数 SqlSplit 
+DROP FUNCTION dbo.SqlSplit
+
+--删除聚合函数 SumString 
+DROP AGGREGATE dbo.SumString
+
+
+DROP PROCEDURE HelloWorld
+DROP PROCEDURE GetStrLength
+DROP PROCEDURE SayHello
+DROP PROCEDURE GetStudentNameByStuNo
+DROP PROCEDURE GetStudentInfoByStuNo_First
+DROP PROCEDURE GetStudentInfoByStuNo_Second
+DROP PROCEDURE GetStudentInfoByStuNo_Third
+DROP PROCEDURE GetStudentsInfoByStuAge_Single
+DROP PROCEDURE GetStudentsInfoByStuAge_Multiple
+DROP PROCEDURE TestInsert
+drop trigger [FirstSqlTrigger]on database
+--删除程序集 UserDefinedClrAssembly 
+DROP ASSEMBLY UserDefinedClrAssembly
+
+
+
+
+
+接下来在之前的项目选择添加新项，选择 SQL CLR C# 存储过程。
+public partial class StoredProcedures
+{
+    /// <summary>
+    /// 无输入参数，无输出参数，无输出结果，有输出消息，无返回值的存储过程
+    /// </summary>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "HelloWorld")]
+    public static void HelloWorld()
+    {
+        SqlContext.Pipe.Send("Hello World");
+    }
+
+    /// <summary>
+    /// 有输入参数，无输出参数，无输出结果，无输出消息，有返回值的存储过程
+    /// </summary>
+    /// <param name="name"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStrLength")]
+    public static SqlInt32 GetStrLength(SqlString str)
+    {
+        return str.ToString().Length;
+    }
+
+    /// <summary>
+    /// 有输入参数，有输出参数，无输出结果，无输出消息，无返回值的存储过程
+    /// </summary>
+    /// <param name="name"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "SayHello")]
+    public static void SayHello(SqlString name,out SqlString sayHello)
+    {
+        sayHello = "Hello " + name.ToString();
+    }
+
+/// <summary>
+    /// 根据学生学号获取学生姓名
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <returns></returns>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentNameByStuNo")]
+    public static void GetStudentNameByStuNo(SqlString stuNo,out SqlString stoName)
+    {
+        stoName = string.Empty;
+
+        //因为程序是在SQL Server内执行，所以连接字符串写成"context connection=true"即可
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select StuName from StudentInfo where StuNo=@StuNo;";
+
+            SqlParameter param = new SqlParameter("@StuNo", SqlDbType.NVarChar, 4000);
+            param.SqlValue = stuNo;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+            if (dataReader.Read())
+            {
+                stoName = dataReader.GetString(0);
+            }
+            dataReader.Close();
+        }
+    }
+
+
+
+//可以看到我们通过输出参数获取到了返回值。如果现在我需要获取整个学生的所有信息呢？
+
+//虽然可以通过设置多个输出参数得到，但是学生信息的字段过多呢？下面看看输出结果集的方式
+
+/// <summary>
+    /// 根据学生的学号获取该学生的所有信息
+    /// 返回的是一个结果集，即有多少条数据就返回多少条数据
+    /// </summary>
+    /// <param name="stuNo"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentInfoByStuNo_First")]
+    public static void GetStudentInfoByStuNo_First(SqlString stuNo)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from StudentInfo where StuNo=@StuNo;";
+
+            SqlParameter param = new SqlParameter("@StuNo", SqlDbType.NVarChar, 4000);
+            param.SqlValue = stuNo;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+            SqlContext.Pipe.Send(dataReader);
+            dataReader.Close();
+        }
+    }
+
+    /// <summary>
+    /// 根据学生的学号获取该学生的所有信息
+    /// 这种方式效率比较高，是通过直接执行 SqlCommand 指令，然后把数据发送到客户端，不需要经过托管内存
+    /// </summary>
+    /// <param name="stuNo"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentInfoByStuNo_Second")]
+    public static void GetStudentInfoByStuNo_Second(SqlString stuNo)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from StudentInfo where StuNo=@StuNo;";
+
+            SqlParameter param = new SqlParameter("@StuNo", SqlDbType.NVarChar, 4000);
+            param.SqlValue = stuNo;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlContext.Pipe.ExecuteAndSend(comm);
+        }
+    }
+
+    /// <summary>
+    /// 根据学生的学号获取该学生的所有信息
+    /// </summary>
+    /// <param name="stuNo"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentInfoByStuNo_Third")]
+    public static void GetStudentInfoByStuNo_Third(SqlString stuNo)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from StudentInfo where StuNo=@StuNo;";
+
+            SqlParameter param = new SqlParameter("@StuNo", SqlDbType.NVarChar, 4000);
+            param.SqlValue = stuNo;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+
+            SqlDataRecord dataRecord = new SqlDataRecord(
+                new SqlMetaData[]
+                {
+                    new SqlMetaData("ID",SqlDbType.Int),
+                    new SqlMetaData("StuNo",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuName",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuAge",SqlDbType.Int)
+                }
+            );
+
+            if(dataReader.Read())
+            {
+                dataRecord.SetInt32(0,(int)dataReader["ID"]);
+                dataRecord.SetString(1,(string)dataReader["StuNo"]);
+                dataRecord.SetString(2,(string)dataReader["StuName"]);
+                dataRecord.SetInt32(3,(int)dataReader["StuAge"]);
+                SqlContext.Pipe.Send(dataRecord);
+            }
+            dataReader.Close();
+        }
+    }
+//上面三个方法中，第一个方法和第二个方法都是直接返回查询结果的，但是在实际存储过程当中是不会这样写的，里面应该包含有逻辑操作等等，所以就有了第三个方法。
+
+//那么现在是返回的一条数据，如果是返回多条数据呢？第一种方法和第二种方法就不说了，因为这两种方法都是返回结果集的。
+/// <summary>
+    /// 根据年龄查询学生的信息
+    /// 这种方式是一条数据返回一个结果集
+    /// </summary>
+    /// <param name="stuAge"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentsInfoByStuAge_Single")]
+    public static void GetStudentsInfoByStuAge_Single(SqlInt32 stuAge)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from StudentInfo where StuAge=@StuAge;";
+
+            SqlParameter param = new SqlParameter("@StuAge", SqlDbType.Int);
+            param.SqlValue = stuAge;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+
+            SqlDataRecord dataRecord = new SqlDataRecord(
+                new SqlMetaData[]
+                {
+                    new SqlMetaData("ID",SqlDbType.Int),
+                    new SqlMetaData("StuNo",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuName",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuAge",SqlDbType.Int)
+                }
+            );
+
+            while (dataReader.Read())
+            {
+                dataRecord.SetInt32(0, (int)dataReader["ID"]);
+                dataRecord.SetString(1, (string)dataReader["StuNo"]);
+                dataRecord.SetString(2, (string)dataReader["StuName"]);
+                dataRecord.SetInt32(3, (int)dataReader["StuAge"]);
+                //发送结果集到客户端
+                SqlContext.Pipe.Send(dataRecord);
+            }
+            dataReader.Close();
+        }
+    }
+
+    /// <summary>
+    /// 根据年龄查询学生的信息
+    /// 这种方式是所有的数据返回一个结果集
+    /// </summary>
+    /// <param name="stuAge"></param>
+    [Microsoft.SqlServer.Server.SqlProcedure(Name = "GetStudentsInfoByStuAge_Multiple")]
+    public static void GetStudentsInfoByStuAge_Multiple(SqlInt32 stuAge)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from StudentInfo where StuAge=@StuAge;";
+
+            SqlParameter param = new SqlParameter("@StuAge", SqlDbType.Int);
+            param.SqlValue = stuAge;
+            comm.Parameters.Add(param);
+
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+
+            SqlDataRecord dataRecord = new SqlDataRecord(
+                new SqlMetaData[]
+                {
+                    new SqlMetaData("ID",SqlDbType.Int),
+                    new SqlMetaData("StuNo",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuName",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuAge",SqlDbType.Int)
+                }
+            );
+
+            //标记结果集的开始
+            SqlContext.Pipe.SendResultsStart(dataRecord);
+            while (dataReader.Read())
+            {
+                dataRecord.SetInt32(0, (int)dataReader["ID"]);
+                dataRecord.SetString(1, (string)dataReader["StuNo"]);
+                dataRecord.SetString(2, (string)dataReader["StuName"]);
+                dataRecord.SetInt32(3, (int)dataReader["StuAge"]);
+                //填充数据到结果集
+                SqlContext.Pipe.SendResultsRow(dataRecord);
+            }
+            //标记结果集的结束
+            SqlContext.Pipe.SendResultsEnd();
+            dataReader.Close();
+        }
+    }
+
+
+}
+
+
+接下来选择添加新项，选择 SQL CLR C# 触发器。
+public partial class Triggers
+{
+    /// <summary>
+    /// 输出操作的数据
+    /// </summary>
+    [Microsoft.SqlServer.Server.SqlTrigger(Name = "FirstSqlTrigger", Target = "StudentInfo", Event = "FOR INSERT,UPDATE,DELETE")]
+    public static void FirstSqlTrigger()
+    {
+        switch (SqlContext.TriggerContext.TriggerAction)
+        {
+            case TriggerAction.Insert:
+                GetInsertedOrDeleted(InsOrDel.Inserted);
+                break;
+            case TriggerAction.Update:
+                GetInsertedOrDeleted(InsOrDel.Inserted);
+                GetInsertedOrDeleted(InsOrDel.Deleted);
+                break;
+            case TriggerAction.Delete:
+                GetInsertedOrDeleted(InsOrDel.Deleted);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 获取操作的数据或之后的数据
+    /// </summary>
+    /// <param name="insOrDel"></param>
+    /// <returns></returns>
+    private static void GetInsertedOrDeleted(InsOrDel insOrDel)
+    {
+        using (SqlConnection conn = new SqlConnection("context connection=true"))
+        {
+            SqlCommand comm = new SqlCommand();
+            comm.CommandText = "select ID,StuNo,StuName,StuAge from " + insOrDel.ToString() + ";";
+            comm.Connection = conn;
+            conn.Open();
+            SqlDataReader dataReader = comm.ExecuteReader();
+
+            SqlDataRecord dataRecord = new SqlDataRecord(
+                new SqlMetaData[]
+                {
+                    new SqlMetaData("ID",SqlDbType.Int),
+                    new SqlMetaData("StuNo",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuName",SqlDbType.NVarChar,128),
+                    new SqlMetaData("StuAge",SqlDbType.Int)
+                }
+            );
+
+            if (dataReader.Read())
+            {
+                dataRecord.SetInt32(0, (int)dataReader["ID"]);
+                dataRecord.SetString(1, (string)dataReader["StuNo"]);
+                dataRecord.SetString(2, (string)dataReader["StuName"]);
+                dataRecord.SetInt32(3, (int)dataReader["StuAge"]);
+                //发送结果集到客户端
+                SqlContext.Pipe.Send(dataRecord);
+            }
+            dataReader.Close();
+        }
+    }
+
+    private enum InsOrDel
+    {
+        Inserted,
+        Deleted
+    }
+}
+
+--注册触发器 FirstSqlTrigger
+CREATE TRIGGER [FirstSqlTrigger] 
+ON StudentInfo    --目标表
+FOR INSERT,UPDATE,DELETE        --指定触发的操作
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[Triggers].[FirstSqlTrigger];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+
+
+--注册存储过程 HelloWorld
+CREATE PROCEDURE [dbo].[HelloWorld] 
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[HelloWorld];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStrLength
+CREATE PROCEDURE [dbo].[GetStrLength] 
+    @str [nvarchar](MAX)
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStrLength];        --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 SayHello
+CREATE PROCEDURE [dbo].[SayHello] 
+    @name [nvarchar](MAX), 
+    @sayHello [nvarchar](MAX) OUTPUT
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[SayHello];        --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentNameByStuNo
+CREATE PROCEDURE [dbo].[GetStudentNameByStuNo] 
+    @stuNo [nvarchar](MAX), 
+    @stoName [nvarchar](MAX) OUTPUT
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentNameByStuNo];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentInfoByStuNo_First
+CREATE PROCEDURE [dbo].[GetStudentInfoByStuNo_First] 
+    @stuNo [nvarchar](MAX)
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentInfoByStuNo_First];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentInfoByStuNo_Second
+CREATE PROCEDURE [dbo].[GetStudentInfoByStuNo_Second] 
+    @stuNo [nvarchar](MAX)
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentInfoByStuNo_Second];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentInfoByStuNo_Third
+CREATE PROCEDURE [dbo].[GetStudentInfoByStuNo_Third] 
+    @stuNo [nvarchar](MAX)
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentInfoByStuNo_Third];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentsInfoByStuAge_Single
+CREATE PROCEDURE [dbo].[GetStudentsInfoByStuAge_Single] 
+    @stuAge [int]
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentsInfoByStuAge_Single];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 GetStudentsInfoByStuAge_Multiple
+CREATE PROCEDURE [dbo].[GetStudentsInfoByStuAge_Multiple] 
+    @stuAge [int]
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[GetStudentsInfoByStuAge_Multiple];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--注册存储过程 TestInsert
+CREATE PROCEDURE [dbo].[TestInsert] 
+WITH EXECUTE AS CALLER
+AS 
+EXTERNAL NAME [UserDefinedClrAssembly].[StoredProcedures].[TestInsert];    --EXTERNAL NAME 程序集名.类名.方法名
+GO
+
+--执行存储过程 HelloWorld
+exec [dbo].[HelloWorld]
+
+--执行存储过程 GetStrLength
+declare @res int 
+exec @res=[dbo].[GetStrLength] '123456' 
+select @res 
+
+--执行存储过程 SayHello
+declare @SayHello nvarchar(32)
+exec [dbo].[SayHello] 'Brambling',@SayHello output 
+
+select @SayHello
+
+
+declare @StuName nvarchar(32)
+exec [GetStudentNameByStuNo] 'A001',@StuName output 
+select @StuName 
+exec [GetStudentNameByStuNo] 'A003',@StuName output 
+select @StuName 
+
+--执行存储过程 GetStudentInfoByStuNo_First
+exec [GetStudentInfoByStuNo_First] 'A003'
+
+--执行存储过程 GetStudentInfoByStuNo_Second
+exec [GetStudentInfoByStuNo_Second] 'A003'
+
+--执行存储过程 GetStudentInfoByStuNo_Third
+exec [GetStudentInfoByStuNo_Third] 'A003'
+
+--执行存储过程 GetStudentsInfoByStuAge_Single
+exec [dbo].[GetStudentsInfoByStuAge_Single] '18'
+
+--执行存储过程 GetStudentsInfoByStuAge_Multiple
+exec [dbo].[GetStudentsInfoByStuAge_Multiple] '18'
+
+exec [dbo].[TestInsert]
+
+触发器
+-- Insert 操作
+  insert into StudentInfo(ID,StuNo,StuName,StuAge)
+  values(1,'A006','小飞',20)
+
+  -- Update 操作
+  update StudentInfo set StuName='小飞飞' where StuNo='A006' 
+
+  -- Delete 操作
+  delete from StudentInfo where StuNo='A006'
 
 ```
