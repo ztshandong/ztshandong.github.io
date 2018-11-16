@@ -84,7 +84,35 @@ Refactor-Extract-Variable 抽取变量
 ```
  IDEA快捷键模式为Visual Studio
  Setting - Editor - File and Code Templates - Class 模板
+ File Header
+ /**
+* @author:zhangsan
+* @date:${YEAR}/${MONTH}/${DATE}/${TIME}
+* @remarke:
+*/
  Setting - Editor - Live Templates Custrom
+ ft field template
+(Edit Template Variables)
+DATE与TIME选skip if defined
+date()，time()
+ /**
+ * @author:zhangsan
+ * @date:$DATE$/$TIME$
+ * @description:$var1$ 
+ */
+private $var2$ $var3$;
+
+mt method template
+/**
+ * @author:zhangsan
+ * @date:$DATE$/$TIME$
+ * @description:$var1$
+ * @input:$var2$
+ * @output:$var3$
+ */
+public $var4$ $var5$(){
+    
+}
  Settings - Keymap - Find in Path 改成Ctrl + Shift + Q
 
  数字.fori + TAB 增续循环
