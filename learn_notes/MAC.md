@@ -44,6 +44,7 @@ brew cask install visual-studio-code
 
 # 安装环境
 ```java
+tomcat建议下载压缩包直接解压
 brew search tomcat
 brew install tomcat@7
 echo 'export PATH="/usr/local/opt/tomcat@7/bin:$PATH"' >> ~/.bash_profile
@@ -61,7 +62,29 @@ export PATH="/usr/local/opt/tomcat@7/bin:$PATH;.;$PATH:$JAVA_HOME/bin"
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home
 export CLASS_PATH="$JAVA_HOME/lib"
 
+
 eclipse的java api项目主要更新build下的文件就可以，注意某些配置文件不用更新
+
+终端输入/usr/libexec/java_home可显示javahome路径
+
+卸载jdk，删除以下文件
+先移除java控制面板
+sudo rm -rf /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
+sudo rm -rf /Library/PreferencesPanes/JavaControlPanel.prefPane
+sudo rm -rf /Library/Application\ Support/Oracle/Java
+sudo rm -rf /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk
+
+使用安装包安装就不用这一步了
+写到配置文件
+sudo chmod +w /etc/profile
+sudo vi /etc/profile
+
+export PATH="/usr/local/bin:$PATH;.;.$PATH:$JAVA_HOME/bin"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home"
+export CLASS_PATH="$JAVA_HOME/lib"
+
+source /etc/profile 
+
 ```
 # openssl
 ```sh
