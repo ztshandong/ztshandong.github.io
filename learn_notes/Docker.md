@@ -178,7 +178,7 @@ yarn config set disturl https://npm.taobao.org/dist --global
 ```sh
 docker pull mysql:5.7
 第一步只是为了建立自己的数据库和用户，这个镜像运行一下稍微等一会再停掉就可以，不要马上停止，因为可能还没创建好数据库
-docker run -p 3306:3306 -v /data/mysql57-1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB1 -e MYSQL_USER=testuser1 -e MYSQL_PASSWORD=12345678 -d mysql:5.7
+docker run --name tmp -p 3306:3306 -v /data/mysql57-1:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=testDB1 -e MYSQL_USER=testuser1 -e MYSQL_PASSWORD=12345678 -d mysql:5.7
 第二步才是真正要用的镜像，起个名字并且开机启动
 docker run -p 3306:3306 --name=mysql5.7-1 -v /data/mysql57-1:/var/lib/mysql --restart=always -d mysql:5.7
 然后删除第一步的container
@@ -284,7 +284,7 @@ GRANT REPLICATION SLAVE ON *.* TO 'repuser'@'%' IDENTIFIED BY '12345678';
 flush privileges; 
 flush tables with read lock;
 show master status;
-此例中File是mysql-bin.000001， Position是2602
+此例中File是mysql-bin.000001， Position是594
 navicat同步数据
 unlock tables;
 
@@ -293,16 +293,16 @@ unlock tables;
 stop slave;
 reset slave; 
 
-docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql57-slave
-ip addr show docker0 终端中运行，不是数据库，本人是172.17.0.1，就是docker的网关
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql1
+ip addr show docker0 终端中运行，不是数据库，本人是192.168.99.1，就是docker的网关
 
 这种方法要自己手动建好数据库并且同步完数据后进行
-change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
-master_log_file='mysql-bin.000001',master_log_pos=594,master_port=3307;
+change master to master_host='192.168.99.1',master_user='repuser',master_password='12345678',
+master_log_file='mysql-bin.000001',master_log_pos=594,master_port=3306;
 
 如果报错就把slave中自定义数据库删掉，master_log_pos=4，这样slave会自动创建数据库并同步数据
-change master to master_host='172.17.0.1',master_user='repuser',master_password='12345678',
-master_log_file='mysql-bin.000001',master_log_pos=4,master_port=3307;
+change master to master_host='192.168.99.1',master_user='repuser',master_password='12345678',
+master_log_file='mysql-bin.000001',master_log_pos=4,master_port=3306;
 start slave;
 show slave status;
 ```
